@@ -19,16 +19,6 @@ public class Text extends Component
 	private boolean hasProcessed = false;
 	private int renderLength;
 
-	public Text(String name, String rawText, int width, int height)
-	{
-		super(name, 0, 0, width, height);
-		content = new ExtensibleText(rawText, 0, 0, 0);
-		renderLength = content.getLength();
-		font = 0;
-		color = 0;
-		setLineWidth(width);
-	}
-
 	public Text(String name, String rawText, int x, int y, int width, int height)
 	{
 		super(name, x, y, width, height);
@@ -85,6 +75,13 @@ public class Text extends Component
 	public void addString(String raw)
 	{
 		content.addString(raw);
+		hasProcessed = false;
+	}
+
+	public void setString(String raw)
+	{
+		content.setContent(raw);
+		setRenderLength(content.getLength());
 		hasProcessed = false;
 	}
 

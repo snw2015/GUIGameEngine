@@ -27,13 +27,17 @@ public class ExtensibleText
 	private VectorInt[] letterPos;
 	private int length = 0;
 	private int lineWidth;
+	private int defaultColor;
+	private int defaultFont;
 
 	public ExtensibleText(String rawText, int defaultColor, int defaultFont,
 			int lineWidth)
 	{
 		this.lineWidth = lineWidth;
 		colorList = getColorList();
+		this.defaultColor = defaultColor;
 		fontList = getFontList();
+		this.defaultFont = defaultFont;
 		processText(rawText, defaultColor, defaultFont);
 		letterPos = new VectorInt[content.length()];
 	}
@@ -116,9 +120,17 @@ public class ExtensibleText
 		return content;
 	}
 
-	public void setContent(String content)
+	public void setContent(String raw)
 	{
-		this.content = content;
+		content = "";
+		length = 0;
+		colorIndex = new ArrayList<Integer>();
+		colors = new ArrayList<Color>();
+		fontIndex = new ArrayList<Integer>();
+		fonts = new ArrayList<Font>();
+		returns = new ArrayList<Integer>();
+		processText(raw, defaultColor, defaultFont);
+		letterPos = new VectorInt[content.length()];
 	}
 
 	public void addString(String raw)

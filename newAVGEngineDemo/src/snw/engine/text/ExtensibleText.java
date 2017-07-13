@@ -27,6 +27,7 @@ public class ExtensibleText
 	private VectorInt[] letterPos;
 	private int length = 0;
 	private int lineWidth;
+	private int height;
 
 	public ExtensibleText(String rawText, int defaultColor, int defaultFont,
 			int lineWidth)
@@ -177,9 +178,9 @@ public class ExtensibleText
 	{
 		// TODO
 		Font[] f = new Font[3];
-		f[0] = new Font("ËÎÌå", Font.PLAIN, 20);
-		f[1] = new Font("ËÎÌå", Font.BOLD, 20);
-		f[2] = new Font("ËÎÌå", Font.PLAIN, 30);
+		f[0] = new Font("ï¿½ï¿½ï¿½ï¿½", Font.PLAIN, 20);
+		f[1] = new Font("ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 20);
+		f[2] = new Font("ï¿½ï¿½ï¿½ï¿½", Font.PLAIN, 30);
 		return (f);
 	}
 
