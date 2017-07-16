@@ -34,7 +34,9 @@ public class Text extends Component
 	{
 		if (!hasProcessed)
 		{
-			content.processPos(g);
+			VectorInt renderBound = content.processPos(g);
+			setSize(renderBound);
+			System.out.println(renderBound);
 			hasProcessed = true;
 		}
 

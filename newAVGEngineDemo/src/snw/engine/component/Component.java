@@ -256,6 +256,23 @@ public abstract class Component
 		this.height = height;
 	}
 
+	public void setSize(int width, int height)
+	{
+		this.width = width;
+		this.height = height;
+	}
+
+	public void setSize(VectorInt size)
+	{
+		this.width = size.x;
+		this.height = size.y;
+	}
+
+	public VectorInt getSize()
+	{
+		return (new VectorInt(width, height));
+	}
+
 	public boolean isAnimated()
 	{
 		return isAnimated;

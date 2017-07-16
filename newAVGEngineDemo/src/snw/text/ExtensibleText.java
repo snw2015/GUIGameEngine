@@ -56,7 +56,7 @@ public class ExtensibleText
 
 	}
 
-	public void processPos(Graphics g)
+	public VectorInt processPos(Graphics g)
 	{
 		// TODO Auto-generated method stub
 		Iterator<Integer> itrf = fontIndex.iterator();
@@ -69,6 +69,8 @@ public class ExtensibleText
 		int width = 0;
 		int height = 0;
 		int maxHeight = 0;
+		int renderWidth = 0;
+		int renderHeight = 0;
 
 		for (int i = 0; i < length; i++)
 		{
@@ -103,6 +105,13 @@ public class ExtensibleText
 			letterPos[i] = new VectorInt(width, height + (int) (h * 0.6) + 5);
 
 			width = width + metric.stringWidth(content.substring(i, i + 1));
+			if (width > renderWidth)
+			{
+				renderWidth = width;
+			}
+
+			renderHeight = height + maxHeight;
+
 			if (lineWidth > 0 && width >= lineWidth)
 			{
 				height += maxHeight + (i == 0 ? 0 : 5);
@@ -112,6 +121,8 @@ public class ExtensibleText
 				width = metric.stringWidth(content.substring(i, i + 1));
 			}
 		}
+
+		return (new VectorInt(renderWidth, renderHeight));
 
 	}
 

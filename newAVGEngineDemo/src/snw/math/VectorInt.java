@@ -70,4 +70,9 @@ public class VectorInt
 		return (x <= this.x && y <= this.y && x + width >= this.x
 				&& y + height >= this.y);
 	}
+
+	public String toString()
+	{
+		return ("Vector(" + x + ", " + y + ")");
+	}
 }
