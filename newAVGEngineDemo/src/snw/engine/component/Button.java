@@ -142,8 +142,9 @@ public class Button extends FrameComponent
 
 	public void setText(String rawtext)
 	{
-		Text comText = new Text(name + "_text", rawtext, borderSize.x, borderSize.y,
-				width - borderSize.x, height - borderSize.y);
+		Text comText = new Text(name + "_text", rawtext, width / 2, height / 2,
+				width - borderSize.x * 2, height - borderSize.y * 2);
+		comText.setAlignment(ALIGNMENT_CENTER);
 		if (text != null)
 		{
 			remove(name + "_text");

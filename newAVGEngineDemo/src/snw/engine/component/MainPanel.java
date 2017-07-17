@@ -109,6 +109,44 @@ public class MainPanel extends FrameComponent
 		add(lp);
 		componentFocus = lp;
 
+		MessageBox mb = new MessageBox("messageBox1",
+				FileDirectReader.getImage("file/a.png"),
+				"test MessageBox! Just for test................................", 500,
+				200, 500, 500, "Yes");
+		add(mb);
+
+		OptionBox ob = new OptionBox("optionBox1",
+				FileDirectReader.getImage("file/a.png"),
+				"test OptionBox! Just for test................................", 500, 200,
+				500, 500, "Yes", "No");
+
+		mb.setReactionClicked(() ->
+		{
+			remove(mb);
+			add(ob);
+		});
+
+		SelectionBox sb = new SelectionBox("selectionBox1",
+				FileDirectReader.getImage("file/a.png"), "Pls make your choice", 500, 150,
+				400, 700, new String[] { "1,add", "2,minus", "3,death" });
+		sb.setReactionClicked((index) ->
+		{
+			print(index + 1 + " has been selected");
+			remove(sb);
+		});
+
+		ob.setReactionClicked((isAgreed) ->
+		{
+			if (isAgreed)
+			{
+				print("yes!");
+			} else
+			{
+				print("nonono!");
+			}
+			remove(ob);
+			add(sb);
+		});
 	}
 
 	@Override

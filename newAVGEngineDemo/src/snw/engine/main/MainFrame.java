@@ -27,9 +27,9 @@ public class MainFrame extends JFrame
 	public MainFrame()
 	{
 		this.setTitle("0.0.1");
-		this.setBounds(0, 0, 1000, 800);
+		this.setBounds(0, 0, 1400, 900);
 
-		panel = new MainPanel("MainPanel", 0, 0, getHeight(), getWidth());
+		panel = new MainPanel("MainPanel", 0, 0, getWidth(), getHeight());
 
 		this.addKeyListener(new KeyListener()
 		{

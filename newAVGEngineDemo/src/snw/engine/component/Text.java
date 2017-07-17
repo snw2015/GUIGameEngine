@@ -36,7 +36,6 @@ public class Text extends Component
 		{
 			VectorInt renderBound = content.processPos(g);
 			setSize(renderBound);
-			System.out.println(renderBound);
 			hasProcessed = true;
 		}
 

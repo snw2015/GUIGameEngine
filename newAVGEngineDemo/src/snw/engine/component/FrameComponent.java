@@ -72,7 +72,32 @@ public abstract class FrameComponent extends Component
 			}
 			if (index < subComponents.size())
 			{
-				subComponents.remove(index);
+				remove(index);
+				return (true);
+			}
+			return (false);
+
+		}
+	}
+
+	@Deprecated
+	protected boolean remove(Component sub)
+	{
+		synchronized (this)
+		{
+			int index = 0;
+
+			while (index < subComponents.size())
+			{
+				if (subComponents.get(index) == sub)
+				{
+					break;
+				}
+				index++;
+			}
+			if (index < subComponents.size())
+			{
+				remove(index);
 				return (true);
 			}
 			return (false);
@@ -86,6 +111,9 @@ public abstract class FrameComponent extends Component
 			if (subComponents.size() > index)
 			{
 				subComponents.remove(index);
+				componentFocus.mouseExited();
+				componentFocus = null;
+				System.out.println("aa");
 				return (true);
 			}
 			return (false);
@@ -185,5 +213,10 @@ public abstract class FrameComponent extends Component
 	public void mouseExited()
 	{
 		componentFocus = null;
+	}
+
+	public String toString()
+	{
+		return (name);
 	}
 }

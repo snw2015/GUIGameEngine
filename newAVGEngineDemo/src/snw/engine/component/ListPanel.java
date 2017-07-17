@@ -20,8 +20,8 @@ public class ListPanel extends FrameComponent
 	private HashMap<Component, Component[]> successor = new HashMap<Component, Component[]>();
 	private Animation flash = new Animation(100, "file/flash.anm");
 	private boolean isFlashing = false;
-	private Graphic effect = null;
 	private Color color = Color.WHITE;
+	private Graphic effect = null;
 
 	public static final int LEFT = 0;
 	public static final int RIGHT = 1;
@@ -106,11 +106,7 @@ public class ListPanel extends FrameComponent
 			suc.mouseEntered();
 
 			componentFocus = suc;
-			if (effect != null)
-			{
-				resetEffect();
-			}
-
+			resetEffect();
 			return (true);
 		} else
 		{
@@ -179,7 +175,10 @@ public class ListPanel extends FrameComponent
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-		effect.render(g);
+		if (effect != null)
+		{
+			effect.render(g);
+		}
 	}
 
 	@Override
@@ -222,10 +221,7 @@ public class ListPanel extends FrameComponent
 		boolean changed = super.mouseMoved(mouseX, mouseY);
 		if (changed)
 		{
-			if (effect != null)
-			{
-				resetEffect();
-			}
+			resetEffect();
 		}
 		return (changed);
 	}
@@ -244,7 +240,10 @@ public class ListPanel extends FrameComponent
 			effect.setAlpha(1);
 		} else
 		{
-			effect.setAlpha(0);
+			if (effect != null)
+			{
+				effect.setAlpha(0);
+			}
 		}
 	}
 
