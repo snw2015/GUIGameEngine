@@ -29,7 +29,7 @@ public class MainFrame extends JFrame
 		this.setTitle("0.0.1");
 		this.setBounds(0, 0, 1400, 900);
 
-		panel = new MainPanel("MainPanel", 0, 0, getWidth(), getHeight());
+		panel = new MainPanel("MainPanel", 0, 0, getWidth(), getHeight(),this);
 
 		this.addKeyListener(new KeyListener()
 		{

@@ -113,7 +113,6 @@ public abstract class FrameComponent extends Component
 				subComponents.remove(index);
 				componentFocus.mouseExited();
 				componentFocus = null;
-				System.out.println("aa");
 				return (true);
 			}
 			return (false);

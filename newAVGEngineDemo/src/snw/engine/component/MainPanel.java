@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 
 import javax.imageio.ImageReader;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 import snw.engine.animation.Animation;
 import snw.engine.script.CommandInfo;
@@ -24,15 +25,15 @@ import snw.engine.script.ScriptProcessor;
 import snw.file.FileDirectReader;
 import snw.math.VectorInt;
 
-public class MainPanel extends FrameComponent
+public class MainPanel extends TopLevelComponent
 {
 	VectorInt mousePos = new VectorInt();
 
 	ScriptProcessor sp = null;
 
-	public MainPanel(String name, int x, int y, int width, int height)
+	public MainPanel(String name, int x, int y, int width, int height, JFrame frame)
 	{
-		super(name, x, y, width, height);
+		super(name, x, y, width, height, frame);
 		BufferedReader chapter1 = null;
 		File file = new File("file/text1.scp");
 		try
