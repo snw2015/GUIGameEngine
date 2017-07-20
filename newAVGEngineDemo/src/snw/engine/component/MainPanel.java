@@ -200,9 +200,9 @@ public class MainPanel extends TopLevelComponent
 	@Override
 	public boolean mouseMoved(int mouseX, int mouseY)
 	{
-		mousePos.x = mouseX - 11;
-		mousePos.y = mouseY - 45;
-		return (super.mouseMoved(mouseX - 11, mouseY - 45));
+		mousePos.x = mouseX;
+		mousePos.y = mouseY;
+		return (super.mouseMoved(mouseX, mouseY));
 	}
 
 }

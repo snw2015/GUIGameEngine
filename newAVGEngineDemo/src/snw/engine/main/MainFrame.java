@@ -11,25 +11,22 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
 
 import snw.engine.component.MainPanel;
+import snw.engine.component.MainPanelC;
 
 public class MainFrame extends JFrame
 {
 	public boolean isRunning = true;
 	public double fps = 60.0;
 
-	private MainPanel panel = null;
+	private MainPanelC panel = null;
 	private Image image = null;
-
-	private Thread threadPaint = null;
-	private Thread threadProcess = null;
-	private Painter painter = new Painter(this);
 
 	public MainFrame()
 	{
-		this.setTitle("0.0.1");
-		this.setBounds(0, 0, 1400, 900);
+		this.setTitle("0.0.2");
+		this.setBounds(0, 0, 1800, 1200);
 
-		panel = new MainPanel("MainPanel", 0, 0, getWidth(), getHeight(),this);
+		panel = new MainPanelC(this);
 
 		this.addKeyListener(new KeyListener()
 		{
@@ -59,21 +56,21 @@ public class MainFrame extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				panel.mouseClicked(e.getX(), e.getY());
+				panel.mouseClicked(e.getX() - 11, e.getY() - 45);
 
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				panel.mousePressed(e.getX(), e.getY());
+				panel.mousePressed(e.getX() - 11, e.getY() - 45);
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
 
-				panel.mouseReleased(e.getX(), e.getY());
+				panel.mouseReleased(e.getX() - 11, e.getY() - 45);
 			}
 
 			@Override
@@ -95,14 +92,14 @@ public class MainFrame extends JFrame
 			public void mouseMoved(MouseEvent e)
 			{
 
-				panel.mouseMoved(e.getX(), e.getY());
+				panel.mouseMoved(e.getX() - 11, e.getY() - 45);
 
 			}
 
 			@Override
 			public void mouseDragged(MouseEvent e)
 			{
-				panel.mouseDragged(e.getX(), e.getY());
+				panel.mouseDragged(e.getX() - 11, e.getY() - 45);
 			}
 		});
 
@@ -116,7 +113,7 @@ public class MainFrame extends JFrame
 	{
 		if (image != null)
 		{
-			g.drawImage(image, 11, 43, this);
+			g.drawImage(image, 11, 45, this);
 		}
 	}
 

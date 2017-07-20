@@ -22,6 +22,7 @@ public class ListPanel extends FrameComponent
 	private boolean isFlashing = false;
 	private Color color = Color.WHITE;
 	private Graphic effect = null;
+	private float effectAlpha = 1.0f;
 
 	public static final int LEFT = 0;
 	public static final int RIGHT = 1;
@@ -141,6 +142,11 @@ public class ListPanel extends FrameComponent
 		}
 	}
 
+	public void setEffectAlpha(float alpha)
+	{
+		effectAlpha = alpha;
+	}
+
 	public void setEffect(Shape shape)
 	{
 		effect = new Graphic(name + "_effect", color, shape, 0, 0);
@@ -237,7 +243,7 @@ public class ListPanel extends FrameComponent
 			}
 			effect.setPos(componentFocus.getPos());
 			effect.setAlignment(componentFocus.getAlignment());
-			effect.setAlpha(1);
+			effect.setAlpha(effectAlpha);
 		} else
 		{
 			if (effect != null)

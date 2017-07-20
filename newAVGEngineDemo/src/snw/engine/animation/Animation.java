@@ -141,4 +141,10 @@ public class Animation
 	{
 		this.isLoop = isLoop;
 	}
+
+	@Override
+	public String toString()
+	{
+		return (datas.toString());
+	}
 }

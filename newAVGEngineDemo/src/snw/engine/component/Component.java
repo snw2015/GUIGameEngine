@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import snw.engine.animation.Animation;
 import snw.engine.animation.AnimationData;
+import snw.engine.database.ImageBufferData;
 import snw.engine.main.MainFrame;
 import snw.math.VectorDbl;
 import snw.math.VectorInt;
@@ -46,6 +47,8 @@ public abstract class Component
 			new VectorDbl(0.5, 1), new VectorDbl(0.5, 0.5) };
 
 	private int alignment = ALIGNMENT_LEFTTOP;
+	private String[] preLoadImageNames = null;
+	private boolean[] preLoaded = null;
 
 	public Component(String name, int x, int y, int width, int height)
 	{
@@ -54,6 +57,7 @@ public abstract class Component
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		preLoadImages();
 	}
 
 	public void render(Graphics g)
@@ -96,13 +100,53 @@ public abstract class Component
 	private void applyAnimation(Graphics2D canvas, BufferedImage object, int deltaX,
 			int deltaY)
 	{
-		// TODO Auto-generated method stub
-		// print(animationData.toString());
-
 		if (animationData != null)
 		{
+			//System.out.println("apply " + animationData);
 			animationData.apply(canvas, object, deltaX, deltaY);
 		}
+	}
+
+	private void preLoadImages()
+	{
+		if (preLoadImageNames != null)
+		{
+			preLoaded = new boolean[preLoadImageNames.length];
+			for (int i = 0; i < preLoadImageNames.length; i++)
+			{
+				if (ImageBufferData.storeImage(name))
+				{
+					preLoaded[i] = true;
+				} else
+				{
+					preLoaded[i] = false;
+				}
+			}
+		}
+	}
+
+	protected Image getImage(String name)
+	{
+		return (ImageBufferData.getImage(name));
+	}
+
+	private void releaseImages()
+	{
+		if (preLoadImageNames != null)
+		{
+			for (int i = 0; i < preLoadImageNames.length; i++)
+			{
+				if (preLoaded[i])
+				{
+					ImageBufferData.releaseImage(preLoadImageNames[i]);
+				}
+			}
+		}
+	}
+
+	public void exit()
+	{
+		releaseImages();
 	}
 
 	public void keyTyped(char keyChar)
@@ -214,6 +258,7 @@ public abstract class Component
 
 	public void setAnimation(Animation animation)
 	{
+		// System.out.println("Set Animation: " + animation);
 		synchronized (this)
 		{
 			if (animation != null)

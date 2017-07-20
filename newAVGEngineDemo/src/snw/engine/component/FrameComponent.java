@@ -110,6 +110,7 @@ public abstract class FrameComponent extends Component
 		{
 			if (subComponents.size() > index)
 			{
+				subComponents.get(index).exit();
 				subComponents.remove(index);
 				componentFocus.mouseExited();
 				componentFocus = null;
@@ -184,7 +185,7 @@ public abstract class FrameComponent extends Component
 			sub = subComponents.get(i);
 			if (sub != null && new VectorInt(mouseX, mouseY).inBound(sub.getBound()))
 			{
-				sub.mouseMoved(mouseX - sub.getX(), mouseY - sub.getY());
+				sub.mouseMoved(mouseX - sub.getAlignedX(), mouseY - sub.getAlignedY());
 				boolean changed = componentFocus != sub;
 				if (changed)
 				{
