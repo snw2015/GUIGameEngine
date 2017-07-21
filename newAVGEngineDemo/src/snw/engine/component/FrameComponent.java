@@ -127,9 +127,9 @@ public abstract class FrameComponent extends Component
 		{
 			for (Component sub : subComponents)
 			{
+				Graphics2D g2d = (Graphics2D) g;
 				if (sub != null)
 				{
-					Graphics2D g2d = (Graphics2D) g;
 					g2d.setComposite(
 							AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 					sub.render(g);

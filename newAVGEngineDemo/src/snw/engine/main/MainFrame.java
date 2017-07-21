@@ -94,6 +94,7 @@ public class MainFrame extends JFrame
 
 				panel.mouseMoved(e.getX() - 11, e.getY() - 45);
 
+				System.out.println(Thread.currentThread().getName());
 			}
 
 			@Override
@@ -119,11 +120,8 @@ public class MainFrame extends JFrame
 
 	public void getComponentGraphic()
 	{
-		// TODO Auto-generated method stub
-		Image imageBuffer = createImage(this.getWidth(), this.getHeight());
-		Graphics g = imageBuffer.getGraphics();
-		panel.render(g);
-		this.image = imageBuffer;
+		panel.render(image.getGraphics());
+		image.flush();
 	}
 
 	public static void print(String s)

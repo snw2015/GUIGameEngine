@@ -65,9 +65,8 @@ public abstract class Component
 		// print("rendering " + name + " x: " + x + " y:" + y);
 		BufferedImage iBuffer = new BufferedImage(width, height,
 				BufferedImage.TYPE_4BYTE_ABGR);
-		Graphics gBuffer = iBuffer.getGraphics();
 
-		paint(gBuffer);
+		paint(iBuffer.getGraphics());
 
 		int alignedX = getAlignedX();
 		int alignedY = getAlignedY();
@@ -80,6 +79,10 @@ public abstract class Component
 		{
 			g.drawImage(iBuffer, alignedX, alignedY, width, height, null);
 		}
+
+		iBuffer.flush();
+		iBuffer = null;
+
 		update();
 	}
 
@@ -102,7 +105,7 @@ public abstract class Component
 	{
 		if (animationData != null)
 		{
-			//System.out.println("apply " + animationData);
+			// System.out.println("apply " + animationData);
 			animationData.apply(canvas, object, deltaX, deltaY);
 		}
 	}

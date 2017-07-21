@@ -21,6 +21,8 @@ public class MainMenuC extends FrameComponent
 	private String[] preLoadImage = new String[] { "background_main_menu",
 			"button_common" };
 
+	private final Animation flash = new Animation(100, "file/flash.anm");
+
 	public MainMenuC()
 	{
 		super("mainMenu1680x1050", 0, 0, 1680, 1050);
@@ -30,7 +32,6 @@ public class MainMenuC extends FrameComponent
 				width, height);
 		add(background);
 
-		Animation flash = new Animation(100, "file/flash.anm");
 		buttonStart = new Button("buttonStart", 300, 800 - 425, getImage("button_common"),
 				"New Game");
 		buttonStart.setAlignment(ALIGNMENT_BOTTOMMID);

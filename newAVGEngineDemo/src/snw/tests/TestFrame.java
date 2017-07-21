@@ -18,6 +18,10 @@ public class TestFrame extends JFrame
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		repaint();
+
+		System.out.println("start gc "+System.currentTimeMillis());
+		System.gc();
+		System.out.println("end gc "+System.currentTimeMillis());
 	}
 
 	@Override
@@ -28,12 +32,10 @@ public class TestFrame extends JFrame
 		Image image = icon.getImage();
 		g.drawImage(image, 0, 0, this);
 
-		BufferedImage iBuffer = new BufferedImage(200, 200,
-				BufferedImage.TYPE_BYTE_GRAY);
+		BufferedImage iBuffer = new BufferedImage(200, 200, BufferedImage.TYPE_BYTE_GRAY);
 
 		Graphics g2 = iBuffer.getGraphics();
 		g2.drawImage(image, 0, 0, this);
-
 
 		g.drawImage(iBuffer, 0, 0, this);
 	}

@@ -52,6 +52,7 @@ public class ImageBufferData
 	{
 		if (bufferData.containsKey(name))
 		{
+			bufferData.get(name).flush();
 			bufferData.remove(name);
 			return (true);
 		} else

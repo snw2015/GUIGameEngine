@@ -1,5 +1,9 @@
 package snw.engine.main;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Timer;
+
 public class Launcher
 {
 	public final static int fps = 50;
@@ -7,13 +11,21 @@ public class Launcher
 	public static void main(String[] args)
 	{
 		MainFrame frame = new MainFrame();
-		Thread frameThread = new Thread(new FrameThread(frame));
-		frameThread.setName("frame");
-		frameThread.start();
+		Timer timerFrame = new Timer(1000 / fps, (ActionEvent e) ->
+		{
+			frame.start();
+		});
+		timerFrame.start();
 
-		Painter painter = new Painter(frame);
-		Thread paintThread = new Thread(new PainterThread(painter, fps));
-		paintThread.setName("paint");
-		paintThread.start();
+		Timer timerPaint = new Timer(1000 / fps, (ActionEvent e) ->
+		{
+			if (frame.isRunning)
+			{
+				frame.repaint();
+				frame.getComponentGraphic();
+				System.gc();
+			}
+		});
+		timerPaint.start();
 	}
 }
