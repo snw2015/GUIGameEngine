@@ -1,6 +1,6 @@
 package snw.engine.component.reaction;
 
-public interface ReactionMainMenuC
+public interface ReactionCommand
 {
 	public void react(int command);
 }

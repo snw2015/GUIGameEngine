@@ -22,11 +22,11 @@ public class Text extends Component
 	public Text(String name, String rawText, int x, int y, int width, int height)
 	{
 		super(name, x, y, width, height);
-		content = new ExtensibleText(rawText, 0, 0, 0);
+		content = new ExtensibleText(rawText, 0, 0, width);
 		renderLength = content.getLength();
 		font = 0;
 		color = 0;
-		setLineWidth(width);
+		this.lineWidth = width;
 	}
 
 	@Override
@@ -79,9 +79,9 @@ public class Text extends Component
 		hasProcessed = false;
 	}
 
-	public void setString(String raw)
+	public void setString(String rawText)
 	{
-		content.setContent(raw);
+		content = new ExtensibleText(rawText, 0, 0, width);
 		setRenderLength(content.getLength());
 		hasProcessed = false;
 	}

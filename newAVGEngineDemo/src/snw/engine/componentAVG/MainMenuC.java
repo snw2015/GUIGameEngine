@@ -1,7 +1,12 @@
-package snw.engine.component;
+package snw.engine.componentAVG;
 
 import snw.engine.animation.Animation;
-import snw.engine.component.reaction.ReactionMainMenuC;
+import snw.engine.component.Button;
+import snw.engine.component.FrameComponent;
+import snw.engine.component.Graphic;
+import snw.engine.component.ListPanel;
+import snw.engine.component.ListPanelGenerator;
+import snw.engine.component.reaction.ReactionCommand;
 
 public class MainMenuC extends FrameComponent
 {
@@ -13,20 +18,19 @@ public class MainMenuC extends FrameComponent
 
 	private ListPanel list;
 
-	private ReactionMainMenuC reaction = null;
+	private ReactionCommand reaction = null;
 	public static final int COMMAND_START = 1;
 	public static final int COMMAND_CONTINUE = 2;
 	public static final int COMMAND_EXIT = 0;
-
-	private String[] preLoadImage = new String[] { "background_main_menu",
-			"button_common" };
 
 	private final Animation flash = new Animation(100, "file/flash.anm");
 
 	public MainMenuC()
 	{
 		super("mainMenu1680x1050", 0, 0, 1680, 1050);
-		// TODO Auto-generated constructor stub
+
+		preLoadImageNames = new String[] { "background_main_menu", "button_common" };
+		preLoadImages();
 
 		background = new Graphic("background", getImage("background_main_menu"), 0, 0,
 				width, height);
@@ -95,9 +99,8 @@ public class MainMenuC extends FrameComponent
 		add(list);
 	}
 
-	public void setReaction(ReactionMainMenuC reaction)
+	public void setReaction(ReactionCommand reaction)
 	{
 		this.reaction = reaction;
 	}
-
 }

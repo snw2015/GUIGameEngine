@@ -1,7 +1,8 @@
-package snw.engine.component;
+package snw.engine.componentAVG;
 
 import javax.swing.JFrame;
 
+import snw.engine.component.TopLevelComponent;
 import snw.math.VectorInt;
 
 public class MainPanelC extends TopLevelComponent
@@ -14,6 +15,29 @@ public class MainPanelC extends TopLevelComponent
 		// TODO Auto-generated constructor stub
 		MainMenuC mainMenu = new MainMenuC();
 		add(mainMenu);
+
+		mainMenu.setReaction((int command) ->
+		{
+			switch (command)
+			{
+			case MainMenuC.COMMAND_START:
+				remove(mainMenu);
+				startMainScreen();
+				break;
+			case MainMenuC.COMMAND_CONTINUE:
+				break;
+			case MainMenuC.COMMAND_EXIT:
+				System.exit(0);
+				break;
+			default:
+				break;
+			}
+		});
+	}
+
+	public void startMainScreen()
+	{
+		add(new MainAVGC());
 	}
 
 	@Override

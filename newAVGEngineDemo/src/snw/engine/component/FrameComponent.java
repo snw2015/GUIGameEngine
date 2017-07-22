@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import snw.math.VectorInt;
 
-public abstract class FrameComponent extends Component
+public class FrameComponent extends Component
 {
 	private ArrayList<Component> subComponents = new ArrayList<Component>();
 	protected Component componentFocus = null;

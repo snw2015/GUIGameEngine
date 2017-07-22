@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import com.sun.javafx.tk.Toolkit;
 
 import snw.engine.database.ConfigData;
+import snw.engine.database.Database;
 
 public class TopLevelComponent extends FrameComponent
 {
@@ -24,7 +25,7 @@ public class TopLevelComponent extends FrameComponent
 		frame.setCursor(frame.getToolkit().createCustomCursor(
 				new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(), null));
 
-		cursor = new MovingGraphic("cursor", ConfigData.getCursorData().getImages(), 0, 0,
+		cursor = new MovingGraphic("cursor", Database.getCursorData().getImages(), 0, 0,
 				50);
 	}
 

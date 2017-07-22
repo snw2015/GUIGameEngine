@@ -49,6 +49,12 @@ public class ScriptProcessor
 		}
 	}
 
+	public class CommandInfo
+	{
+		public int command = 0;
+		public String[] inputs = null;
+	}
+
 	private String[] getOrderList()
 	{
 		// TODO Auto-generated method stub

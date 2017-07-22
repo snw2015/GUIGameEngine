@@ -47,7 +47,7 @@ public abstract class Component
 			new VectorDbl(0.5, 1), new VectorDbl(0.5, 0.5) };
 
 	private int alignment = ALIGNMENT_LEFTTOP;
-	private String[] preLoadImageNames = null;
+	protected String[] preLoadImageNames = null;
 	private boolean[] preLoaded = null;
 
 	public Component(String name, int x, int y, int width, int height)
@@ -57,7 +57,6 @@ public abstract class Component
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		preLoadImages();
 	}
 
 	public void render(Graphics g)
@@ -105,19 +104,19 @@ public abstract class Component
 	{
 		if (animationData != null)
 		{
-			// System.out.println("apply " + animationData);
+			// print("apply " + animationData);
 			animationData.apply(canvas, object, deltaX, deltaY);
 		}
 	}
 
-	private void preLoadImages()
+	protected void preLoadImages()
 	{
 		if (preLoadImageNames != null)
 		{
 			preLoaded = new boolean[preLoadImageNames.length];
 			for (int i = 0; i < preLoadImageNames.length; i++)
 			{
-				if (ImageBufferData.storeImage(name))
+				if (ImageBufferData.storeImage(preLoadImageNames[i]))
 				{
 					preLoaded[i] = true;
 				} else
@@ -291,7 +290,13 @@ public abstract class Component
 
 	public void setWidth(int width)
 	{
-		this.width = width;
+		if (width > 0)
+		{
+			this.width = width;
+		} else
+		{
+			this.width = 1;
+		}
 	}
 
 	public int getHeight()
@@ -301,19 +306,25 @@ public abstract class Component
 
 	public void setHeight(int height)
 	{
-		this.height = height;
+		if (height > 0)
+		{
+			this.height = height;
+		} else
+		{
+			this.height = 1;
+		}
 	}
 
 	public void setSize(int width, int height)
 	{
-		this.width = width;
-		this.height = height;
+		setWidth(width);
+		setHeight(height);
 	}
 
 	public void setSize(VectorInt size)
 	{
-		this.width = size.x;
-		this.height = size.y;
+		setWidth(size.x);
+		setHeight(size.y);
 	}
 
 	public VectorInt getSize()

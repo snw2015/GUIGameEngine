@@ -66,8 +66,7 @@ public class MovingTextBox extends TextBox
 	{
 		if (speed != 0 && !isEnded)
 		{
-			int maxmumFrame = 100 / speed;
-			if (++counter > maxmumFrame)
+			if (++counter > 100 / speed)
 			{
 				counter = 0;
 				if (!text.addRenderLength())
@@ -86,5 +85,13 @@ public class MovingTextBox extends TextBox
 	public void setSpeed(int speed)
 	{
 		this.speed = speed;
+	}
+
+	@Override
+	public void setString(String rawText)
+	{
+		super.setString(rawText);
+		isEnded = false;
+		counter = 0;
 	}
 }

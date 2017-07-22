@@ -19,7 +19,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import snw.engine.animation.Animation;
-import snw.engine.script.CommandInfo;
 import snw.engine.script.DataSet;
 import snw.engine.script.ScriptProcessor;
 import snw.file.FileDirectReader;
@@ -155,7 +154,7 @@ public class MainPanel extends TopLevelComponent
 	{
 		if (key == KeyEvent.VK_SPACE)
 		{
-			CommandInfo commandInfo = sp.process();
+			snw.engine.script.ScriptProcessor.CommandInfo commandInfo = sp.process();
 			if (commandInfo != null)
 			{
 				switch (commandInfo.command)

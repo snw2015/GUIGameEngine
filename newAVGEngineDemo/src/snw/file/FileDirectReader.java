@@ -26,12 +26,18 @@ public class FileDirectReader
 
 	public static Image[] getImageList(String filename, int length)
 	{
-		Image[] images = new Image[length];
-		for (int i = 0; i < length; i++)
+		if (length > 1)
 		{
-			String[] nameSplit = filename.split("\\.", 2);
-			images[i] = getImage(nameSplit[0] + "_" + (i + 1) + "." + nameSplit[1]);
+			Image[] images = new Image[length];
+			for (int i = 0; i < length; i++)
+			{
+				String[] nameSplit = filename.split("\\.", 2);
+				images[i] = getImage(nameSplit[0] + "_" + (i + 1) + "." + nameSplit[1]);
+			}
+			return (images);
+		} else
+		{
+			return (null);
 		}
-		return (images);
 	}
 }

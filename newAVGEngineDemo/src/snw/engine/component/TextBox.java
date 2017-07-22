@@ -117,4 +117,9 @@ public class TextBox extends FrameComponent
 	{
 		graphicBG.setAlpha(alpha);
 	}
+
+	public void setString(String rawText)
+	{
+		text.setString(rawText);
+	}
 }

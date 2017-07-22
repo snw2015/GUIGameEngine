@@ -11,7 +11,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
 
 import snw.engine.component.MainPanel;
-import snw.engine.component.MainPanelC;
+import snw.engine.componentAVG.MainPanelC;
 
 public class MainFrame extends JFrame
 {
@@ -21,9 +21,9 @@ public class MainFrame extends JFrame
 	private MainPanelC panel = null;
 	private Image image = null;
 
-	public MainFrame()
+	public MainFrame(String title)
 	{
-		this.setTitle("0.0.2");
+		this.setTitle(title);
 		this.setBounds(0, 0, 1800, 1200);
 
 		panel = new MainPanelC(this);
@@ -91,10 +91,7 @@ public class MainFrame extends JFrame
 			@Override
 			public void mouseMoved(MouseEvent e)
 			{
-
 				panel.mouseMoved(e.getX() - 11, e.getY() - 45);
-
-				System.out.println(Thread.currentThread().getName());
 			}
 
 			@Override
