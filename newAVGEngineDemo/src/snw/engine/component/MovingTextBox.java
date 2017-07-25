@@ -6,7 +6,7 @@ public class MovingTextBox extends TextBox
 {
 	private boolean isEnded = false;
 	private int counter = 0;
-	private int speed = 0;// 0~100
+	private int updateSpeed = 100;// 0~100
 
 	public MovingTextBox(String name, Image background, int x, int y, int width,
 			int height)
@@ -57,16 +57,16 @@ public class MovingTextBox extends TextBox
 	{
 		super(name, background, rawText, x, y, width, height);
 		text.setRenderLength(0);
-		this.speed = speed;
+		this.updateSpeed = speed;
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void update()
 	{
-		if (speed != 0 && !isEnded)
+		if (updateSpeed != 0 && !isEnded)
 		{
-			if (++counter > 100 / speed)
+			if (++counter > 100 / updateSpeed)
 			{
 				counter = 0;
 				if (!text.addRenderLength())
@@ -79,18 +79,23 @@ public class MovingTextBox extends TextBox
 
 	public int getSpeed()
 	{
-		return speed;
+		return updateSpeed;
 	}
 
 	public void setSpeed(int speed)
 	{
-		this.speed = speed;
+		this.updateSpeed = speed;
 	}
 
 	@Override
-	public void setString(String rawText)
+	public void setTextContent(String rawText)
 	{
-		super.setString(rawText);
+		super.setTextContent(rawText);
+	}
+
+	public void resetRender()
+	{
+		text.setRenderLength(0);
 		isEnded = false;
 		counter = 0;
 	}

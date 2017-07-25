@@ -48,14 +48,14 @@ public class AnimationData
 		{
 			if (isMasked)
 			{
-				int w = object.getWidth();
-				int h = object.getHeight();
-				BufferedImage rescaledImage = new BufferedImage(w, h,
+				int width = object.getWidth();
+				int height = object.getHeight();
+				BufferedImage rescaledImage = new BufferedImage(width, height,
 						BufferedImage.TYPE_BYTE_GRAY);
-				rescaledImage.getGraphics().drawImage(maskImage, 0, 0, w, h, null);
+				rescaledImage.getGraphics().drawImage(maskImage, 0, 0, width, height, null);
 				mask = new MaskData(
-						rescaledImage.getRaster().getPixels(0, 0, w, h, new int[w * h]),
-						w, h);
+						rescaledImage.getRaster().getPixels(0, 0, width, height, new int[width * height]),
+						width, height);
 				mask.apply(object);
 			}
 			for (int i = 0; i < filterNum; i++)
@@ -66,7 +66,6 @@ public class AnimationData
 			{
 				canvas.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
 						(float) alpha / 255));
-
 			}
 			transformation.translate(deltaX, deltaY);
 			canvas.drawImage(object, transformation, null);

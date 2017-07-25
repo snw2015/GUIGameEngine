@@ -8,7 +8,7 @@ public class MovingGraphic extends Graphic
 	private boolean isLoop = true;
 	private int counter = 0;
 	private int frameNum = 0;
-	private int speed = 0;// 0~100
+	private int updateSpeed = 0;// 0~100
 	private final Image[] images;
 
 	public MovingGraphic(String name, Image[] images, int x, int y, int width, int height,
@@ -17,7 +17,7 @@ public class MovingGraphic extends Graphic
 		super(name, images[0], x, y, width, height);
 		// TODO Auto-generated constructor stub
 		this.images = images;
-		this.speed = speed;
+		this.updateSpeed = speed;
 	}
 
 	public MovingGraphic(String name, Image[] images, int x, int y, int speed)
@@ -25,15 +25,15 @@ public class MovingGraphic extends Graphic
 		super(name, images[0], x, y);
 		// TODO Auto-generated constructor stub
 		this.images = images;
-		this.speed = speed;
+		this.updateSpeed = speed;
 	}
 
 	@Override
 	public void update()
 	{
-		if (speed != 0 && !isEnded)
+		if (updateSpeed != 0 && !isEnded)
 		{
-			int maxmumFrame = 100 / speed;
+			int maxmumFrame = 100 / updateSpeed;
 			if (++counter >= maxmumFrame)
 			{
 				counter = 0;
@@ -55,12 +55,12 @@ public class MovingGraphic extends Graphic
 
 	public int getSpeed()
 	{
-		return speed;
+		return updateSpeed;
 	}
 
 	public void setSpeed(int speed)
 	{
-		this.speed = speed;
+		this.updateSpeed = speed;
 	}
 
 	public int getFrameNum()

@@ -34,7 +34,6 @@ public class FrameComponent extends Component
 		}
 	}
 
-	@Deprecated
 	protected boolean addAfter(String name, Component sub)
 	{
 		synchronized (this)
@@ -55,7 +54,6 @@ public class FrameComponent extends Component
 		}
 	}
 
-	@Deprecated
 	protected boolean remove(String name)
 	{
 		synchronized (this)
@@ -80,7 +78,6 @@ public class FrameComponent extends Component
 		}
 	}
 
-	@Deprecated
 	protected boolean remove(Component sub)
 	{
 		synchronized (this)
@@ -110,7 +107,6 @@ public class FrameComponent extends Component
 		{
 			if (subComponents.size() > index)
 			{
-				subComponents.get(index).exit();
 				subComponents.remove(index);
 				componentFocus.mouseExited();
 				componentFocus = null;

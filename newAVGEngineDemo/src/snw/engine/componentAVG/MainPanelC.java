@@ -13,7 +13,36 @@ public class MainPanelC extends TopLevelComponent
 	{
 		super("mainPanel", 0, 0, 1680, 1050, frame);
 		// TODO Auto-generated constructor stub
+		startMainMenu();
+	}
+
+	public void startMainScreen()
+	{
+		MainGameScreenC mainScreen = new MainGameScreenC();
+		mainScreen.preProcess();
+		mainScreen.setReaction((command) ->
+		{
+			switch (command)
+			{
+			case MainGameScreenC.COMMAND_END:
+				mainScreen.exit();
+				remove(mainScreen);
+				startMainMenu();
+				break;
+			case MainGameScreenC.COMMAND_SAVE:
+				break;
+			default:
+				break;
+			}
+		});
+		add(mainScreen);
+	}
+
+	private void startMainMenu()
+	{
+		// TODO Auto-generated method stub
 		MainMenuC mainMenu = new MainMenuC();
+		mainMenu.preProcess();
 		add(mainMenu);
 
 		mainMenu.setReaction((int command) ->
@@ -21,6 +50,7 @@ public class MainPanelC extends TopLevelComponent
 			switch (command)
 			{
 			case MainMenuC.COMMAND_START:
+				mainMenu.exit();
 				remove(mainMenu);
 				startMainScreen();
 				break;
@@ -35,15 +65,10 @@ public class MainPanelC extends TopLevelComponent
 		});
 	}
 
-	public void startMainScreen()
-	{
-		add(new MainAVGC());
-	}
-
 	@Override
 	public void mouseClicked(int mouseX, int mouseY)
 	{
-		print(mousePosition.x + " , " + mousePosition.y);
+		print("Clicked at: " + mousePosition.x + " , " + mousePosition.y);
 		super.mouseClicked(mousePosition.x, mousePosition.y);
 	}
 

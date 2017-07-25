@@ -1,6 +1,6 @@
 package snw.engine.component;
 
-public class ListPanelGenerator {
+public class ListPanelFactory {
 
 	public static final int NO_LOOP = 0;
 	public static final int ALL_LOOP = 1;

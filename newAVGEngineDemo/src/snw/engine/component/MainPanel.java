@@ -97,11 +97,11 @@ public class MainPanel extends TopLevelComponent
 		SetSwitch ss = new SetSwitch("setSwitch1", 100, 550, 300, 100,
 				new String[] { "aaaaaaaa", "bbbb", "c" });
 
-		ListPanel lp = ListPanelGenerator
+		ListPanel lp = ListPanelFactory
 				.getGridInstance(
 						"listPanelHorizontal1", 20, 20, 800, 800, new Component[][] {
 								{ tb, bt }, { sp, gr }, { sw1, sw1 }, { ss, ss } },
-						ListPanelGenerator.ALL_LOOP);
+						ListPanelFactory.ALL_LOOP);
 
 		lp.setEffect(300, 300, Color.YELLOW);
 		lp.setFlash(true);

@@ -118,7 +118,7 @@ public class TextBox extends FrameComponent
 		background.setAlpha(alpha);
 	}
 
-	public void setString(String rawText)
+	public void setTextContent(String rawText)
 	{
 		text.setString(rawText);
 	}

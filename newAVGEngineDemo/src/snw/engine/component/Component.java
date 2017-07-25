@@ -1,22 +1,13 @@
 package snw.engine.component;
 
-import java.awt.AlphaComposite;
-import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.util.ArrayList;
-
 import snw.engine.animation.Animation;
 import snw.engine.animation.AnimationData;
 import snw.engine.database.ImageBufferData;
-import snw.engine.main.MainFrame;
 import snw.math.VectorDbl;
 import snw.math.VectorInt;
 
@@ -57,6 +48,11 @@ public abstract class Component
 		this.y = y;
 		this.width = width;
 		this.height = height;
+	}
+
+	public void preProcess()
+	{
+		preLoadImages();
 	}
 
 	public void render(Graphics g)
@@ -166,7 +162,6 @@ public abstract class Component
 
 	public void mouseClicked(int mouseX, int mouseY)
 	{
-		print("click " + name);
 	}
 
 	public void mousePressed(int mouseX, int mouseY)

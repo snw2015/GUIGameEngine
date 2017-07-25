@@ -9,7 +9,7 @@ import snw.engine.component.reaction.ReactionSelectionClicked;
 
 public class SelectionBox extends FrameComponent
 {
-	private Graphic graphicBG;
+	private Graphic background;
 	private Text text;
 
 	private ListPanel selections;
@@ -20,14 +20,15 @@ public class SelectionBox extends FrameComponent
 	private int textMaxHeight = 60;
 	private ReactionSelectionClicked reaction;
 
-	public SelectionBox(String name, Image imageBG, String rawText, int x, int y,
-			int width, int height, String[] selectionText)
+	public SelectionBox(String name, Image backgroundSource, String titleText, int x,
+			int y, int width, int height, String[] selectionText)
 	{
 		super(name, x, y, width, height);
 		// TODO Auto-generated constructor stub
-		graphicBG = new Graphic(name + "_background", imageBG, 0, 0, width, height);
-		add(graphicBG);
-		text = new Text(name + "_text", rawText, borderWidth, borderHeight,
+		background = new Graphic(name + "_background", backgroundSource, 0, 0, width,
+				height);
+		add(background);
+		text = new Text(name + "_text", titleText, borderWidth, borderHeight,
 				width - borderWidth * 2, textMaxHeight);
 		add(text);
 
@@ -36,8 +37,10 @@ public class SelectionBox extends FrameComponent
 		for (int i = 0; i < numSelection; i++)
 		{
 			buttons[i] = new Button(name + "_button" + i, width / 2 - borderWidth,
-					(height - textMaxHeight) * i / numSelection, width - borderWidth * 2,
-					(height - textMaxHeight) / numSelection, selectionText[i]);
+					(height - textMaxHeight - borderHeight) * i / numSelection,
+					width - borderWidth * 2,
+					(height - textMaxHeight - borderHeight) / numSelection,
+					selectionText[i]);
 			buttons[i].setAlignment(ALIGNMENT_TOPMID);
 			final int index = i;
 			buttons[i].setReactionClicked(() ->
@@ -45,9 +48,9 @@ public class SelectionBox extends FrameComponent
 				reaction.react(index);
 			});
 		}
-		selections = ListPanelGenerator.getVerticalInstance(name + "_selections",
+		selections = ListPanelFactory.getVerticalInstance(name + "_selections",
 				borderWidth, textMaxHeight, width - borderWidth * 2,
-				height - textMaxHeight, buttons);
+				height - textMaxHeight - borderHeight, buttons);
 		selections.setFlash(true);
 		add(selections);
 	}
