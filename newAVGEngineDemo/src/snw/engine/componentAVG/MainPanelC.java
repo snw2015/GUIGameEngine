@@ -7,7 +7,7 @@ import snw.math.VectorInt;
 
 public class MainPanelC extends TopLevelComponent
 {
-	VectorInt mousePos = new VectorInt();
+	VectorInt mousePosition = new VectorInt();
 
 	public MainPanelC(JFrame frame)
 	{
@@ -43,15 +43,15 @@ public class MainPanelC extends TopLevelComponent
 	@Override
 	public void mouseClicked(int mouseX, int mouseY)
 	{
-		print(mousePos.x + " , " + mousePos.y);
-		super.mouseClicked(mousePos.x, mousePos.y);
+		print(mousePosition.x + " , " + mousePosition.y);
+		super.mouseClicked(mousePosition.x, mousePosition.y);
 	}
 
 	@Override
 	public boolean mouseMoved(int mouseX, int mouseY)
 	{
-		mousePos.x = mouseX;
-		mousePos.y = mouseY;
+		mousePosition.x = mouseX;
+		mousePosition.y = mouseY;
 		return (super.mouseMoved(mouseX, mouseY));
 	}
 

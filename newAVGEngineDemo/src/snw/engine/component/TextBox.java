@@ -8,73 +8,73 @@ import javax.swing.ImageIcon;
 
 public class TextBox extends FrameComponent
 {
-	private Graphic graphicBG;
+	private Graphic background;
 	protected Text text;
 
 	private int borderWidth = 18;
 	private int borderHeight = 9;
 
-	public TextBox(String name, Image background)
+	public TextBox(String name, Image backgroundSource)
 	{
-		super(name, 0, 0, new ImageIcon(background).getIconWidth(),
-				new ImageIcon(background).getIconHeight());
-		graphicBG = new Graphic(name + "_background", background, 0, 0);
-		add(graphicBG);
+		super(name, 0, 0, new ImageIcon(backgroundSource).getIconWidth(),
+				new ImageIcon(backgroundSource).getIconHeight());
+		background = new Graphic(name + "_background", backgroundSource, 0, 0);
+		add(background);
 		text = new Text(name + "_text", "", borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);
 		add(text);
 	}
 
-	public TextBox(String name, Image background, int x, int y)
+	public TextBox(String name, Image backgroundSource, int x, int y)
 	{
-		super(name, x, y, new ImageIcon(background).getIconWidth(),
-				new ImageIcon(background).getIconHeight());
-		graphicBG = new Graphic(name + "_background", background, 0, 0);
-		add(graphicBG);
+		super(name, x, y, new ImageIcon(backgroundSource).getIconWidth(),
+				new ImageIcon(backgroundSource).getIconHeight());
+		background = new Graphic(name + "_background", backgroundSource, 0, 0);
+		add(background);
 		text = new Text(name + "_text", "", borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);
 		add(text);
 	}
 
-	public TextBox(String name, Image background, int x, int y, int width, int height)
+	public TextBox(String name, Image backgroundSource, int x, int y, int width, int height)
 	{
 		super(name, x, y, width, height);
-		graphicBG = new Graphic(name + "_background", background, 0, 0, width, height);
-		add(graphicBG);
+		background = new Graphic(name + "_background", backgroundSource, 0, 0, width, height);
+		add(background);
 		text = new Text(name + "_text", "", borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);
 		add(text);
 	}
 
-	public TextBox(String name, Image background, String rawText)
+	public TextBox(String name, Image backgroundSource, String rawText)
 	{
-		super(name, 0, 0, new ImageIcon(background).getIconWidth(),
-				new ImageIcon(background).getIconHeight());
-		graphicBG = new Graphic(name + "_background", background, 0, 0);
-		add(graphicBG);
+		super(name, 0, 0, new ImageIcon(backgroundSource).getIconWidth(),
+				new ImageIcon(backgroundSource).getIconHeight());
+		background = new Graphic(name + "_background", backgroundSource, 0, 0);
+		add(background);
 		text = new Text(name + "_text", rawText, borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);
 		add(text);
 	}
 
-	public TextBox(String name, Image background, String rawText, int x, int y)
+	public TextBox(String name, Image backgroundSource, String rawText, int x, int y)
 	{
-		super(name, x, y, new ImageIcon(background).getIconWidth(),
-				new ImageIcon(background).getIconHeight());
-		graphicBG = new Graphic(name + "_background", background, 0, 0);
-		add(graphicBG);
+		super(name, x, y, new ImageIcon(backgroundSource).getIconWidth(),
+				new ImageIcon(backgroundSource).getIconHeight());
+		background = new Graphic(name + "_background", backgroundSource, 0, 0);
+		add(background);
 		text = new Text(name + "_text", rawText, borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);
 		add(text);
 	}
 
-	public TextBox(String name, Image background, String rawText, int x, int y, int width,
+	public TextBox(String name, Image backgroundSource, String rawText, int x, int y, int width,
 			int height)
 	{
 		super(name, x, y, width, height);
 
-		graphicBG = new Graphic(name + "_background", background, 0, 0, width, height);
-		add(graphicBG);
+		background = new Graphic(name + "_background", backgroundSource, 0, 0, width, height);
+		add(background);
 		text = new Text(name + "_text", rawText, borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);
 		add(text);
@@ -115,7 +115,7 @@ public class TextBox extends FrameComponent
 
 	public void setBackgroundAlpha(float alpha)
 	{
-		graphicBG.setAlpha(alpha);
+		background.setAlpha(alpha);
 	}
 
 	public void setString(String rawText)
