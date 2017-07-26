@@ -8,7 +8,7 @@ import snw.engine.component.ListPanel;
 import snw.engine.component.ListPanelFactory;
 import snw.engine.component.reaction.ReactionCommand;
 
-public class MainMenuC extends FrameComponent
+public class MainMenuC extends PanelC
 {
 	private Graphic background;
 
@@ -27,20 +27,30 @@ public class MainMenuC extends FrameComponent
 
 	public MainMenuC()
 	{
-		super("mainMenu1680x1050", 0, 0, 1680, 1050);
+		super("mainMenu");
 	}
 
 	@Override
 	public void preProcess()
 	{
 		preLoadImageNames = new String[] { "background_main_menu", "button_common" };
-		
+
 		super.preProcess();
 
+		addBackground();
+		addButtons();
+		addList();
+	}
+
+	private void addBackground()
+	{
 		background = new Graphic("background", getImage("background_main_menu"), 0, 0,
 				width, height);
 		add(background);
+	}
 
+	private void addButtons()
+	{
 		buttonStart = new Button("buttonStart", 300, 800 - 425, getImage("button_common"),
 				"New Game");
 		buttonStart.setAlignment(ALIGNMENT_BOTTOMMID);
@@ -96,7 +106,10 @@ public class MainMenuC extends FrameComponent
 		{
 			buttonExit.setAnimation(null);
 		});
+	}
 
+	private void addList()
+	{
 		list = ListPanelFactory.getVerticalInstance("menuList", width / 2, height - 50,
 				600, 800, new Button[] { buttonStart, buttonContinue, buttonExit });
 		list.setAlignment(ALIGNMENT_BOTTOMMID);

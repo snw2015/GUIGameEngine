@@ -45,7 +45,10 @@ public class SelectionBox extends FrameComponent
 			final int index = i;
 			buttons[i].setReactionClicked(() ->
 			{
-				reaction.react(index);
+				if (reaction != null)
+				{
+					reaction.react(index);
+				}
 			});
 		}
 		selections = ListPanelFactory.getVerticalInstance(name + "_selections",

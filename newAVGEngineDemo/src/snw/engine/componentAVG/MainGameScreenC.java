@@ -10,10 +10,10 @@ import snw.engine.component.SelectionBox;
 import snw.engine.component.reaction.ReactionCommand;
 import snw.engine.database.Database;
 
-public class MainGameScreenC extends FrameComponent
+public class MainGameScreenC extends PanelC
 {
 	private Graphic background;
-	private FrameComponent graphicComponent;
+	private FrameComponent graphicLayer;
 	private MovingTextBox textbox;
 	private SelectionBox selectionbox;
 	private ReactionCommand reaction = null;
@@ -23,23 +23,37 @@ public class MainGameScreenC extends FrameComponent
 
 	public MainGameScreenC()
 	{
-		super("mainGameScreen1680x1050", 0, 0, 1680, 1050);
+		super("mainGameScreen");
 	}
 
 	@Override
 	public void preProcess()
 	{
 		preLoadImageNames = new String[] { "background_main_screen", "option_common" };
-
 		super.preProcess();
 
+		addBackground();
+		addGraphicLayer();
+		addTextbox();
+
+		displaySelection("test", preLoadImageNames);
+	}
+
+	private void addBackground()
+	{
 		background = new Graphic("background", getImage("background_main_screen"), 0, 0,
 				width, height);
 		add(background);
+	}
 
-		graphicComponent = new FrameComponent("graphicsLayer", 0, 0, width, height);
-		add(graphicComponent);
+	private void addGraphicLayer()
+	{
+		graphicLayer = new FrameComponent("graphicLayer", 0, 0, width, height);
+		add(graphicLayer);
+	}
 
+	private void addTextbox()
+	{
 		textbox = new MovingTextBox("textbox", getImage("textbox_common"), width / 2,
 				height - 15);
 		textbox.setAlignment(ALIGNMENT_BOTTOMMID);
@@ -85,6 +99,19 @@ public class MainGameScreenC extends FrameComponent
 			{
 				reaction.react(COMMAND_SAVE);
 			}
+		} else
+		{
+			super.keyPressed(key);
 		}
+	}
+
+	private void setTextboxVisible(boolean isVisible)
+	{
+		textbox.setVisible(isVisible);
+	}
+
+	private void setTextboxBackAlpha(float alpha)
+	{
+		textbox.setBackgroundAlpha(alpha);
 	}
 }

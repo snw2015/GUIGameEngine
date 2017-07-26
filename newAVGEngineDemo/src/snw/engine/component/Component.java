@@ -19,6 +19,9 @@ public abstract class Component
 	protected int width;
 	protected int height;
 	private boolean isAnimated = false;
+	private boolean isVisible = true;
+	private boolean isEnable = true;
+
 	private AnimationData animationData;
 	private Animation animation;
 
@@ -32,10 +35,10 @@ public abstract class Component
 	public static final int ALIGNMENT_BOTTOMMID = 7;
 	public static final int ALIGNMENT_CENTER = 8;
 
-	public static final VectorDbl[] alignmentList = new VectorDbl[] { new VectorDbl(0, 0),
-			new VectorDbl(0, 1), new VectorDbl(0, 0.5), new VectorDbl(1, 0),
-			new VectorDbl(1, 1), new VectorDbl(1, 0.5), new VectorDbl(0.5, 0),
-			new VectorDbl(0.5, 1), new VectorDbl(0.5, 0.5) };
+	public static final VectorDbl[] alignmentRatioList = new VectorDbl[] {
+			new VectorDbl(0, 0), new VectorDbl(0, 1), new VectorDbl(0, 0.5),
+			new VectorDbl(1, 0), new VectorDbl(1, 1), new VectorDbl(1, 0.5),
+			new VectorDbl(0.5, 0), new VectorDbl(0.5, 1), new VectorDbl(0.5, 0.5) };
 
 	private int alignment = ALIGNMENT_LEFTTOP;
 	protected String[] preLoadImageNames = null;
@@ -57,28 +60,31 @@ public abstract class Component
 
 	public void render(Graphics g)
 	{
-		// print("rendering " + name + " x: " + x + " y:" + y);
-		BufferedImage iBuffer = new BufferedImage(width, height,
-				BufferedImage.TYPE_4BYTE_ABGR);
-
-		paint(iBuffer.getGraphics());
-
-		int alignedX = getAlignedX();
-		int alignedY = getAlignedY();
-		if (isAnimated)
+		if (isEnable)
 		{
-			Graphics2D g2d = (Graphics2D) g;
-			applyAnimation(g2d, iBuffer, alignedX, alignedY);
-			updateAnimation();
-		} else
-		{
-			g.drawImage(iBuffer, alignedX, alignedY, width, height, null);
+			// print("rendering " + name + " x: " + x + " y:" + y);
+			BufferedImage iBuffer = new BufferedImage(width, height,
+					BufferedImage.TYPE_4BYTE_ABGR);
+
+			paint(iBuffer.getGraphics());
+
+			int alignedX = getAlignedX();
+			int alignedY = getAlignedY();
+			if (isAnimated)
+			{
+				Graphics2D g2d = (Graphics2D) g;
+				applyAnimation(g2d, iBuffer, alignedX, alignedY);
+				updateAnimation();
+			} else
+			{
+				g.drawImage(iBuffer, alignedX, alignedY, width, height, null);
+			}
+
+			iBuffer.flush();
+			iBuffer = null;
+
+			update();
 		}
-
-		iBuffer.flush();
-		iBuffer = null;
-
-		update();
 	}
 
 	public abstract void paint(Graphics g);
@@ -339,17 +345,37 @@ public abstract class Component
 
 	public int getAlignedX()
 	{
-		return (x - (int) ((double) width * alignmentList[alignment].x));
+		return (x - (int) ((double) width * alignmentRatioList[alignment].x));
 	}
 
 	public int getAlignedY()
 	{
-		return (y - (int) ((double) height * alignmentList[alignment].y));
+		return (y - (int) ((double) height * alignmentRatioList[alignment].y));
 	}
 
 	public void setAlignment(int alignment)
 	{
 		this.alignment = alignment;
+	}
+
+	public boolean isVisible()
+	{
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible)
+	{
+		this.isVisible = isVisible;
+	}
+
+	public boolean isEnable()
+	{
+		return isEnable;
+	}
+
+	public void setEnable(boolean isEnable)
+	{
+		this.isEnable = isEnable;
 	}
 
 }

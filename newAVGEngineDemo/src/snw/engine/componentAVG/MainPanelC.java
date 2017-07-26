@@ -66,6 +66,13 @@ public class MainPanelC extends TopLevelComponent
 	}
 
 	@Override
+	public void update()
+	{
+		super.mouseMoved(mousePosition.x, mousePosition.y);
+		super.update();
+	}
+
+	@Override
 	public void mouseClicked(int mouseX, int mouseY)
 	{
 		print("Clicked at: " + mousePosition.x + " , " + mousePosition.y);

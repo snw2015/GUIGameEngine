@@ -116,6 +116,40 @@ public class FrameComponent extends Component
 		}
 	}
 
+	protected Component getSub(int index)
+	{
+		synchronized (this)
+		{
+			if (subComponents.size() > index)
+			{
+				return (subComponents.get(index));
+			}
+		}
+		return (null);
+	}
+
+	protected Component getSub(String name)
+	{
+		synchronized (this)
+		{
+			int index = 0;
+
+			while (index < subComponents.size())
+			{
+				if (subComponents.get(index).getName().equals(name))
+				{
+					break;
+				}
+				index++;
+			}
+			if (index < subComponents.size())
+			{
+				return (getSub(index));
+			}
+		}
+		return (null);
+	}
+
 	@Override
 	public void paint(Graphics g)
 	{
@@ -174,12 +208,13 @@ public class FrameComponent extends Component
 	@Override
 	public boolean mouseMoved(int mouseX, int mouseY)
 	{
+		// obviously need to be refactored
 		// print("move in " + name);
 		Component sub = null;
 		for (int i = subComponents.size() - 1; i >= 0; i--)
 		{
 			sub = subComponents.get(i);
-			if (sub != null && new VectorInt(mouseX, mouseY).inBound(sub.getBound()))
+			if (sub != null && sub.getBound().contains(mouseX, mouseY))
 			{
 				sub.mouseMoved(mouseX - sub.getAlignedX(), mouseY - sub.getAlignedY());
 				boolean changed = componentFocus != sub;
@@ -202,12 +237,15 @@ public class FrameComponent extends Component
 			return (true);
 		}
 		return (false);
-
 	}
 
 	@Override
 	public void mouseExited()
 	{
+		if (componentFocus != null)
+		{
+			componentFocus.mouseExited();
+		}
 		componentFocus = null;
 	}
 
