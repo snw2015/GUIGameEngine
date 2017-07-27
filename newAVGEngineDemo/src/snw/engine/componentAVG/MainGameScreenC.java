@@ -35,8 +35,6 @@ public class MainGameScreenC extends PanelC
 		addBackground();
 		addGraphicLayer();
 		addTextbox();
-
-		displaySelection("test", preLoadImageNames);
 	}
 
 	private void addBackground()

@@ -240,6 +240,14 @@ public class FrameComponent extends Component
 	}
 
 	@Override
+	public void mouseDragged(int mouseX, int mouseY)
+	{
+		componentFocus.mouseDragged(mouseX - componentFocus.getAlignedX(),
+				mouseY - componentFocus.getAlignedY());
+		super.mouseDragged(mouseX, mouseY);
+	}
+
+	@Override
 	public void mouseExited()
 	{
 		if (componentFocus != null)

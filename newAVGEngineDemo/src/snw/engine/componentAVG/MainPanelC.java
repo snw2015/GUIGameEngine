@@ -9,6 +9,8 @@ public class MainPanelC extends TopLevelComponent
 {
 	VectorInt mousePosition = new VectorInt();
 
+	boolean isDragging = false;
+
 	public MainPanelC(JFrame frame)
 	{
 		super("mainPanel", 0, 0, 1680, 1050, frame);
@@ -68,7 +70,10 @@ public class MainPanelC extends TopLevelComponent
 	@Override
 	public void update()
 	{
-		super.mouseMoved(mousePosition.x, mousePosition.y);
+		if (!isDragging)
+		{
+			super.mouseMoved(mousePosition.x, mousePosition.y);
+		}
 		super.update();
 	}
 
@@ -85,6 +90,22 @@ public class MainPanelC extends TopLevelComponent
 		mousePosition.x = mouseX;
 		mousePosition.y = mouseY;
 		return (super.mouseMoved(mouseX, mouseY));
+	}
+
+	@Override
+	public void mouseDragged(int mouseX, int mouseY)
+	{
+		isDragging = true;
+		mousePosition.x = mouseX;
+		mousePosition.y = mouseY;
+		super.mouseDragged(mouseX, mouseY);
+	}
+
+	@Override
+	public void mouseReleased(int mouseX, int mouseY)
+	{
+		isDragging = false;
+		super.mouseReleased(mouseX, mouseY);
 	}
 
 }

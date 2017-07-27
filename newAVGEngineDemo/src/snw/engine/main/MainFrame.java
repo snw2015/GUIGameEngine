@@ -10,7 +10,6 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 
-import snw.engine.component.MainPanel;
 import snw.engine.componentAVG.MainPanelC;
 
 public class MainFrame extends JFrame

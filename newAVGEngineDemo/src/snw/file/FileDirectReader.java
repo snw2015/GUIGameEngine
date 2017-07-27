@@ -24,20 +24,21 @@ public class FileDirectReader
 		return (images);
 	}
 
-	public static Image[] getImageList(String filename, int length)
+	public static Image[] getImageList(String fileName, int length)
 	{
 		if (length > 1)
 		{
 			Image[] images = new Image[length];
 			for (int i = 0; i < length; i++)
 			{
-				String[] nameSplit = filename.split("\\.", 2);
+				String[] nameSplit = fileName.split("\\.", 2);
 				images[i] = getImage(nameSplit[0] + "_" + (i + 1) + "." + nameSplit[1]);
 			}
 			return (images);
-		} else
+		} else if (length == 1)
 		{
-			return (null);
+			return (new Image[] { getImage(fileName) });
 		}
+		return (null);
 	}
 }

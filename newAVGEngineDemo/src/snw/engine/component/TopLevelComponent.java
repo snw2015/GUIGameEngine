@@ -9,8 +9,8 @@ import javax.swing.JFrame;
 
 import com.sun.javafx.tk.Toolkit;
 
-import snw.engine.database.ConfigData;
 import snw.engine.database.Database;
+import snw.math.VectorInt;
 
 public class TopLevelComponent extends FrameComponent
 {
@@ -43,4 +43,27 @@ public class TopLevelComponent extends FrameComponent
 		return (super.mouseMoved(mouseX, mouseY));
 	}
 
+	@Override
+	public void mouseDragged(int mouseX, int mouseY)
+	{
+		cursor.setPos(mouseX, mouseY);
+		setCursor("drag");
+		super.mouseDragged(mouseX, mouseY);
+	}
+
+	@Override
+	public void mouseReleased(int mouseX, int mouseY)
+	{
+		setCursor("normal");
+		super.mouseReleased(mouseX, mouseY);
+	}
+
+	protected void setCursor(String typeName)
+	{
+		int posX = cursor.getX();
+		int posY = cursor.getY();
+		cursor = null;
+		cursor = new MovingGraphic("cursor", Database.getCursorData().getImages(typeName),
+				posX, posY, 50);
+	}
 }

@@ -6,6 +6,7 @@ import snw.engine.component.FrameComponent;
 import snw.engine.component.Graphic;
 import snw.engine.component.ListPanel;
 import snw.engine.component.ListPanelFactory;
+import snw.engine.component.ScrollBar;
 import snw.engine.component.reaction.ReactionCommand;
 
 public class MainMenuC extends PanelC
