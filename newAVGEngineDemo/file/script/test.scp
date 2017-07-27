@@ -1,0 +1,2 @@
+#start say [Tester]Hello world!
+select Choose your favourate|a|b|c

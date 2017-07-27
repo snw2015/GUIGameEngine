@@ -56,6 +56,74 @@ public class Database
 		}
 	}
 
+	public static class LimitData
+	{
+		private final int chapterSwitchLimit, fileSwitchLimit, globalSwitchLimit,
+				chapterIntLimit, fileIntLimit, globalIntLimit, chapterStringLimit,
+				fileStringLimit, globalStringLimit;
+
+		private LimitData(int chapterSwitchLimit, int fileSwitchLimit,
+				int globalSwitchLimit, int chapterIntLimit, int fileIntLimit,
+				int globalIntLimit, int chapterStringLimit, int fileStringLimit,
+				int globalStringLimit)
+		{
+			this.chapterSwitchLimit = chapterSwitchLimit;
+			this.fileSwitchLimit = fileSwitchLimit;
+			this.globalSwitchLimit = globalSwitchLimit;
+			this.chapterIntLimit = chapterIntLimit;
+			this.fileIntLimit = fileIntLimit;
+			this.globalIntLimit = globalIntLimit;
+			this.chapterStringLimit = chapterStringLimit;
+			this.fileStringLimit = fileStringLimit;
+			this.globalStringLimit = globalStringLimit;
+		}
+
+		public int getChapterSwitchLimit()
+		{
+			return chapterSwitchLimit;
+		}
+
+		public int getFileSwitchLimit()
+		{
+			return fileSwitchLimit;
+		}
+
+		public int getGlobalSwitchLimit()
+		{
+			return globalSwitchLimit;
+		}
+
+		public int getChapterIntLimit()
+		{
+			return chapterIntLimit;
+		}
+
+		public int getFileIntLimit()
+		{
+			return fileIntLimit;
+		}
+
+		public int getGlobalIntLimit()
+		{
+			return globalIntLimit;
+		}
+
+		public int getChapterStringLimit()
+		{
+			return chapterStringLimit;
+		}
+
+		public int getFileStringLimit()
+		{
+			return fileStringLimit;
+		}
+
+		public int getGlobalStringLimit()
+		{
+			return globalStringLimit;
+		}
+	}
+
 	public static CursorData getCursorData()
 	{
 		CursorData cursorData = new CursorData();
@@ -99,5 +167,11 @@ public class Database
 	public static String getUserData(String dataKey)
 	{
 		return (UserConfig.getData(dataKey));
+	}
+
+	public static LimitData getVarNumLimit()
+	{
+		// TODO Auto-generated method stub
+		return (new LimitData(10, 10, 10, 10, 10, 10, 10, 10, 10));
 	}
 }

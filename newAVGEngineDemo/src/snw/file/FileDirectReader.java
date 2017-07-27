@@ -1,7 +1,10 @@
 package snw.file;
 
 import java.awt.Image;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 import javax.swing.ImageIcon;
 
@@ -40,5 +43,13 @@ public class FileDirectReader
 			return (new Image[] { getImage(fileName) });
 		}
 		return (null);
+	}
+
+	public static BufferedReader getBufferedReaderOfFile(String fileName)
+			throws FileNotFoundException
+	{
+		File file = new File(fileName);
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		return (br);
 	}
 }
