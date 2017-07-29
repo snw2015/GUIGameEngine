@@ -1,2 +1,15 @@
-#start say [Tester]Hello world!
-select Choose your favourate|a|b|c
+#start say Tester|Hello world!
+#choose select Choose your favourate|A|B|C
+if 1 a
+if 2 b
+if 3 c
+#a select you chose A?|Y|N
+if 1 y
+#n jump choose
+#y end a
+#b say Tester|chose B.
+say choose B?
+say ok
+end b
+#c say repeat!
+jump start

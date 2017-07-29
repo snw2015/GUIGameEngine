@@ -18,10 +18,6 @@ public class ScriptProcessor
 	private int lineNum = 0;
 	private int labelNum = 0;
 
-	public static final int TYPE_CHAPTER = 0;
-	public static final int TYPE_FILE = 1;
-	public static final int TYPE_GLOBAL = 2;
-
 	public ScriptProcessor(String chapterName, AVGScreen screen,
 			BufferedReader chapterFile)
 	{
@@ -86,26 +82,67 @@ public class ScriptProcessor
 		} else
 		{
 			String inputs = line.getInputs();
+			// System.out.println(programCounter + " , " + inputs);
 
 			switch (line.getOrder())
 			{
-			case COMMAND_SAY:
+			case SAY:
 				say(inputs);
 				break;
-			case COMMAND_JUMP:
+			case JUMP:
 				jump(inputs);
 				break;
-			case COMMAND_SELECT:
+			case SELECT:
 				select(inputs);
 				break;
-			case COMMAND_END:
-				say("END测试");
+			case END:
+				end(inputs);
+				break;
+			case IF:
+				ifJump(inputs);
 				break;
 			default:
 				// TODO
 				System.out.println("No such syntax anyway my f*cking Jesus!");
 				break;
 			}
+		}
+	}
+
+	private void end(String endName)
+	{
+		// TODO Auto-generated method stub
+		screen.end(endName);
+	}
+
+	private void ifJump(String inputs)
+	{
+		if (inputs.charAt(0) == '@')
+		{
+			ifJumpVar(inputs);
+		} else
+		{
+			ifJumpSelect(inputs);
+		}
+	}
+
+	private void ifJumpVar(String inputs)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	private void ifJumpSelect(String inputs)
+	{
+		// TODO Auto-generated method stub
+		String[] splits = inputs.split(" ");
+		int value = Integer.parseInt(splits[0]);
+		if (screen.getSelectedValue() == value)
+		{
+			jump(splits[1]);
+		} else
+		{
+			process();
 		}
 	}
 
@@ -132,10 +169,9 @@ public class ScriptProcessor
 
 	private void say(String content)
 	{
-		if (content.startsWith("["))
+		String[] splits = content.split("\\|", 2);
+		if (splits.length == 2)
 		{
-			// TODO "\["
-			String[] splits = content.substring(1).split("]", 2);
 			screen.say(splits[0], splits[1]);
 		} else
 		{
