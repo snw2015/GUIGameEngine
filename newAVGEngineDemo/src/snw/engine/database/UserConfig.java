@@ -113,6 +113,7 @@ public class UserConfig
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				System.out.println(file.getAbsolutePath());
 				return (false);
 			}
 			if (setDatabase(reader) == STATE_FAIL)
