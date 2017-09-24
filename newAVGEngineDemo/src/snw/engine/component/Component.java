@@ -80,6 +80,7 @@ public abstract class Component
 				g.drawImage(iBuffer, alignedX, alignedY, width, height, null);
 			}
 
+			iBuffer.getGraphics().dispose();
 			iBuffer.flush();
 			iBuffer = null;
 

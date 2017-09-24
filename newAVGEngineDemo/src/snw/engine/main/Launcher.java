@@ -10,6 +10,8 @@ import snw.engine.database.UserConfig;
 public class Launcher
 {
 	public final static int fps = 50;
+	public final static int gcInterval = 5;
+	public static int counter = 0;
 
 	public static void main(String[] args)
 	{
@@ -28,7 +30,11 @@ public class Launcher
 			{
 				frame.repaint();
 				frame.getComponentGraphic();
-				System.gc();
+
+				if(counter++>=gcInterval){
+					System.gc();
+					counter=0;
+				}
 			}
 		});
 		timerPaint.start();

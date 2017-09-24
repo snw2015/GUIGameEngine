@@ -69,8 +69,6 @@ public class ImageBufferData
 
 	private static Image loadImage(String name)
 	{
-		// TODO Auto-generated method stub
 		return (FileDirectReader.getImage("file/image/" + name + ".png"));
 	}
-
 }
