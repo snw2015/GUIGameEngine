@@ -11,7 +11,7 @@ public class PanelC extends FrameComponent
 
 	public PanelC(String name)
 	{
-		super(name, 0, 0, 1680, 1050);
+		super(name, 0, 0, 1680, 1050,true);
 		// TODO Auto-generated constructor stub
 	}
 

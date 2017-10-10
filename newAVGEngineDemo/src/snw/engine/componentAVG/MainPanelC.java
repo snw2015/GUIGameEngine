@@ -7,18 +7,15 @@ import snw.math.VectorInt;
 
 public class MainPanelC extends TopLevelComponent
 {
-	VectorInt mousePosition = new VectorInt();
-
 	boolean isDragging = false;
 
 	public MainPanelC(JFrame frame)
 	{
 		super("mainPanel", 0, 0, 1680, 1050, frame);
 		// TODO Auto-generated constructor stub
-		startMainMenu();
 	}
 
-	public void startMainScreen()
+	private void startMainScreen()
 	{
 		MainGameScreenC mainScreen = new MainGameScreenC();
 		mainScreen.preProcess();
@@ -38,6 +35,7 @@ public class MainPanelC extends TopLevelComponent
 			}
 		});
 		add(mainScreen);
+		refocusMouse();
 	}
 
 	private void startMainMenu()
@@ -65,30 +63,31 @@ public class MainPanelC extends TopLevelComponent
 				break;
 			}
 		});
+
+		refocusMouse();
+	}
+
+	public void start()
+	{
+		startMainMenu();
 	}
 
 	@Override
 	public void update()
 	{
-		if (!isDragging)
-		{
-			super.mouseMoved(mousePosition.x, mousePosition.y);
-		}
 		super.update();
 	}
 
 	@Override
 	public void mouseClicked(int mouseX, int mouseY)
 	{
-		print("Clicked at: " + mousePosition.x + " , " + mousePosition.y);
-		super.mouseClicked(mousePosition.x, mousePosition.y);
+		print("Clicked at: " + mouseX + " , " + mouseY);
+		super.mouseClicked(mouseX,mouseY);
 	}
 
 	@Override
 	public boolean mouseMoved(int mouseX, int mouseY)
 	{
-		mousePosition.x = mouseX;
-		mousePosition.y = mouseY;
 		return (super.mouseMoved(mouseX, mouseY));
 	}
 
@@ -96,8 +95,6 @@ public class MainPanelC extends TopLevelComponent
 	public void mouseDragged(int mouseX, int mouseY)
 	{
 		isDragging = true;
-		mousePosition.x = mouseX;
-		mousePosition.y = mouseY;
 		super.mouseDragged(mouseX, mouseY);
 	}
 

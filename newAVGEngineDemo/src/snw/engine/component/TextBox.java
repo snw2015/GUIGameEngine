@@ -18,7 +18,7 @@ public class TextBox extends FrameComponent
 	{
 		super(name, 0, 0, new ImageIcon(backgroundSource).getIconWidth(),
 				new ImageIcon(backgroundSource).getIconHeight());
-		background = new Graphic(name + "_background", backgroundSource, 0, 0);
+		background = new Graphic(name + "_background", backgroundSource, 0, 0,false);
 		add(background);
 		text = new Text(name + "_text", "", borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);
@@ -29,7 +29,7 @@ public class TextBox extends FrameComponent
 	{
 		super(name, x, y, new ImageIcon(backgroundSource).getIconWidth(),
 				new ImageIcon(backgroundSource).getIconHeight());
-		background = new Graphic(name + "_background", backgroundSource, 0, 0);
+		background = new Graphic(name + "_background", backgroundSource, 0, 0,false);
 		add(background);
 		text = new Text(name + "_text", "", borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);
@@ -39,7 +39,7 @@ public class TextBox extends FrameComponent
 	public TextBox(String name, Image backgroundSource, int x, int y, int width, int height)
 	{
 		super(name, x, y, width, height);
-		background = new Graphic(name + "_background", backgroundSource, 0, 0, width, height);
+		background = new Graphic(name + "_background", backgroundSource, 0, 0, width, height,false);
 		add(background);
 		text = new Text(name + "_text", "", borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);
@@ -50,7 +50,7 @@ public class TextBox extends FrameComponent
 	{
 		super(name, 0, 0, new ImageIcon(backgroundSource).getIconWidth(),
 				new ImageIcon(backgroundSource).getIconHeight());
-		background = new Graphic(name + "_background", backgroundSource, 0, 0);
+		background = new Graphic(name + "_background", backgroundSource, 0, 0,false);
 		add(background);
 		text = new Text(name + "_text", rawText, borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);
@@ -61,7 +61,7 @@ public class TextBox extends FrameComponent
 	{
 		super(name, x, y, new ImageIcon(backgroundSource).getIconWidth(),
 				new ImageIcon(backgroundSource).getIconHeight());
-		background = new Graphic(name + "_background", backgroundSource, 0, 0);
+		background = new Graphic(name + "_background", backgroundSource, 0, 0,false);
 		add(background);
 		text = new Text(name + "_text", rawText, borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);
@@ -73,7 +73,7 @@ public class TextBox extends FrameComponent
 	{
 		super(name, x, y, width, height);
 
-		background = new Graphic(name + "_background", backgroundSource, 0, 0, width, height);
+		background = new Graphic(name + "_background", backgroundSource, 0, 0, width, height,false);
 		add(background);
 		text = new Text(name + "_text", rawText, borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 2);

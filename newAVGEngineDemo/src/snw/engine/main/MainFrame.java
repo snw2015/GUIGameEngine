@@ -103,7 +103,6 @@ public class MainFrame extends JFrame
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 		image = createImage(this.getWidth(), this.getHeight());
-
 	}
 
 	public void paint(Graphics g)
@@ -127,7 +126,6 @@ public class MainFrame extends JFrame
 
 	public void start()
 	{
-		// TODO Auto-generated method stub
-
+		panel.start();
 	}
 }

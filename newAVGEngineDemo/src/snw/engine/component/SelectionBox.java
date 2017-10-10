@@ -26,7 +26,7 @@ public class SelectionBox extends FrameComponent
 		super(name, x, y, width, height);
 		// TODO Auto-generated constructor stub
 		background = new Graphic(name + "_background", backgroundSource, 0, 0, width,
-				height);
+				height,false);
 		add(background);
 		text = new Text(name + "_text", titleText, borderWidth, borderHeight,
 				width - borderWidth * 2, textMaxHeight);

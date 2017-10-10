@@ -25,7 +25,7 @@ public class OptionBox extends FrameComponent
 	{
 		super(name, x, y, width, height);
 		// TODO Auto-generated constructor stub
-		graphicBG = new Graphic(name + "_background", imageBG, 0, 0, width, height);
+		graphicBG = new Graphic(name + "_background", imageBG, 0, 0, width, height,false);
 		add(graphicBG);
 		text = new Text(name + "_text", rawText, borderWidth, borderHeight,
 				width - borderWidth * 2, height - borderHeight * 3 - buttonWidth);

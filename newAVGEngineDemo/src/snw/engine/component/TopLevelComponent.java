@@ -20,7 +20,7 @@ public class TopLevelComponent extends FrameComponent
 	public TopLevelComponent(String name, int x, int y, int width, int height,
 			JFrame frame)
 	{
-		super(name, x, y, width, height);
+		super(name, x, y, width, height,true);
 		// TODO Auto-generated constructor stub
 		frame.setCursor(frame.getToolkit().createCustomCursor(
 				new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(), null));

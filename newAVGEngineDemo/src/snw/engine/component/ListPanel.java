@@ -149,21 +149,21 @@ public class ListPanel extends FrameComponent
 
 	public void setEffect(Shape shape)
 	{
-		effect = new Graphic(name + "_effect", color, shape, 0, 0);
+		effect = new Graphic(name + "_effect", color, shape, 0, 0,false);
 		effect.setAlpha(0);
 	}
 
 	public void setEffect(int width, int height)
 	{
 		effect = new Graphic(name + "_effect", color, new Rectangle(0, 0, width, height),
-				0, 0);
+				0, 0,false);
 		effect.setAlpha(0);
 	}
 
 	public void setEffect(Shape shape, Color color)
 	{
 		setFlashColor(color);
-		effect = new Graphic(name + "_effect", color, shape, 0, 0);
+		effect = new Graphic(name + "_effect", color, shape, 0, 0,false);
 		effect.setAlpha(0);
 	}
 
@@ -171,7 +171,7 @@ public class ListPanel extends FrameComponent
 	{
 		setFlashColor(color);
 		effect = new Graphic(name + "_effect", color, new Rectangle(0, 0, width, height),
-				0, 0);
+				0, 0,false);
 		effect.setAlpha(0);
 	}
 

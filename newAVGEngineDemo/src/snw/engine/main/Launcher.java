@@ -18,11 +18,6 @@ public class Launcher
 		Database.loadUserData();
 
 		MainFrame frame = new MainFrame("0.0.3");
-		Timer timerFrame = new Timer(1000 / fps, (ActionEvent e) ->
-		{
-			frame.start();
-		});
-		timerFrame.start();
 
 		Timer timerPaint = new Timer(1000 / fps, (ActionEvent e) ->
 		{
@@ -38,5 +33,7 @@ public class Launcher
 			}
 		});
 		timerPaint.start();
+		
+		frame.start();
 	}
 }

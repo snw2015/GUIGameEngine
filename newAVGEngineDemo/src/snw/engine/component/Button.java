@@ -126,7 +126,7 @@ public class Button extends FrameComponent
 	public void setBackground(Image image)
 	{
 		Graphic comGraphic = new Graphic(name + "_background", image, 0, 0, width,
-				height);
+				height,false);
 		if (background != null)
 		{
 			remove(name + "_background");

@@ -8,257 +8,220 @@ import java.util.ArrayList;
 
 import snw.math.VectorInt;
 
-public class FrameComponent extends Component
-{
-	private ArrayList<Component> subComponents = new ArrayList<Component>();
-	protected Component componentFocus = null;
+public class FrameComponent extends Component {
+    private ArrayList<Component> subComponents = new ArrayList<Component>();
+    protected Component componentFocus = null;
+    private int mouseX;
+    private int mouseY;
 
-	public FrameComponent(String name, int x, int y, int width, int height)
-	{
-		super(name, x, y, width, height);
-	}
+    public FrameComponent(String name, int x, int y, int width, int height, boolean focusable) {
+        super(name, x, y, width, height, focusable);
+    }
 
-	protected void add(Component sub)
-	{
-		synchronized (this)
-		{
-			subComponents.add(sub);
-		}
-	}
+    public FrameComponent(String name, int x, int y, int width, int height) {
+        super(name, x, y, width, height);
+    }
 
-	protected void add(int index, Component sub)
-	{
-		synchronized (this)
-		{
-			subComponents.add(index, sub);
-		}
-	}
+    protected void add(Component sub) {
+        synchronized (this) {
+            subComponents.add(sub);
+        }
+    }
 
-	protected boolean addAfter(String name, Component sub)
-	{
-		synchronized (this)
-		{
-			int index = 0;
-			Component object = subComponents.get(index);
+    protected void add(int index, Component sub) {
+        synchronized (this) {
+            subComponents.add(index, sub);
+        }
+    }
 
-			while (index < subComponents.size() && !object.getName().equals(name))
-			{
-				object = subComponents.get(++index);
-			}
-			if (index < subComponents.size())
-			{
-				subComponents.add(index, sub);
-				return (true);
-			}
-			return (false);
-		}
-	}
+    protected boolean addAfter(String name, Component sub) {
+        synchronized (this) {
+            int index = 0;
+            Component object = subComponents.get(index);
 
-	protected boolean remove(String name)
-	{
-		synchronized (this)
-		{
-			int index = 0;
+            while (index < subComponents.size() && !object.getName().equals(name)) {
+                object = subComponents.get(++index);
+            }
+            if (index < subComponents.size()) {
+                subComponents.add(index, sub);
+                return (true);
+            }
+            return (false);
+        }
+    }
 
-			while (index < subComponents.size())
-			{
-				if (subComponents.get(index).getName().equals(name))
-				{
-					break;
-				}
-				index++;
-			}
-			if (index < subComponents.size())
-			{
-				remove(index);
-				return (true);
-			}
-			return (false);
+    protected boolean remove(String name) {
+        synchronized (this) {
+            int index = 0;
 
-		}
-	}
+            while (index < subComponents.size()) {
+                if (subComponents.get(index).getName().equals(name)) {
+                    break;
+                }
+                index++;
+            }
+            if (index < subComponents.size()) {
+                remove(index);
+                return (true);
+            }
+            return (false);
 
-	protected boolean remove(Component sub)
-	{
-		synchronized (this)
-		{
-			int index = 0;
+        }
+    }
 
-			while (index < subComponents.size())
-			{
-				if (subComponents.get(index) == sub)
-				{
-					break;
-				}
-				index++;
-			}
-			if (index < subComponents.size())
-			{
-				remove(index);
-				return (true);
-			}
-			return (false);
-		}
-	}
+    protected boolean remove(Component sub) {
+        synchronized (this) {
+            int index = 0;
 
-	protected boolean remove(int index)
-	{
-		synchronized (this)
-		{
-			if (subComponents.size() > index)
-			{
-				subComponents.remove(index);
-				componentFocus.mouseExited();
-				componentFocus = null;
-				return (true);
-			}
-			return (false);
-		}
-	}
+            while (index < subComponents.size()) {
+                if (subComponents.get(index) == sub) {
+                    break;
+                }
+                index++;
+            }
+            if (index < subComponents.size()) {
+                remove(index);
+                return (true);
+            }
+            return (false);
+        }
+    }
 
-	protected Component getSub(int index)
-	{
-		synchronized (this)
-		{
-			if (subComponents.size() > index)
-			{
-				return (subComponents.get(index));
-			}
-		}
-		return (null);
-	}
+    protected boolean remove(int index) {
+        synchronized (this) {
+            if (subComponents.size() > index) {
+                subComponents.remove(index);
+                componentFocus.mouseExited();
+                componentFocus = null;
+                return (true);
+            }
+            return (false);
+        }
+    }
 
-	protected Component getSub(String name)
-	{
-		synchronized (this)
-		{
-			int index = 0;
+    protected Component getSub(int index) {
+        synchronized (this) {
+            if (subComponents.size() > index) {
+                return (subComponents.get(index));
+            }
+        }
+        return (null);
+    }
 
-			while (index < subComponents.size())
-			{
-				if (subComponents.get(index).getName().equals(name))
-				{
-					break;
-				}
-				index++;
-			}
-			if (index < subComponents.size())
-			{
-				return (getSub(index));
-			}
-		}
-		return (null);
-	}
+    protected Component getSub(String name) {
+        synchronized (this) {
+            int index = 0;
 
-	@Override
-	public void paint(Graphics g)
-	{
-		synchronized (this)
-		{
-			for (Component sub : subComponents)
-			{
-				Graphics2D g2d = (Graphics2D) g;
-				if (sub != null)
-				{
-					g2d.setComposite(
-							AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-					sub.render(g);
-				}
-			}
-		}
-	}
+            while (index < subComponents.size()) {
+                if (subComponents.get(index).getName().equals(name)) {
+                    break;
+                }
+                index++;
+            }
+            if (index < subComponents.size()) {
+                return (getSub(index));
+            }
+        }
+        return (null);
+    }
 
-	@Override
-	public void keyTyped(char keyChar)
-	{
-		if (componentFocus != null)
-		{
-			componentFocus.keyTyped(keyChar);
-		}
-	}
+    @Override
+    public void paint(Graphics g) {
+        synchronized (this) {
+            for (Component sub : subComponents) {
+                Graphics2D g2d = (Graphics2D) g;
+                if (sub != null) {
+                    g2d.setComposite(
+                            AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+                    sub.render(g);
+                }
+            }
+        }
+    }
 
-	@Override
-	public void keyPressed(int key)
-	{
-		if (componentFocus != null)
-		{
-			componentFocus.keyPressed(key);
-		}
-	}
+    @Override
+    public void keyTyped(char keyChar) {
+        if (componentFocus != null) {
+            componentFocus.keyTyped(keyChar);
+        }
+    }
 
-	@Override
-	public void keyReleased(int key)
-	{
-		if (componentFocus != null)
-		{
-			componentFocus.keyReleased(key);
-		}
-	}
+    @Override
+    public void keyPressed(int key) {
+        if (componentFocus != null) {
+            componentFocus.keyPressed(key);
+        }
+    }
 
-	@Override
-	public void mouseClicked(int mouseX, int mouseY)
-	{
-		if (componentFocus != null)
-		{
-			Component sub = componentFocus;
-			sub.mouseClicked(mouseX - sub.getX(), mouseY - sub.getY());
-		}
-	}
+    @Override
+    public void keyReleased(int key) {
+        if (componentFocus != null) {
+            componentFocus.keyReleased(key);
+        }
+    }
 
-	@Override
-	public boolean mouseMoved(int mouseX, int mouseY)
-	{
-		// obviously need to be refactored
-		// print("move in " + name);
-		Component sub = null;
-		for (int i = subComponents.size() - 1; i >= 0; i--)
-		{
-			sub = subComponents.get(i);
-			if (sub != null && sub.getBound().contains(mouseX, mouseY))
-			{
-				sub.mouseMoved(mouseX - sub.getAlignedX(), mouseY - sub.getAlignedY());
-				boolean changed = componentFocus != sub;
-				if (changed)
-				{
-					if (componentFocus != null)
-					{
-						componentFocus.mouseExited();
-					}
-					sub.mouseEntered();
-					componentFocus = sub;
-				}
-				return (changed);
-			}
-		}
-		if (componentFocus != null)
-		{
-			componentFocus.mouseExited();
-			componentFocus = null;
-			return (true);
-		}
-		return (false);
-	}
+    @Override
+    public void mouseClicked(int mouseX, int mouseY) {
+        refocusMouse();
+        if (componentFocus != null) {
+            Component sub = componentFocus;
+            sub.mouseClicked(mouseX - sub.getX(), mouseY - sub.getY());
+        }
+    }
 
-	@Override
-	public void mouseDragged(int mouseX, int mouseY)
-	{
-		componentFocus.mouseDragged(mouseX - componentFocus.getAlignedX(),
-				mouseY - componentFocus.getAlignedY());
-		super.mouseDragged(mouseX, mouseY);
-	}
+    @Override
+    public boolean mouseMoved(int mouseX, int mouseY) {
+        // print("move in " + name);
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
+        return refocusMouse();
+    }
 
-	@Override
-	public void mouseExited()
-	{
-		if (componentFocus != null)
-		{
-			componentFocus.mouseExited();
-		}
-		componentFocus = null;
-	}
+    public boolean refocusMouse() {
+        Component sub = null;
+        for (int i = subComponents.size() - 1; i >= 0; i--) {
+            sub = subComponents.get(i);
+            if (sub != null && sub.isFocusable() && sub.getBound().contains(mouseX, mouseY)) {
+                boolean changed = componentFocus != sub;
+                if (changed) {
+                    if (componentFocus != null) {
+                        componentFocus.mouseExited();
+                    }
+                    sub.mouseEntered();
+                    componentFocus = sub;
+                }
 
-	public String toString()
-	{
-		return (name);
-	}
+                sub.mouseMoved(mouseX - sub.getAlignedX(), mouseY - sub.getAlignedY());
+
+                return (changed);
+            }
+        }
+        if (componentFocus != null) {
+            componentFocus.mouseExited();
+            componentFocus = null;
+            return (true);
+        }
+        return (false);
+    }
+
+    @Override
+    public void mouseDragged(int mouseX, int mouseY) {
+        if (componentFocus != null) {
+            componentFocus.mouseDragged(mouseX - componentFocus.getAlignedX(),
+                    mouseY - componentFocus.getAlignedY());
+            super.mouseDragged(mouseX, mouseY);
+        }
+    }
+
+    @Override
+    public void mouseExited() {
+        if (componentFocus != null) {
+            componentFocus.mouseExited();
+        }
+        componentFocus = null;
+    }
+
+    public String toString() {
+        return (name);
+    }
 }

@@ -40,7 +40,7 @@ public class MainGameScreenC extends PanelC
 	private void addBackground()
 	{
 		background = new Graphic("background", getImage("background_main_screen"), 0, 0,
-				width, height);
+				width, height,false);
 		add(background);
 	}
 
