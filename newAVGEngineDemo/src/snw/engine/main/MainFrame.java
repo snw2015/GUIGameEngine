@@ -1,131 +1,132 @@
 package snw.engine.main;
 
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import javax.swing.JFrame;
+import javax.swing.*;
+import javax.swing.text.AbstractDocument;
 
+import snw.engine.component.Component;
+import snw.engine.component.TopLevelComponent;
 import snw.engine.componentAVG.MainPanelC;
 
-public class MainFrame extends JFrame
-{
-	public boolean isRunning = true;
-	public double fps = 60.0;
+public class MainFrame extends JFrame {
+    public boolean isRunning = true;
+    public double fps = 60.0;
 
-	private MainPanelC panel = null;
-	private Image image = null;
+    private TopLevelComponent panel = null;
+    private JPanel contentPanel = null;
+    private Image image = null;
 
-	public MainFrame(String title)
-	{
-		this.setTitle(title);
-		this.setBounds(0, 0, 1800, 1200);
+    class ContentPanel extends JPanel
+    {
+        public ContentPanel()
+        {
+            this.setPreferredSize(new Dimension(1680,1050));
+            this.addMouseListener(new MouseListener() {
 
-		panel = new MainPanelC(this);
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    panel.mouseClicked(e.getX(), e.getY());
 
-		this.addKeyListener(new KeyListener()
-		{
+                }
 
-			@Override
-			public void keyTyped(KeyEvent e)
-			{
-				panel.keyTyped(e.getKeyChar());
-			}
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    panel.mousePressed(e.getX(), e.getY());
+                }
 
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				panel.keyPressed(e.getKeyCode());
-			}
+                @Override
+                public void mouseReleased(MouseEvent e) {
 
-			@Override
-			public void keyReleased(KeyEvent e)
-			{
+                    panel.mouseReleased(e.getX(), e.getY());
+                }
 
-				panel.keyReleased(e.getKeyCode());
-			}
-		});
-		this.addMouseListener(new MouseListener()
-		{
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    panel.mouseEntered();
+                }
 
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				panel.mouseClicked(e.getX() - 11, e.getY() - 45);
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    panel.mouseExited();
+                }
+            });
+            this.addMouseMotionListener(new MouseMotionListener() {
 
-			}
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    panel.mouseMoved(e.getX(), e.getY());
+                }
 
-			@Override
-			public void mousePressed(MouseEvent e)
-			{
-				panel.mousePressed(e.getX() - 11, e.getY() - 45);
-			}
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    panel.mouseDragged(e.getX(), e.getY());
+                }
+            });
+        }
 
-			@Override
-			public void mouseReleased(MouseEvent e)
-			{
+        public void paint(Graphics g) {
+            if (image != null) {
+                g.drawImage(image, 0, 0, this);
+            }
+        }
+    }
 
-				panel.mouseReleased(e.getX() - 11, e.getY() - 45);
-			}
+    public MainFrame(String title) {
+        this.setTitle(title);
 
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				panel.mouseEntered();
-			}
+        this.panel = new MainPanelC(this);
 
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				panel.mouseExited();
-			}
-		});
-		this.addMouseMotionListener(new MouseMotionListener()
-		{
+        contentPanel = new ContentPanel();
+        this.add(contentPanel);
+        this.pack();
+        this.setLocationRelativeTo(null);
 
-			@Override
-			public void mouseMoved(MouseEvent e)
-			{
-				panel.mouseMoved(e.getX() - 11, e.getY() - 45);
-			}
+        this.addKeyListener(new KeyListener() {
 
-			@Override
-			public void mouseDragged(MouseEvent e)
-			{
-				panel.mouseDragged(e.getX() - 11, e.getY() - 45);
-			}
-		});
+            @Override
+            public void keyTyped(KeyEvent e) {
+                panel.keyTyped(e.getKeyChar());
+            }
 
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setVisible(true);
-		image = createImage(this.getWidth(), this.getHeight());
-	}
+            @Override
+            public void keyPressed(KeyEvent e) {
+                panel.keyPressed(e.getKeyCode());
+            }
 
-	public void paint(Graphics g)
-	{
-		if (image != null)
-		{
-			g.drawImage(image, 11, 45, this);
-		}
-	}
+            @Override
+            public void keyReleased(KeyEvent e) {
 
-	public void getComponentGraphic()
-	{
-		panel.render(image.getGraphics());
-		image.flush();
-	}
+                panel.keyReleased(e.getKeyCode());
+            }
+        });
 
-	public static void print(String s)
-	{
-		System.out.println(s);
-	}
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setVisible(true);
 
-	public void start()
-	{
-		panel.start();
-	}
+        image = createImage(contentPanel.getWidth(), contentPanel.getHeight());
+    }
+
+    public void setMainPanel(TopLevelComponent panel)
+    {
+        this.panel = panel;
+    }
+
+    public void getComponentGraphic() {
+        panel.render(image.getGraphics());
+        image.flush();
+    }
+
+    public static void print(String s) {
+        System.out.println(s);
+    }
+
+    public void start() {
+        panel.start();
+    }
 }

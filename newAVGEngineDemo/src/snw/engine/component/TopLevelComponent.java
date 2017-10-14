@@ -12,7 +12,7 @@ import com.sun.javafx.tk.Toolkit;
 import snw.engine.database.Database;
 import snw.math.VectorInt;
 
-public class TopLevelComponent extends FrameComponent
+public abstract class TopLevelComponent extends FrameComponent
 {
 
 	private MovingGraphic cursor;
@@ -66,4 +66,6 @@ public class TopLevelComponent extends FrameComponent
 		cursor = new MovingGraphic("cursor", Database.getCursorData().getImages(typeName),
 				posX, posY, 50);
 	}
+
+	public abstract void start();
 }

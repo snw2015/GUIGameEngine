@@ -67,6 +67,7 @@ public class MainPanelC extends TopLevelComponent
 		refocusMouse();
 	}
 
+	@Override
 	public void start()
 	{
 		startMainMenu();
