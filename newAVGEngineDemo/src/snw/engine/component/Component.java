@@ -16,6 +16,8 @@ public abstract class Component {
     protected final String name;
     protected int x;
     protected int y;
+    protected int initialX;
+    protected int initialY;
     protected int width;
     protected int height;
     private boolean animated = false;
@@ -48,7 +50,9 @@ public abstract class Component {
     public Component(String name, int x, int y, int width, int height, boolean focusable) {
         this.name = name;
         this.x = x;
+        initialX = x;
         this.y = y;
+        initialY = y;
         this.width = width;
         this.height = height;
         this.focusable = focusable;
@@ -57,7 +61,9 @@ public abstract class Component {
     public Component(String name, int x, int y, int width, int height) {
         this.name = name;
         this.x = x;
+        initialX = x;
         this.y = y;
+        initialY = y;
         this.width = width;
         this.height = height;
         focusable = true;
@@ -104,7 +110,7 @@ public abstract class Component {
         }
     }
 
-    private void applyAnimation(Graphics2D canvas, BufferedImage object, int deltaX,
+    protected void applyAnimation(Graphics2D canvas, BufferedImage object, int deltaX,
                                 int deltaY) {
         if (animationData != null) {
             // print("apply " + animationData);
@@ -177,6 +183,8 @@ public abstract class Component {
     public void mouseDragged(int mouseX, int mouseY) {
     }
 
+    public void setPaintedPosition(int startX,int startY){}
+
     public String getName() {
         return name;
     }
@@ -193,12 +201,22 @@ public abstract class Component {
         return x;
     }
 
+    public int getX(int deltaX)
+    {
+        return initialX + deltaX;
+    }
+
     public void setX(int x) {
         this.x = x;
     }
 
     public int getY() {
         return y;
+    }
+
+    public int getY(int deltaY)
+    {
+        return initialY + deltaY;
     }
 
     public void setY(int y) {
@@ -323,5 +341,10 @@ public abstract class Component {
 
     public boolean isFocusable() {
         return focusable;
+    }
+
+    public String toString()
+    {
+        return name;
     }
 }

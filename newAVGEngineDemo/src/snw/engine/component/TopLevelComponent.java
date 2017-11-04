@@ -12,60 +12,65 @@ import com.sun.javafx.tk.Toolkit;
 import snw.engine.database.Database;
 import snw.math.VectorInt;
 
-public abstract class TopLevelComponent extends FrameComponent
-{
+public abstract class TopLevelComponent extends FrameComponent {
+    private boolean hasCursor;
+    private MovingGraphic cursor;
 
-	private MovingGraphic cursor;
+    public TopLevelComponent(String name, int x, int y, int width, int height,
+                             JFrame frame, boolean hasCursor) {
+        super(name, x, y, width, height, true);
+        // TODO Auto-generated constructor stub
+        this.hasCursor = hasCursor;
 
-	public TopLevelComponent(String name, int x, int y, int width, int height,
-			JFrame frame)
-	{
-		super(name, x, y, width, height,true);
-		// TODO Auto-generated constructor stub
-		frame.setCursor(frame.getToolkit().createCustomCursor(
-				new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(), null));
+        if (hasCursor) {
+            frame.setCursor(frame.getToolkit().createCustomCursor(
+                    new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(), null));
+            cursor = new MovingGraphic("cursor", Database.getCursorData().getImages(), 0, 0,
+                    50);
+        }
+    }
 
-		cursor = new MovingGraphic("cursor", Database.getCursorData().getImages(), 0, 0,
-				50);
-	}
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
 
-	@Override
-	public void paint(Graphics g)
-	{
-		super.paint(g);
-		cursor.render(g);
-	}
+        if (hasCursor) {
+            cursor.render(g);
+        }
+    }
 
-	@Override
-	public boolean mouseMoved(int mouseX, int mouseY)
-	{
-		cursor.setPos(mouseX, mouseY);
-		return (super.mouseMoved(mouseX, mouseY));
-	}
+    @Override
+    public boolean mouseMoved(int mouseX, int mouseY) {
+        if (hasCursor) {
+            cursor.setPos(mouseX, mouseY);
+        }
+        return (super.mouseMoved(mouseX, mouseY));
+    }
 
-	@Override
-	public void mouseDragged(int mouseX, int mouseY)
-	{
-		cursor.setPos(mouseX, mouseY);
-		setCursor("drag");
-		super.mouseDragged(mouseX, mouseY);
-	}
+    @Override
+    public void mouseDragged(int mouseX, int mouseY) {
+        if (hasCursor) {
+            cursor.setPos(mouseX, mouseY);
+            setCursor("drag");
+        }
+        super.mouseDragged(mouseX, mouseY);
+    }
 
-	@Override
-	public void mouseReleased(int mouseX, int mouseY)
-	{
-		setCursor("normal");
-		super.mouseReleased(mouseX, mouseY);
-	}
+    @Override
+    public void mouseReleased(int mouseX, int mouseY) {
+        if (hasCursor) {
+            setCursor("normal");
+        }
+        super.mouseReleased(mouseX, mouseY);
+    }
 
-	protected void setCursor(String typeName)
-	{
-		int posX = cursor.getX();
-		int posY = cursor.getY();
-		cursor = null;
-		cursor = new MovingGraphic("cursor", Database.getCursorData().getImages(typeName),
-				posX, posY, 50);
-	}
+    protected void setCursor(String typeName) {
+        int posX = cursor.getX();
+        int posY = cursor.getY();
+        cursor = null;
+        cursor = new MovingGraphic("cursor", Database.getCursorData().getImages(typeName),
+                posX, posY, 50);
+    }
 
-	public abstract void start();
+    public abstract void start();
 }

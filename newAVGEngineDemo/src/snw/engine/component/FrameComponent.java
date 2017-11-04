@@ -1,14 +1,14 @@
 package snw.engine.component;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.image.ColorModel;
 import java.util.ArrayList;
 
 import snw.math.VectorInt;
 
 public class FrameComponent extends Component {
+
     private ArrayList<Component> subComponents = new ArrayList<Component>();
     protected Component componentFocus = null;
     private int mouseX;
@@ -99,6 +99,17 @@ public class FrameComponent extends Component {
         }
     }
 
+    protected boolean removeAll() {
+        synchronized (this) {
+            if (subComponents.isEmpty()) {
+                return false;
+            }
+            subComponents.clear();
+            subComponents.trimToSize();
+            return true;
+        }
+    }
+
     protected Component getSub(int index) {
         synchronized (this) {
             if (subComponents.size() > index) {
@@ -125,18 +136,27 @@ public class FrameComponent extends Component {
         return (null);
     }
 
+    public ArrayList<Component> getSubs() {
+        return subComponents;
+    }
+
     @Override
     public void paint(Graphics g) {
         synchronized (this) {
             for (Component sub : subComponents) {
-                Graphics2D g2d = (Graphics2D) g;
                 if (sub != null) {
-                    g2d.setComposite(
-                            AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+                    Graphics2D g2d = (Graphics2D) g;
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1));
                     sub.render(g);
                 }
             }
         }
+    }
+
+    private boolean isInBound(Component sub, int x, int y, int width, int height) {
+        int l1 = x, r1 = x + width, t1 = y, b1 = y + height;
+        int l2 = sub.x, r2 = sub.x + sub.width, t2 = sub.y, b2 = sub.y + sub.height;
+        return (l1 <= r2 && r1 >= l2 && t1 <= b2 && b1 >= t2);
     }
 
     @Override
@@ -202,6 +222,15 @@ public class FrameComponent extends Component {
             return (true);
         }
         return (false);
+    }
+
+    @Override
+    public void setPaintedPosition(int paintedX, int paintedY) {
+        for (Component sub : subComponents) {
+            if (sub != null) {
+                sub.setPos(sub.getX(-paintedX), sub.getY(-paintedY));
+            }
+        }
     }
 
     @Override

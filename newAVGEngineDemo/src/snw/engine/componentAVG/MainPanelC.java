@@ -11,7 +11,7 @@ public class MainPanelC extends TopLevelComponent
 
 	public MainPanelC(JFrame frame)
 	{
-		super("mainPanel", 0, 0, 1680, 1050, frame);
+		super("mainPanel", 0, 0, 1680, 1050, frame,true);
 		// TODO Auto-generated constructor stub
 	}
 

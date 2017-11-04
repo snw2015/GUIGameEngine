@@ -1,6 +1,9 @@
 package snw.engine.componentAVG;
 
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import snw.engine.component.FrameComponent;
 import snw.engine.component.Graphic;
@@ -9,14 +12,17 @@ import snw.engine.component.OptionBox;
 import snw.engine.component.SelectionBox;
 import snw.engine.component.reaction.ReactionCommand;
 import snw.engine.database.Database;
+import snw.engine.script.AVGScreen;
+import snw.engine.script.ScriptProcessor;
+import snw.file.FileDirectReader;
 
-public class MainGameScreenC extends PanelC
-{
+public class MainGameScreenC extends PanelC implements AVGScreen {
 	private Graphic background;
 	private FrameComponent graphicLayer;
 	private MovingTextBox textbox;
 	private SelectionBox selectionbox;
 	private ReactionCommand reaction = null;
+	private ScriptProcessor processor;
 
 	public static final int COMMAND_END = 0;
 	public static final int COMMAND_SAVE = 1;
@@ -83,6 +89,7 @@ public class MainGameScreenC extends PanelC
 	public void mouseClicked(int mouseX, int mouseY)
 	{
 		super.mouseClicked(mouseX, mouseY);
+		processor.process();
 	}
 
 	@Override
@@ -111,5 +118,58 @@ public class MainGameScreenC extends PanelC
 	private void setTextboxBackAlpha(float alpha)
 	{
 		textbox.setBackgroundAlpha(alpha);
+	}
+
+	@Override
+	public void say(String speakerName, String content) {
+	}
+
+	@Override
+	public void displaySelection(String[] contains) {
+	}
+
+	@Override
+	public void setBackground(String imageName) {
+
+	}
+
+	@Override
+	public void displayGraphic(String imageName, int position) {
+
+	}
+
+	@Override
+	public void setBGM(String BGMName) {
+
+	}
+
+	@Override
+	public void displaySound(String soundName) {
+
+	}
+
+	@Override
+	public void end(String endName) {
+		reaction.react(COMMAND_END);
+	}
+
+	@Override
+	public int getSelectedValue() {
+		return 0;
+	}
+
+	@Override
+	public boolean getBooleanVar(int type, int index) {
+		return false;
+	}
+
+	@Override
+	public int getIntVar(int type, int index) {
+		return 0;
+	}
+
+	@Override
+	public String getStringVar(int type, int index) {
+		return null;
 	}
 }
