@@ -19,10 +19,11 @@ public class SnakeScreenDemo extends TopLevelComponent implements SnakeScreen {
         clearScreen();
         int blockWidth = width / map.length;
         int blockHeight = height / map[0].length;
+        Rectangle recBlock = new Rectangle(blockWidth,blockHeight);
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
                 Color color = getColor(map[i][j]);
-                add(new Graphic("label " + i + "," + j, color, new Rectangle(blockWidth, blockHeight), i * blockWidth,
+                add(new Graphic("label " + i + "," + j, color, recBlock, i * blockWidth,
                         j * blockHeight, false));
             }
         }

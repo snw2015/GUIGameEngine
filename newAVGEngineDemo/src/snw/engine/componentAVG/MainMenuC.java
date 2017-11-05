@@ -31,7 +31,7 @@ public class MainMenuC extends PanelC {
 
     @Override
     public void preProcess() {
-        preLoadImageNames = new String[]{"background_main_menu", "button_common"};
+        preLoadImageNames = new String[]{"background_main_menu.gif", "button_common"};
 
         super.preProcess();
 
@@ -41,7 +41,7 @@ public class MainMenuC extends PanelC {
     }
 
     private void addBackground() {
-        background = new Graphic("background", getImage("background_main_menu"), 0, 0,
+        background = new Graphic("background", getImage("background_main_menu.gif"), 0, 0,
                 width, height, false);
         add(background);
     }

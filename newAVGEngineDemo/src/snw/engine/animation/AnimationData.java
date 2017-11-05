@@ -2,79 +2,98 @@ package snw.engine.animation;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
-import java.util.Arrays;
 
-import snw.graphic.Filter;
-import snw.graphic.MaskData;
+public class AnimationData {
+    public AffineTransform getTransformation() {
+        return transformation;
+    }
 
-public class AnimationData
-{
-	private AffineTransform transformation;
-	private int alpha = 255;
-	private MaskData mask;
-	private Filter[] filters;
-	private int filterNum = 0;
-	private boolean isMasked = false;
-	private Image maskImage;
+    public void setTransformation(AffineTransform transformation) {
+        this.transformation = transformation;
+    }
 
-	public AnimationData(String rawData, Image[] masks)
-	{
-		String[] matrix = rawData.split(",");
+    public int getAlphaInt() {
+        return alphaInt;
+    }
 
-		transformation = new AffineTransform(Double.valueOf(matrix[0]),
-				Double.valueOf(matrix[1]), Double.valueOf(matrix[2]),
-				Double.valueOf(matrix[3]), Double.valueOf(matrix[4]),
-				Double.valueOf(matrix[5]));
+    public void setAlphaInt(int alphaInt) {
+        if (alphaInt < 0) {
+            alphaInt = 0;
+        }
+        this.alphaInt = alphaInt;
+        this.alphaFloat = (float) alphaInt / 255;
+    }
 
-		if (matrix.length >= 7)
-		{
-			alpha = Integer.valueOf(matrix[6]);
-			if (matrix.length >= 8)
-			{
-				maskImage = masks[Integer.valueOf(matrix[7])];
-				isMasked = true;
-			}
-		}
-	}
+    public float getAlphaFloat() {
+        return alphaFloat;
+    }
 
-	public void apply(Graphics2D canvas, BufferedImage object, int deltaX, int deltaY)
-	{
-		// TODO Auto-generated method stub
-		if (alpha != 0)
-		{
-			if (isMasked)
-			{
-				int width = object.getWidth();
-				int height = object.getHeight();
-				BufferedImage rescaledImage = new BufferedImage(width, height,
-						BufferedImage.TYPE_BYTE_GRAY);
-				rescaledImage.getGraphics().drawImage(maskImage, 0, 0, width, height, null);
-				mask = new MaskData(
-						rescaledImage.getRaster().getPixels(0, 0, width, height, new int[width * height]),
-						width, height);
-				mask.apply(object);
-			}
-			for (int i = 0; i < filterNum; i++)
-			{
-				filters[i].apply(object);
-			}
-			if (alpha < 255)
-			{
-				canvas.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-						(float) alpha / 255));
-			}
-			transformation.translate(deltaX, deltaY);
-			canvas.drawImage(object, transformation, null);
-			transformation.translate(-deltaX, -deltaY);
-		}
-	}
+    public void setAlphaFloat(float alphaFloat) {
+        if (alphaFloat < 0) {
+            alphaFloat = 0;
+        }
+        this.alphaFloat = alphaFloat;
+        this.alphaInt = (int) (alphaFloat * 255 + 0.5f);
+    }
 
-	public String toString()
-	{
-		return (transformation.toString() + "," + alpha);
-	}
+    private AffineTransform transformation;
+    private int alphaInt;
+    private float alphaFloat;
+
+    public AnimationData(String rawData) {
+        String[] matrix = rawData.split(",");
+
+        transformation = new AffineTransform(Double.valueOf(matrix[0]),
+                Double.valueOf(matrix[1]), Double.valueOf(matrix[2]),
+                Double.valueOf(matrix[3]), Double.valueOf(matrix[4]),
+                Double.valueOf(matrix[5]));
+        setAlphaInt(Integer.valueOf(matrix[6]));
+    }
+
+    public AnimationData(AffineTransform transformation, int alpha) {
+        this.transformation = transformation;
+        setAlphaInt(alpha);
+    }
+
+    public AnimationData(AffineTransform transformation) {
+        this.transformation = transformation;
+        setAlphaInt(255);
+    }
+
+    public AnimationData add(AnimationData other) {
+        AffineTransform newTransformation = new AffineTransform(this.transformation);
+        newTransformation.concatenate(other.transformation);
+
+        AnimationData newData = new AnimationData(newTransformation);
+        newData.setAlphaFloat(this.alphaFloat * other.alphaFloat);
+
+        return newData;
+    }
+
+    public AnimationData preAdd(AnimationData other) {
+        AffineTransform newTransformation = new AffineTransform(this.transformation);
+        newTransformation.preConcatenate(other.transformation);
+
+        AnimationData newData = new AnimationData(newTransformation);
+        newData.setAlphaFloat(this.alphaFloat * other.alphaFloat);
+
+        return newData;
+    }
+
+    public void transform(AnimationData other) {
+        this.transformation.concatenate(other.transformation);
+        setAlphaFloat(alphaFloat * other.alphaFloat);
+    }
+
+    public void preTransform(AnimationData other) {
+        this.transformation.preConcatenate(other.transformation);
+        setAlphaFloat(alphaFloat * other.alphaFloat);
+    }
+
+
+    public String toString() {
+        return (transformation.toString() + "," + alphaInt);
+    }
 }

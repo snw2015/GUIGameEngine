@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import snw.engine.animation.Animation;
@@ -24,6 +25,8 @@ public abstract class Component {
     private boolean visible = true;
     private boolean enable = true;
     private final boolean focusable;
+
+    protected float alpha = 1.0f;
 
     private AnimationData animationData;
     private Animation animation;
@@ -73,48 +76,30 @@ public abstract class Component {
         preLoadImages();
     }
 
-    public void render(Graphics g) {
-        if (enable) {
-            // print("rendering " + name + " x: " + x + " y:" + y);
-            BufferedImage iBuffer = new BufferedImage(width, height,
-                    BufferedImage.TYPE_4BYTE_ABGR);
-
-            paint(iBuffer.getGraphics());
-
-            int alignedX = getAlignedX();
-            int alignedY = getAlignedY();
-            if (animated) {
-                Graphics2D g2d = (Graphics2D) g;
-                applyAnimation(g2d, iBuffer, alignedX, alignedY);
-                updateAnimation();
-            } else {
-                g.drawImage(iBuffer, alignedX, alignedY, width, height, null);
-            }
-
-            iBuffer.getGraphics().dispose();
-            iBuffer.flush();
-            iBuffer = null;
-
-            update();
-        }
+    public void render(Graphics2D g,AnimationData appliedData)
+    {
+        AnimationData finalData = getFinalAnimationData().preAdd(appliedData);
+        paint(g,finalData);
     }
 
-    public abstract void paint(Graphics g);
+    public abstract void paint(Graphics2D g, AnimationData appliedData);
 
-    public void update() {
+    public void update(){};
+
+    public AnimationData getFinalAnimationData() {
+
+        AnimationData finalData = new AnimationData(AffineTransform.getTranslateInstance(getAlignedX(),getAlignedY()));
+        finalData.setAlphaFloat(alpha);
+        if(animated && animationData!=null) {
+            finalData.add(animationData);
+        }
+
+        return finalData;
     }
 
     public void updateAnimation() {
-        if (animation != null) {
+        if (animated && animation != null) {
             animationData = animation.getNextFrame();
-        }
-    }
-
-    protected void applyAnimation(Graphics2D canvas, BufferedImage object, int deltaX,
-                                int deltaY) {
-        if (animationData != null) {
-            // print("apply " + animationData);
-            animationData.apply(canvas, object, deltaX, deltaY);
         }
     }
 
@@ -169,11 +154,11 @@ public abstract class Component {
     }
 
     public void mouseEntered() {
-        print("move into " + name);
+        //print("move into " + name);
     }
 
     public void mouseExited() {
-        print("move out of " + name);
+        //print("move out of " + name);
     }
 
     public boolean mouseMoved(int mouseX, int mouseY) {
@@ -183,7 +168,8 @@ public abstract class Component {
     public void mouseDragged(int mouseX, int mouseY) {
     }
 
-    public void setPaintedPosition(int startX,int startY){}
+    public void setPaintedPosition(int startX, int startY) {
+    }
 
     public String getName() {
         return name;
@@ -201,8 +187,7 @@ public abstract class Component {
         return x;
     }
 
-    public int getX(int deltaX)
-    {
+    public int getX(int deltaX) {
         return initialX + deltaX;
     }
 
@@ -214,8 +199,7 @@ public abstract class Component {
         return y;
     }
 
-    public int getY(int deltaY)
-    {
+    public int getY(int deltaY) {
         return initialY + deltaY;
     }
 
@@ -343,8 +327,19 @@ public abstract class Component {
         return focusable;
     }
 
-    public String toString()
-    {
+    public AnimationData getAnimationData() {
+        return animationData;
+    }
+
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
+
+    public String toString() {
         return name;
     }
 }

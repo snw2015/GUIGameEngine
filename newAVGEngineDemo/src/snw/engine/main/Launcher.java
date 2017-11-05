@@ -16,6 +16,8 @@ public class Launcher
 
 	public static void main(String[] args)
 	{
+		System.setProperty("sun.java2d.opengl","true");
+
 		Database.loadUserData();
 
 		MainFrame frame = new MainFrame("0.0.3");
@@ -27,7 +29,6 @@ public class Launcher
 			if (frame.isRunning)
 			{
 				frame.repaint();
-				frame.getComponentGraphic();
 
 				if(counter++>=gcInterval){
 					System.gc();

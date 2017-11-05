@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.ColorModel;
 import java.util.ArrayList;
 
+import com.sun.scenario.animation.shared.AnimationAccessor;
+import snw.engine.animation.AnimationData;
 import snw.math.VectorInt;
 
 public class FrameComponent extends Component {
@@ -141,16 +143,30 @@ public class FrameComponent extends Component {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics2D g, AnimationData appliedData) {
         synchronized (this) {
             for (Component sub : subComponents) {
                 if (sub != null) {
-                    Graphics2D g2d = (Graphics2D) g;
-                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1));
-                    sub.render(g);
+                    AnimationData finalData = getFinalAnimationData().preAdd(appliedData);
+                    sub.render(g,appliedData);
                 }
             }
         }
+    }
+
+    @Override
+    public void update() {
+        synchronized (this) {
+            for (Component sub : subComponents) {
+                if (sub != null) {
+                    sub.update();
+                }
+            }
+        }
+    }
+
+    protected boolean hasSub(Component sub) {
+        return (subComponents.contains(sub));
     }
 
     private boolean isInBound(Component sub, int x, int y, int width, int height) {

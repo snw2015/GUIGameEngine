@@ -6,10 +6,12 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 
+import snw.engine.animation.AnimationData;
 import snw.engine.component.Component;
 import snw.engine.component.TopLevelComponent;
 import snw.engine.componentAVG.MainPanelC;
@@ -22,11 +24,9 @@ public class MainFrame extends JFrame {
     private JPanel contentPanel = null;
     private Image image = null;
 
-    class ContentPanel extends JPanel
-    {
-        public ContentPanel()
-        {
-            this.setPreferredSize(new Dimension(1680,1050));
+    class ContentPanel extends JPanel {
+        public ContentPanel() {
+            this.setPreferredSize(new Dimension(1680, 1050));
             this.addMouseListener(new MouseListener() {
 
                 @Override
@@ -42,7 +42,6 @@ public class MainFrame extends JFrame {
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-
                     panel.mouseReleased(e.getX(), e.getY());
                 }
 
@@ -71,16 +70,15 @@ public class MainFrame extends JFrame {
         }
 
         public void paint(Graphics g) {
-            if (image != null) {
-                g.drawImage(image, 0, 0, this);
+            if (panel != null) {
+                panel.render((Graphics2D) g, new AnimationData(AffineTransform.getTranslateInstance(0, 0)));
             }
         }
     }
 
+
     public MainFrame(String title) {
         this.setTitle(title);
-
-        this.panel = new MainPanelC(this);
 
         contentPanel = new ContentPanel();
         this.add(contentPanel);
@@ -112,14 +110,8 @@ public class MainFrame extends JFrame {
         image = createImage(contentPanel.getWidth(), contentPanel.getHeight());
     }
 
-    public void setMainPanel(TopLevelComponent panel)
-    {
+    public void setMainPanel(TopLevelComponent panel) {
         this.panel = panel;
-    }
-
-    public void getComponentGraphic() {
-        panel.render(image.getGraphics());
-        image.flush();
     }
 
     public static void print(String s) {

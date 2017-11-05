@@ -11,7 +11,7 @@ public class MainPanelC extends TopLevelComponent
 
 	public MainPanelC(JFrame frame)
 	{
-		super("mainPanel", 0, 0, 1680, 1050, frame,true);
+		super("mainPanel", 0, 0, 1680, 1050, frame,false);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -71,12 +71,6 @@ public class MainPanelC extends TopLevelComponent
 	public void start()
 	{
 		startMainMenu();
-	}
-
-	@Override
-	public void update()
-	{
-		super.update();
 	}
 
 	@Override

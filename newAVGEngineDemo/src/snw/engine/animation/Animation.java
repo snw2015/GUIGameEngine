@@ -25,13 +25,9 @@ public class Animation
 	private boolean isLoop = true;
 	private ArrayList<AnimationData> datas = new ArrayList<AnimationData>();
 
-	private final Image[] maskList;
-
 	public Animation(int speed, BufferedReader animationFile)
 	{
 		// TODO
-		Image maskImage = FileDirectReader.getImage("file/mask1.png");
-		maskList = new Image[] { maskImage };
 
 		this.speed = speed;
 		String line = null;
@@ -45,7 +41,7 @@ public class Animation
 		}
 		while (line != null)
 		{
-			datas.add(new AnimationData(line, maskList));
+			datas.add(new AnimationData(line));
 			try
 			{
 				line = animationFile.readLine();
@@ -60,14 +56,11 @@ public class Animation
 
 	public Animation(int speed, String path)
 	{
-		Image maskImage = FileDirectReader.getImage("file/mask1.png");
-		maskList = new Image[] { maskImage };
-
 		this.speed = speed;
 		String line = null;
 
 		BufferedReader animationFile = null;
-		File file = new File("file/flash.anm");
+		File file = new File(path);
 		try
 		{
 			animationFile = new BufferedReader(
@@ -87,7 +80,7 @@ public class Animation
 		}
 		while (line != null)
 		{
-			datas.add(new AnimationData(line, maskList));
+			datas.add(new AnimationData(line));
 			try
 			{
 				line = animationFile.readLine();

@@ -1,11 +1,10 @@
 package snw.engine.component;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
+import snw.engine.animation.AnimationData;
 import snw.math.VectorInt;
 import snw.text.ExtensibleText;
 
@@ -30,7 +29,7 @@ public class Text extends Component
 	}
 
 	@Override
-	public void paint(Graphics g)
+	public void paint(Graphics2D g, AnimationData animationData)
 	{
 		if (!hasProcessed)
 		{

@@ -61,10 +61,7 @@ public class Launcher {
 
 		Timer timerPaint = new Timer(1000 / fps, (ActionEvent e) -> {
 			if (frame.isRunning) {
-				processor.process();
-
 				frame.repaint();
-				frame.getComponentGraphic();
 
 				if (counter++ >= gcInterval) {
 					System.gc();
@@ -74,6 +71,19 @@ public class Launcher {
 			}
 		});
 		timerPaint.start();
+
+		Timer timerProcess = new Timer(1000 / fps, (ActionEvent e) -> {
+			if (frame.isRunning) {
+				processor.process();
+
+				if (counter++ >= gcInterval) {
+					System.gc();
+
+					counter = 0;
+				}
+			}
+		});
+		timerProcess.start();
 
 		frame.start();
 	}

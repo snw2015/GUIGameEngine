@@ -20,7 +20,7 @@ public class ComponentTests extends TopLevelComponent {
     public static int counter = 0;
 
     public ComponentTests(JFrame frame) {
-        super("testMain", 0, 0, 1680, 1050, frame, true);
+        super("testMain", 0, 0, 1680, 1050, frame, false);
         add(new Graphic("back", Color.white, new Rectangle(1680, 1050), 0, 0, false));
 
         Component[][] comps = new Component[6][2];
@@ -55,7 +55,6 @@ public class ComponentTests extends TopLevelComponent {
         {
             if (frame.isRunning) {
                 frame.repaint();
-                frame.getComponentGraphic();
 
                 if (counter++ >= gcInterval) {
                     System.gc();

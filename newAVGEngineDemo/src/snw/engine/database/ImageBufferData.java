@@ -69,6 +69,10 @@ public class ImageBufferData
 
 	private static Image loadImage(String name)
 	{
+		if(name.contains(".")){
+			System.out.println(name);
+			return (FileDirectReader.getImage("file/image/" + name));
+		}
 		return (FileDirectReader.getImage("file/image/" + name + ".png"));
 	}
 }

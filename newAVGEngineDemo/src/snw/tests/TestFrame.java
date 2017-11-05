@@ -18,10 +18,6 @@ public class TestFrame extends JFrame
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		repaint();
-
-		System.out.println("start gc "+System.currentTimeMillis());
-		System.gc();
-		System.out.println("end gc "+System.currentTimeMillis());
 	}
 
 	@Override
