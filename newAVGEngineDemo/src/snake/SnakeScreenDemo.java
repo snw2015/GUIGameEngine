@@ -10,8 +10,8 @@ import snw.engine.component.Component;
 
 public class SnakeScreenDemo extends TopLevelComponent implements SnakeScreen {
 
-    public SnakeScreenDemo(String name, int x, int y, int width, int height, int m, int n, JFrame frame) {
-        super(name, x, y, width, height, frame, false);
+    public SnakeScreenDemo(String name, int x, int y, int width, int height, int m, int n) {
+        super(name, x, y, width, height, false);
     }
 
     @Override

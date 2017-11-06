@@ -59,7 +59,7 @@ public class Graphic extends Component {
             case MODE_IMAGE:
                 long t = System.currentTimeMillis();
                 g.drawImage(image, appliedData.getTransformation(),null);
-                print("painted graphic: " + name + ", cost: " + (System.currentTimeMillis() - t) + "ms");
+                //print("painted graphic: " + name + ", cost: " + (System.currentTimeMillis() - t) + "ms");
                 break;
             case MODE_SHAPE:
                 g.setColor(color);

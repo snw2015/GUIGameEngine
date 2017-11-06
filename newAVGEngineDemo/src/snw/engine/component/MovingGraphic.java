@@ -8,7 +8,16 @@ public class MovingGraphic extends Graphic {
     private int counter = 0;
     private int frameNum = 0;
     private int updateSpeed = 0;// 0~100
-    private final Image[] images;
+
+    public void setImages(Image[] images) {
+            this.images = images;
+        if (!isEnded) {
+            counter = 0;
+            frameNum = 0;
+        }
+    }
+
+    private Image[] images;
 
     public MovingGraphic(String name, Image[] images, int x, int y, int width, int height,
                          int speed, boolean focusable) {
@@ -18,22 +27,23 @@ public class MovingGraphic extends Graphic {
         this.updateSpeed = speed;
     }
 
-    public MovingGraphic(String name, Image[] images, int x, int y, int speed,boolean focusable) {
-        super(name, images[0], x, y,focusable);
+    public MovingGraphic(String name, Image[] images, int x, int y, int speed, boolean focusable) {
+        super(name, images[0], x, y, focusable);
         // TODO Auto-generated constructor stub
         this.images = images;
         this.updateSpeed = speed;
     }
+
     public MovingGraphic(String name, Image[] images, int x, int y, int width, int height,
                          int speed) {
-        super(name, images[0], x, y, width, height,false);
+        super(name, images[0], x, y, width, height, false);
         // TODO Auto-generated constructor stub
         this.images = images;
         this.updateSpeed = speed;
     }
 
     public MovingGraphic(String name, Image[] images, int x, int y, int speed) {
-        super(name, images[0], x, y,false);
+        super(name, images[0], x, y, false);
         // TODO Auto-generated constructor stub
         this.images = images;
         this.updateSpeed = speed;

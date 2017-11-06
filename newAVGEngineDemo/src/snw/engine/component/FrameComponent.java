@@ -9,9 +9,12 @@ import com.sun.scenario.animation.shared.AnimationAccessor;
 import snw.engine.animation.AnimationData;
 import snw.math.VectorInt;
 
+
 public class FrameComponent extends Component {
 
-    private ArrayList<Component> subComponents = new ArrayList<Component>();
+    private ArrayList<Component> subComponents = new ArrayList<>();
+    private ArrayList<Integer> subPriorities = new ArrayList<>();
+
     protected Component componentFocus = null;
     private int mouseX;
     private int mouseY;
@@ -24,32 +27,23 @@ public class FrameComponent extends Component {
         super(name, x, y, width, height);
     }
 
-    protected void add(Component sub) {
+    protected void add(Component sub, int priority) {
         synchronized (this) {
-            subComponents.add(sub);
-        }
-    }
+            int index = subPriorities.size();
+            for (int i = 0; i < subPriorities.size(); i++) {
+                if (subPriorities.get(i) > priority) {
+                    index = i;
+                    break;
+                }
+            }
 
-    protected void add(int index, Component sub) {
-        synchronized (this) {
+            subPriorities.add(index, new Integer(priority));
             subComponents.add(index, sub);
         }
     }
 
-    protected boolean addAfter(String name, Component sub) {
-        synchronized (this) {
-            int index = 0;
-            Component object = subComponents.get(index);
-
-            while (index < subComponents.size() && !object.getName().equals(name)) {
-                object = subComponents.get(++index);
-            }
-            if (index < subComponents.size()) {
-                subComponents.add(index, sub);
-                return (true);
-            }
-            return (false);
-        }
+    protected void add(Component sub) {
+        add(sub, 0);
     }
 
     protected boolean remove(String name) {
@@ -81,20 +75,17 @@ public class FrameComponent extends Component {
                 }
                 index++;
             }
-            if (index < subComponents.size()) {
-                remove(index);
-                return (true);
-            }
-            return (false);
+            return (remove(index));
         }
     }
 
-    protected boolean remove(int index) {
+    private boolean remove(int index) {
         synchronized (this) {
             if (subComponents.size() > index) {
                 subComponents.remove(index);
-                componentFocus.mouseExited();
-                componentFocus = null;
+                subPriorities.remove(index);
+
+                exitFocus();
                 return (true);
             }
             return (false);
@@ -108,9 +99,21 @@ public class FrameComponent extends Component {
             }
             subComponents.clear();
             subComponents.trimToSize();
+            subPriorities.clear();
+            subPriorities.trimToSize();
+
+            exitFocus();
             return true;
         }
     }
+
+    private void exitFocus() {
+        if (componentFocus != null) {
+            componentFocus.mouseExited();
+            componentFocus = null;
+        }
+    }
+
 
     protected Component getSub(int index) {
         synchronized (this) {
@@ -147,8 +150,7 @@ public class FrameComponent extends Component {
         synchronized (this) {
             for (Component sub : subComponents) {
                 if (sub != null) {
-                    AnimationData finalData = getFinalAnimationData().preAdd(appliedData);
-                    sub.render(g,appliedData);
+                    sub.render(g, appliedData);
                 }
             }
         }
@@ -157,6 +159,7 @@ public class FrameComponent extends Component {
     @Override
     public void update() {
         synchronized (this) {
+            super.update();
             for (Component sub : subComponents) {
                 if (sub != null) {
                     sub.update();
@@ -215,6 +218,7 @@ public class FrameComponent extends Component {
 
     public boolean refocusMouse() {
         Component sub = null;
+
         for (int i = subComponents.size() - 1; i >= 0; i--) {
             sub = subComponents.get(i);
             if (sub != null && sub.isFocusable() && sub.getBound().contains(mouseX, mouseY)) {

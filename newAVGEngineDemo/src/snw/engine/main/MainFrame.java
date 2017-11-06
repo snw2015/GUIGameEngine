@@ -32,7 +32,6 @@ public class MainFrame extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     panel.mouseClicked(e.getX(), e.getY());
-
                 }
 
                 @Override
@@ -77,8 +76,10 @@ public class MainFrame extends JFrame {
     }
 
 
-    public MainFrame(String title) {
+    public MainFrame(String title, TopLevelComponent panel) {
         this.setTitle(title);
+
+        this.panel = panel;
 
         contentPanel = new ContentPanel();
         this.add(contentPanel);
@@ -110,15 +111,16 @@ public class MainFrame extends JFrame {
         image = createImage(contentPanel.getWidth(), contentPanel.getHeight());
     }
 
-    public void setMainPanel(TopLevelComponent panel) {
-        this.panel = panel;
-    }
-
     public static void print(String s) {
         System.out.println(s);
     }
 
     public void start() {
         panel.start();
+    }
+
+    public void update()
+    {
+        panel.update();
     }
 }

@@ -19,9 +19,9 @@ public class Launcher {
     public static void main(String[] s) {
         Database.loadUserData();
 
-        MainFrame frame = new MainFrame("Snake");
-        SnakeScreenDemo panel = new SnakeScreenDemo("panel", 0, 0, 500, 500, 20, 20, frame);
-        frame.setMainPanel(panel);
+        SnakeScreenDemo panel = new SnakeScreenDemo("panel", 0, 0, 500, 500, 20, 20);
+        MainFrame frame = new MainFrame("Snake",panel);
+
         SnakeProcessor processor = new SnakeProcessor(20, 20, panel);
         processor.initialize();
         frame.addKeyListener(new KeyListener() {
@@ -69,6 +69,7 @@ public class Launcher {
         Timer timerProcess = new Timer(1000 / fps, (ActionEvent e) -> {
             if (frame.isRunning) {
                 processor.process();
+                frame.update();
             }
         });
         timerProcess.start();

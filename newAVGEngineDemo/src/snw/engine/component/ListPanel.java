@@ -58,7 +58,7 @@ public class ListPanel extends FrameComponent {
     }
 
     @Override
-    public boolean remove(int index) {
+    public boolean remove(Component sub) {
         return (false);
     }
 

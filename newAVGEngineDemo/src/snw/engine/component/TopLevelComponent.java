@@ -16,17 +16,14 @@ public abstract class TopLevelComponent extends FrameComponent {
     private boolean hasCursor;
     private MovingGraphic cursor;
 
-    public TopLevelComponent(String name, int x, int y, int width, int height,
-                             JFrame frame, boolean hasCursor) {
+    public TopLevelComponent(String name, int x, int y, int width, int height, boolean hasCursor) {
         super(name, x, y, width, height, true);
         this.hasCursor = hasCursor;
 
         if (hasCursor) {
-            frame.setCursor(frame.getToolkit().createCustomCursor(
-                    new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(), null));
             cursor = new MovingGraphic("cursor", Database.getCursorData().getImages(), 0, 0,
                     50);
-            add(cursor);
+            add(cursor, 1);
         }
     }
 
@@ -35,6 +32,7 @@ public abstract class TopLevelComponent extends FrameComponent {
         if (hasCursor) {
             cursor.setPos(mouseX, mouseY);
         }
+
         return (super.mouseMoved(mouseX, mouseY));
     }
 
@@ -58,9 +56,7 @@ public abstract class TopLevelComponent extends FrameComponent {
     protected void setCursor(String typeName) {
         int posX = cursor.getX();
         int posY = cursor.getY();
-        cursor = null;
-        cursor = new MovingGraphic("cursor", Database.getCursorData().getImages(typeName),
-                posX, posY, 100);
+        cursor.setImages(Database.getCursorData().getImages(typeName));
     }
 
     public abstract void start();

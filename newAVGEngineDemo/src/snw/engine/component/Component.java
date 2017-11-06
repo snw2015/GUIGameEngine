@@ -79,19 +79,21 @@ public abstract class Component {
     public void render(Graphics2D g,AnimationData appliedData)
     {
         AnimationData finalData = getFinalAnimationData().preAdd(appliedData);
+
         paint(g,finalData);
     }
 
     public abstract void paint(Graphics2D g, AnimationData appliedData);
 
-    public void update(){};
+    public void update(){
+        updateAnimation();
+    };
 
     public AnimationData getFinalAnimationData() {
-
         AnimationData finalData = new AnimationData(AffineTransform.getTranslateInstance(getAlignedX(),getAlignedY()));
         finalData.setAlphaFloat(alpha);
         if(animated && animationData!=null) {
-            finalData.add(animationData);
+            finalData.transform(animationData);
         }
 
         return finalData;
