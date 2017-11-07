@@ -8,141 +8,129 @@ import snw.engine.animation.AnimationData;
 import snw.math.VectorInt;
 import snw.text.ExtensibleText;
 
-public class Text extends Component
-{
+public class Text extends Component {
 
-	private ExtensibleText content;
-	private int font;
-	private int color;
-	private int lineWidth;
-	private boolean hasProcessed = false;
-	private int renderLength;
+    private ExtensibleText content;
+    private int font;
+    private int color;
+    private int lineWidth;
+    private boolean hasProcessed = false;
+    private int renderLength;
 
-	public Text(String name, String rawText, int x, int y, int width, int height)
-	{
-		super(name, x, y, width, height);
-		content = new ExtensibleText(rawText, 0, 0, width);
-		renderLength = content.getLength();
-		font = 0;
-		color = 0;
-		this.lineWidth = width;
-	}
+    public Text(String name, String rawText, int x, int y, int width, int height) {
+        super(name, x, y, width, height);
+        content = new ExtensibleText(rawText, 0, 0, width);
+        renderLength = content.getLength();
+        font = 0;
+        color = 0;
+        this.lineWidth = width;
+    }
 
-	@Override
-	public void paint(Graphics2D g, AnimationData animationData)
-	{
-		if (!hasProcessed)
-		{
-			VectorInt renderBound = content.processPos(g);
-			setSize(renderBound);
-			hasProcessed = true;
-		}
+    @Override
+    public void paint(Graphics2D g, Shape clip, AnimationData finalData) {
+        if (!hasProcessed) {
+            VectorInt renderBound = content.processPos(g);
+            setSize(renderBound);
+            hasProcessed = true;
+        }
 
-		Iterator<Integer> itrci = content.getColorIndex().iterator();
-		Iterator<Color> itrc = content.getColors().iterator();
-		Iterator<Integer> itrfi = content.getFontIndex().iterator();
-		Iterator<Font> itrf = content.getFonts().iterator();
+        Iterator<Integer> itrci = content.getColorIndex().iterator();
+        Iterator<Color> itrc = content.getColors().iterator();
+        Iterator<Integer> itrfi = content.getFontIndex().iterator();
+        Iterator<Font> itrf = content.getFonts().iterator();
 
-		int indexc = itrci.next();
-		int indexf = itrfi.next();
+        int indexc = itrci.next();
+        int indexf = itrfi.next();
 
-		String string = content.getContent();
-		VectorInt[] pos = content.getLetterPos();
+        String string = content.getContent();
+        VectorInt[] pos = content.getLetterPos();
 
-		for (int i = 0; i < renderLength; i++)
-		{
-			if (indexc == i)
-			{
-				g.setColor(itrc.next());
-				if (itrci.hasNext())
-				{
-					indexc = itrci.next();
-				}
-			}
-			if (indexf == i)
-			{
-				g.setFont(itrf.next());
-				if (itrfi.hasNext())
-				{
-					indexf = itrfi.next();
-				}
-			}
+        for (int i = 0; i < renderLength; i++) {
+            if (indexc == i) {
+                g.setColor(itrc.next());
+                if (itrci.hasNext()) {
+                    indexc = itrci.next();
+                }
+            }
+            if (indexf == i) {
+                g.setFont(itrf.next());
+                if (itrfi.hasNext()) {
+                    indexf = itrfi.next();
+                }
+            }
 
-			g.drawString(string.substring(i, i + 1), pos[i].x, pos[i].y);
-		}
-	}
+            drawString(g, clip, string.substring(i, i + 1), pos[i].x, pos[i].y, finalData);
+        }
+    }
 
-	public void addString(String raw)
-	{
-		content.addString(raw);
-		hasProcessed = false;
-	}
+    private void drawString(Graphics2D g, Shape clip, String string, int x, int y, AnimationData finalData) {
+        Point pSrc = new Point(x, y);
+        Point pDst = new Point(0, 0);
 
-	public void setString(String rawText)
-	{
-		content = new ExtensibleText(rawText, 0, 0, width);
-		setRenderLength(content.getLength());
-		hasProcessed = false;
-	}
+        finalData.getTransformation().transform(pSrc, pDst);
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, finalData.getAlphaFloat()));
+        g.setClip(finalData.getTransformation().createTransformedShape(clip));
 
-	public ExtensibleText getContent()
-	{
-		return content;
-	}
+        g.drawString(string, pDst.x, pDst.y);
+    }
 
-	public void setContent(ExtensibleText newContent)
-	{
-		content = newContent;
-	}
+    public void addString(String raw) {
+        content.addString(raw);
+        hasProcessed = false;
+    }
 
-	public int getFont()
-	{
-		return font;
-	}
+    public void setString(String rawText) {
+        content = new ExtensibleText(rawText, 0, 0, width);
+        setRenderLength(content.getLength());
+        hasProcessed = false;
+    }
 
-	public void setFont(int font)
-	{
-		this.font = font;
-	}
+    public ExtensibleText getContent() {
+        return content;
+    }
 
-	public int getColor()
-	{
-		return color;
-	}
+    public void setContent(ExtensibleText newContent) {
+        content = newContent;
+    }
 
-	public void setColor(int color)
-	{
-		this.color = color;
-	}
+    public int getFont() {
+        return font;
+    }
 
-	public int getLineWidth()
-	{
-		return lineWidth;
-	}
+    public void setFont(int font) {
+        this.font = font;
+    }
 
-	public void setLineWidth(int lineWidth)
-	{
-		this.lineWidth = lineWidth;
-		content.setLineWidth(lineWidth);
-	}
+    public int getColor() {
+        return color;
+    }
 
-	public int getRenderLength()
-	{
-		return renderLength;
-	}
+    public void setColor(int color) {
+        this.color = color;
+    }
 
-	public void setRenderLength(int renderLength)
-	{
-		this.renderLength = renderLength;
-	}
+    public int getLineWidth() {
+        return lineWidth;
+    }
 
-	public boolean addRenderLength()
-	{
-		if (renderLength < content.getLength())
-		{
-			setRenderLength(getRenderLength() + 1);
-			return (true);
-		}
-		return (false);
-	}
+    public void setLineWidth(int lineWidth) {
+        this.lineWidth = lineWidth;
+        content.setLineWidth(lineWidth);
+    }
+
+    public int getRenderLength() {
+        return renderLength;
+    }
+
+    public void setRenderLength(int renderLength) {
+        this.renderLength = renderLength;
+    }
+
+    public boolean addRenderLength() {
+        if (renderLength < content.getLength()) {
+            setRenderLength(getRenderLength() + 1);
+            return (true);
+        }
+        return (false);
+    }
 }

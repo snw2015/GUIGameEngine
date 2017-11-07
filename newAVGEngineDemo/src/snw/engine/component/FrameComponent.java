@@ -146,11 +146,11 @@ public class FrameComponent extends Component {
     }
 
     @Override
-    public void paint(Graphics2D g, AnimationData appliedData) {
+    public void paint(Graphics2D g, Shape clip, AnimationData appliedData) {
         synchronized (this) {
             for (Component sub : subComponents) {
                 if (sub != null) {
-                    sub.render(g, appliedData);
+                    sub.render(g, clip, appliedData);
                 }
             }
         }
@@ -221,6 +221,7 @@ public class FrameComponent extends Component {
 
         for (int i = subComponents.size() - 1; i >= 0; i--) {
             sub = subComponents.get(i);
+
             if (sub != null && sub.isFocusable() && sub.getBound().contains(mouseX, mouseY)) {
                 boolean changed = componentFocus != sub;
                 if (changed) {
@@ -239,6 +240,7 @@ public class FrameComponent extends Component {
         if (componentFocus != null) {
             componentFocus.mouseExited();
             componentFocus = null;
+
             return (true);
         }
         return (false);

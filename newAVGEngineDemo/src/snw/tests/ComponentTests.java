@@ -21,32 +21,29 @@ public class ComponentTests extends TopLevelComponent {
     public static int counter = 0;
 
     public ComponentTests() {
-        super("testMain", 0, 0, 1680, 1050, true);
-        Graphic back = new Graphic("back", Color.white, new Rectangle(1680, 1050), 0, 0, false);
+        super("testMain", 0, 0, 1680, 1050, true);        Graphic back = new Graphic("back", Color.white, new Rectangle(1680, 1050), 0, 0, false);
         add(back);
-        Graphic g1 = new Graphic("g1", Color.black, new Rectangle(100, 100), 0, 0, false);
-
-        Button b1 = new Button("b1",300,100,g1,"test button");
-        Graphic g2 = new Graphic("g2", Color.yellow, new Rectangle(100, 100), 300, 100, false);
-        add(b1);
-        add(g2);
 
 
 
-        //Component[][] comps = new Component[6][2];
+        Component[][] comps = new Component[6][2];
 
-        //for (int i = 0; i < comps.length; i++) {
-        //    for (int j = 0; j < comps[i].length; j++) {
-        //        comps[i][j] = new Graphic("shape " + i + "," + j, Color.black, new Arc2D.Double(0, 0, 200, 200, 0, 360, Arc2D.PIE)
-        //                , i * 200, j * 200, false);
-        //    }
-        //}
+        for (int i = 0; i < comps.length; i++) {
+            for (int j = 0; j < comps[i].length; j++) {
+                comps[i][j] = new Graphic("shape " + i + "," + j, Color.black, new Arc2D.Double(0, 0, 200, 200, 0, 360, Arc2D.PIE)
+                        , i * 200, j * 200, true);
+            }
+        }
 
-        //ListPanel lp = ListPanelFactory.getGridInstance("ListPaneA", 0, 0, 500, 400, comps);
-        //ScrollBar sb = new ScrollBar("ScrollA", getImage("scroll_back"), getImage("scroll_slider"), 0, 400, 500, 30, 30, 30);
+        ListPanel lp = ListPanelFactory.getGridInstance("ListPaneA", 0, 0, 500, 400, comps);
+        lp.setEffect(200,200);
+        lp.setFlash(true);
 
-        //ScrollPanel sp = new ScrollPanel("ScrollPaneA", 100, 100, 500, 430, 1200, sb, lp);
-        //add(sp);
+        ScrollBar sb = new ScrollBar("ScrollA", getImage("scroll_back"), getImage("scroll_slider"), 0, 400, 500, 30, 30, 30);
+        //add(sb);
+
+        ScrollPanel sp = new ScrollPanel("ScrollPaneA", 100, 100, 500, 430, 1200, sb, lp);
+        add(sp);
     }
 
     @Override

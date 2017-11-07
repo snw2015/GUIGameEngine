@@ -1,14 +1,13 @@
 package snw.engine.component;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import snw.engine.animation.Animation;
 import snw.engine.animation.AnimationData;
+import snw.engine.component.reaction.ReactionScrollBar;
 import snw.engine.database.ImageBufferData;
 import snw.math.VectorDbl;
 import snw.math.VectorInt;
@@ -76,23 +75,24 @@ public abstract class Component {
         preLoadImages();
     }
 
-    public void render(Graphics2D g,AnimationData appliedData)
-    {
+    public void render(Graphics2D g, Shape clip, AnimationData appliedData) {
         AnimationData finalData = getFinalAnimationData().preAdd(appliedData);
 
-        paint(g,finalData);
+        paint(g, getClip(clip), finalData);
     }
 
-    public abstract void paint(Graphics2D g, AnimationData appliedData);
+    public abstract void paint(Graphics2D g, Shape clip, AnimationData appliedData);
 
-    public void update(){
+    public void update() {
         updateAnimation();
-    };
+    }
+
+    ;
 
     public AnimationData getFinalAnimationData() {
-        AnimationData finalData = new AnimationData(AffineTransform.getTranslateInstance(getAlignedX(),getAlignedY()));
+        AnimationData finalData = new AnimationData(AffineTransform.getTranslateInstance(getAlignedX(), getAlignedY()));
         finalData.setAlphaFloat(alpha);
-        if(animated && animationData!=null) {
+        if (animated && animationData != null) {
             finalData.transform(animationData);
         }
 
@@ -117,6 +117,7 @@ public abstract class Component {
             }
         }
     }
+
 
     protected Image getImage(String name) {
         return (ImageBufferData.getImage(name));
@@ -177,11 +178,11 @@ public abstract class Component {
         return name;
     }
 
-    public VectorInt getPosition() {
+    public VectorInt getPosVec() {
         return (new VectorInt(x, y));
     }
 
-    public static void print(String s) {
+    public static void print(Object s) {
         System.out.println(s);
     }
 
@@ -251,6 +252,22 @@ public abstract class Component {
         animation.setLoop(isLoop);
     }
 
+    public Rectangle getClip() {
+        return new Rectangle(getXDelta(), getYDelta(), width, height);
+    }
+
+    public Shape getClip(Shape boundClip) {
+        if (boundClip instanceof Rectangle) {
+            Rectangle deltaClip = new Rectangle((Rectangle) boundClip);
+            deltaClip.translate(-getX(), -getY());
+            print(name + deltaClip.toString() + "," + getClip().toString()+","+getClip().intersection(deltaClip).toString());
+            return (getClip().intersection(deltaClip));
+        } else {
+            //TODO
+        }
+        return boundClip;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -297,12 +314,20 @@ public abstract class Component {
         return alignment;
     }
 
+    public int getXDelta() {
+        return (int) ((double) width * alignmentRatioList[alignment].x);
+    }
+
     public int getAlignedX() {
-        return (x - (int) ((double) width * alignmentRatioList[alignment].x));
+        return (x - getXDelta());
+    }
+
+    public int getYDelta() {
+        return (int) ((double) height * alignmentRatioList[alignment].y);
     }
 
     public int getAlignedY() {
-        return (y - (int) ((double) height * alignmentRatioList[alignment].y));
+        return (y - getYDelta());
     }
 
     public void setAlignment(int alignment) {

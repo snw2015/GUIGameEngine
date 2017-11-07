@@ -21,18 +21,17 @@ public class Launcher {
         Database.loadUserData();
 
 
-
         MainPanelC panel = new MainPanelC();
-        MainFrame frame = new MainFrame("0.0.3",panel);
+        MainFrame frame = new MainFrame("0.0.3", panel);
         frame.setCursor(frame.getToolkit().createCustomCursor(
                 new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(), null));
 
         Timer timerPaint = new Timer(1000 / fps, (e) ->
         {
             if (frame.isRunning) {
-                long t = System.currentTimeMillis();
+                //long t = System.currentTimeMillis();
                 frame.repaint();
-                System.out.println("Paint cost: " + (System.currentTimeMillis() - t)+"ms");
+                //System.out.println("Paint cost: " + (System.currentTimeMillis() - t)+"ms");
             }
         });
         timerPaint.start();

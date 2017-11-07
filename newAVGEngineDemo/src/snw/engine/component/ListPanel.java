@@ -123,43 +123,43 @@ public class ListPanel extends FrameComponent {
     }
 
     public void setEffect(Shape shape) {
-        boolean b = effect == null;
-        effect = new Graphic(name + "_effect", color, shape, 0, 0, false);
-        effect.setAlpha(0);
-        if (b) {
-            this.add(effect);
+        if (effect != null) {
+            remove(effect);
         }
+        effect = new Graphic(name + "_effect", color, shape, 0, 0, false);
+        this.add(effect);
+        resetEffect();
     }
 
     public void setEffect(int width, int height) {
-        boolean b = effect == null;
+        if (effect != null) {
+            remove(effect);
+        }
         effect = new Graphic(name + "_effect", color, new Rectangle(0, 0, width, height),
                 0, 0, false);
-        effect.setAlpha(0);
-        if (b) {
-            this.add(effect);
-        }
+        add(effect);
+        resetEffect();
     }
 
     public void setEffect(Shape shape, Color color) {
-        boolean b = effect == null;
+        if (effect != null) {
+            remove(effect);
+        }
         setFlashColor(color);
         effect = new Graphic(name + "_effect", color, shape, 0, 0, false);
-        effect.setAlpha(0);
-        if (b) {
-            this.add(effect);
-        }
+        add(effect);
+        resetEffect();
     }
 
     public void setEffect(int width, int height, Color color) {
-        boolean b = effect == null;
+        if (effect != null) {
+            remove(effect);
+        }
         setFlashColor(color);
         effect = new Graphic(name + "_effect", color, new Rectangle(0, 0, width, height),
                 0, 0, false);
-        effect.setAlpha(0);
-        if (b) {
-            this.add(effect);
-        }
+        add(effect);
+        resetEffect();
     }
 
     @Override
@@ -192,19 +192,17 @@ public class ListPanel extends FrameComponent {
 
     @Override
     public boolean mouseMoved(int mouseX, int mouseY) {
-        boolean changed = super.mouseMoved(mouseX, mouseY);
-        if (changed) {
-            resetEffect();
-        }
-        return (changed);
+        boolean b = super.mouseMoved(mouseX,mouseY);
+        resetEffect();
+        return (b);
     }
 
     public void resetEffect() {
         if (componentFocus != null) {
-            setEffect(componentFocus.getWidth(), componentFocus.getHeight());
-            if (isFlashing) {
-                effect.setAnimation(flash);
-            }
+            //setEffect(componentFocus.getWidth(), componentFocus.getHeight());
+            //if (isFlashing) {
+            //effect.setAnimation(flash);
+            //}
             effect.setPos(componentFocus.getPos());
             effect.setAlignment(componentFocus.getAlignment());
             effect.setAlpha(effectAlpha);

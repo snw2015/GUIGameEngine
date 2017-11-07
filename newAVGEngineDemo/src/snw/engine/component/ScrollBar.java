@@ -5,9 +5,9 @@ import snw.engine.component.reaction.ReactionScrollBar;
 
 import java.awt.*;
 
-public class ScrollBar extends Component {
-    private Image background;
-    private Image slider;
+public class ScrollBar extends FrameComponent {
+    private Graphic background;
+    private Graphic slider;
     private int sliderWidth;
     private int sliderHeight;
 
@@ -15,22 +15,18 @@ public class ScrollBar extends Component {
 
     private ReactionScrollBar reaction;
 
-    public ScrollBar(String name, Image background, Image slider, int x, int y, int width,
+    public ScrollBar(String name, Image backgroundImg, Image sliderImg, int x, int y, int width,
                      int height, int sliderWidth, int sliderHeight) {
         super(name, x, y, width, height);
         // TODO Auto-generated constructor stub
-        this.background = background;
-        this.slider = slider;
+        this.background = new Graphic(name + "_background", backgroundImg, 0, 0, width, height, false);
+
         this.sliderWidth = sliderWidth;
         this.sliderHeight = sliderHeight;
-    }
+        this.slider = new Graphic(name + "_slider", sliderImg, 0, 0, sliderWidth, sliderHeight, false);
 
-    @Override
-    public void paint(Graphics2D g, AnimationData animationData) {
-        // TODO Auto-generated method stub
-        g.drawImage(background, 0, 0, width, height, null);
-        g.drawImage(slider, (int) ((width - sliderWidth) * barValue),
-                (height - sliderHeight) / 2, sliderWidth, sliderHeight, null);
+        add(background);
+        add(slider);
     }
 
     public double getBarValue() {
@@ -56,6 +52,9 @@ public class ScrollBar extends Component {
             mouseX = sliderWidth / 2;
         }
         setBarValue((double) (mouseX - sliderWidth / 2) / (double) (width - sliderWidth));
+
+        slider.setPos(mouseX - sliderWidth / 2, 0);
+
         super.mousePressed(mouseX, mouseY);
     }
 
