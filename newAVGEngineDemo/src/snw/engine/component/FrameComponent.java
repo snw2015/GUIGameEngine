@@ -146,11 +146,16 @@ public class FrameComponent extends Component {
     }
 
     @Override
-    public void paint(Graphics2D g, Shape clip, AnimationData appliedData) {
+    public void paint(Graphics2D g, AnimationData appliedData) {
         synchronized (this) {
+            Rectangle bound = g.getClipBounds();
             for (Component sub : subComponents) {
                 if (sub != null) {
-                    sub.render(g, clip, appliedData);
+                    if (sub.getClipOnBound(bound).intersects(bound)) {
+                        print(name + " render: " + sub.name);
+                        print(g.getClipBounds());
+                        sub.render(g, appliedData);
+                    }
                 }
             }
         }

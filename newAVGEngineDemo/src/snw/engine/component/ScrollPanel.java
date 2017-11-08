@@ -14,7 +14,7 @@ public class ScrollPanel extends FrameComponent {
         this.fullX = fullX;
         this.bar = bar;
 
-        bar.setReaction((double value) -> {
+        bar.setReaction((value) -> {
             setPanelVision((int) ((fullX - width) * value), 0);
         });
 
@@ -28,7 +28,7 @@ public class ScrollPanel extends FrameComponent {
         this.fullX = fullX;
         this.bar = bar;
 
-        bar.setReaction((double value) -> {
+        bar.setReaction((value) -> {
             setPanelVision((int) ((fullX - width) * value), 0);
         });
 

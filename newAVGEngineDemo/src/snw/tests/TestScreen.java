@@ -10,7 +10,6 @@ import javax.swing.*;
 
 public class TestScreen extends JFrame {
     Image imageTest = FileDirectReader.getImage("file/image/background_main_menu.png");
-    BufferedImage buffy;
     int counter = 0;
 
     public TestScreen() {
@@ -18,23 +17,6 @@ public class TestScreen extends JFrame {
         this.setSize(200, 200);
         this.setVisible(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        System.out.println(imageTest.getHeight(null));
-
-
-        BufferedImage iBuffer = new BufferedImage(imageTest.getWidth(null), imageTest.getHeight(null), BufferedImage.TYPE_4BYTE_ABGR);
-
-        long t1 = System.currentTimeMillis();
-        iBuffer.getGraphics().drawImage(imageTest, 0, 0, this);
-        System.out.println("ib time cost: " + (System.currentTimeMillis() - t1) + "ms");
-
-        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice device = env.getDefaultScreenDevice();
-        GraphicsConfiguration config = device.getDefaultConfiguration();
-        buffy = config.createCompatibleImage(iBuffer.getWidth(), iBuffer.getHeight(), iBuffer.getTransparency());
-
-        long t2 = System.currentTimeMillis();
-        buffy.getGraphics().drawImage(iBuffer, 0, 0, null);
-        System.out.println("ib time cost: " + (System.currentTimeMillis() - t2) + "ms");
 
 
         while (true) {
@@ -52,26 +34,49 @@ public class TestScreen extends JFrame {
     @Override
     public void paint(Graphics g) {
 
-        if (buffy != null) {
-            Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) g;
 
-            g2d.setColor(Color.black);
-            g2d.fillRect(0, 0, getWidth(), getHeight());
+        g2d.setColor(Color.black);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
 
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
 
-            g2d.drawImage(buffy, 0, 0, null);
+        BufferedImage buffy = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 
-            for (int i = 0; i < 20; i++) {
-                AffineTransform transform = AffineTransform.getTranslateInstance(counter, 20);
-                transform.concatenate(AffineTransform.getRotateInstance(0.1 * i));
-                g2d.drawImage(buffy, transform, null);
+        long t = System.currentTimeMillis();
+        buffy.getGraphics().drawImage(imageTest, 0, 0, null);
+        print("Paint first, cost: " + (System.currentTimeMillis() - t));
+        t = System.currentTimeMillis();
+        buffy.getGraphics().drawImage(imageTest, 0, 0, null);
+        print("Paint second, cost: " + (System.currentTimeMillis() - t));
+        t = System.currentTimeMillis();
+        buffy.getGraphics().drawImage(imageTest, 0, 0, null);
+        print("Paint third, cost: " + (System.currentTimeMillis() - t));
+/**
+        for (int i = 0; i < 20; i++) {
+            AffineTransform transform = AffineTransform.getTranslateInstance(counter, 20);
+            transform.concatenate(AffineTransform.getRotateInstance(0.1 * i));
+            t = System.currentTimeMillis();
+            g2d.drawImage(imageTest, transform, null);
+            print("Paint " + i + ", cost: " + (System.currentTimeMillis() - t));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+*/
+        t = System.currentTimeMillis();
+        g2d.drawImage(imageTest, 0, 0, null);
+        print("Paint final, cost: " + (System.currentTimeMillis() - t));
     }
 
     public static void main(String[] args) {
         System.setProperty("sun.java2d.opengl", "true");
         new TestScreen();
+    }
+
+    public static void print(Object s) {
+        System.out.println(s);
     }
 }

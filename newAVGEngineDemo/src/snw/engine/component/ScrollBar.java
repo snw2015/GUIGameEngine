@@ -1,7 +1,6 @@
 package snw.engine.component;
 
-import snw.engine.animation.AnimationData;
-import snw.engine.component.reaction.ReactionScrollBar;
+import snw.engine.component.reaction.Reaction;
 
 import java.awt.*;
 
@@ -13,7 +12,7 @@ public class ScrollBar extends FrameComponent {
 
     private double barValue;
 
-    private ReactionScrollBar reaction;
+    private Reaction<Double> reaction;
 
     public ScrollBar(String name, Image backgroundImg, Image sliderImg, int x, int y, int width,
                      int height, int sliderWidth, int sliderHeight) {
@@ -40,7 +39,7 @@ public class ScrollBar extends FrameComponent {
         }
     }
 
-    public void setReaction(ReactionScrollBar reaction) {
+    public void setReaction(Reaction<Double> reaction) {
         this.reaction = reaction;
     }
 

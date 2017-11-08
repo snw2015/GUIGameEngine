@@ -2,12 +2,9 @@ package snw.engine.component;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 
 import snw.engine.animation.Animation;
 import snw.engine.animation.AnimationData;
-import snw.engine.component.reaction.ReactionScrollBar;
 import snw.engine.database.ImageBufferData;
 import snw.math.VectorDbl;
 import snw.math.VectorInt;
@@ -75,19 +72,33 @@ public abstract class Component {
         preLoadImages();
     }
 
-    public void render(Graphics2D g, Shape clip, AnimationData appliedData) {
+    public void render(Graphics2D g, AnimationData appliedData) {
         AnimationData finalData = getFinalAnimationData().preAdd(appliedData);
+        Rectangle bound = trimClip(g);
 
-        paint(g, getClip(clip), finalData);
+        paint(g, finalData);
+
+        g.setClip(bound);
     }
 
-    public abstract void paint(Graphics2D g, Shape clip, AnimationData appliedData);
+    protected Rectangle trimClip(Graphics2D g) {
+        Rectangle bound = g.getClipBounds();
+        Rectangle clip = getClipOnBound(bound);
+        g.setClip(clip.intersection(bound));
+        return bound;
+    }
+
+    protected Rectangle getClipOnBound(Rectangle bound) {
+        Rectangle clip = getClip();
+        clip.translate((int) bound.getX(), (int) bound.getY());
+        return clip;
+    }
+
+    public abstract void paint(Graphics2D g, AnimationData appliedData);
 
     public void update() {
         updateAnimation();
     }
-
-    ;
 
     public AnimationData getFinalAnimationData() {
         AnimationData finalData = new AnimationData(AffineTransform.getTranslateInstance(getAlignedX(), getAlignedY()));
@@ -253,15 +264,20 @@ public abstract class Component {
     }
 
     public Rectangle getClip() {
-        return new Rectangle(getXDelta(), getYDelta(), width, height);
+        return new Rectangle(getAlignedX(), getAlignedY(), width, height);
     }
 
     public Shape getClip(Shape boundClip) {
         if (boundClip instanceof Rectangle) {
-            Rectangle deltaClip = new Rectangle((Rectangle) boundClip);
-            deltaClip.translate(-getX(), -getY());
-            print(name + deltaClip.toString() + "," + getClip().toString()+","+getClip().intersection(deltaClip).toString());
-            return (getClip().intersection(deltaClip));
+            Rectangle absoluteClip = new Rectangle(getClip());
+            absoluteClip.translate((int) ((Rectangle) boundClip).getX(), (int) ((Rectangle) boundClip).getY());
+
+            //print(name);
+            //print("re clip:"+getClip()+"ab clip:"+absoluteClip+"bound: "+boundClip);
+            //print("answer:"+((Rectangle) boundClip).intersection(absoluteClip));
+            //print("");
+
+            return (((Rectangle) boundClip).intersection(absoluteClip));
         } else {
             //TODO
         }

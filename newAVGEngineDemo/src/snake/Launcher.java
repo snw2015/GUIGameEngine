@@ -20,9 +20,9 @@ public class Launcher {
         Database.loadUserData();
 
         SnakeScreenDemo panel = new SnakeScreenDemo("panel", 0, 0, 500, 500, 20, 20);
-        MainFrame frame = new MainFrame("Snake",panel);
+        MainFrame frame = new MainFrame("Snake", panel, true);
 
-        SnakeProcessor processor = new SnakeProcessor(20, 20, panel);
+        SnakeProcessor processor = new SnakeProcessor(20, 20, 3, panel);
         processor.initialize();
         frame.addKeyListener(new KeyListener() {
 

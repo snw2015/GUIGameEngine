@@ -52,15 +52,12 @@ public class Graphic extends Component {
     }
 
     @Override
-    public void paint(Graphics2D g, Shape clip, AnimationData appliedData) {
+    public void paint(Graphics2D g, AnimationData appliedData) {
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, appliedData.getAlphaFloat()));
-        g.setClip(appliedData.getTransformation().createTransformedShape(clip));
 
         switch (mode) {
             case MODE_IMAGE:
-                long t = System.currentTimeMillis();
                 g.drawImage(image, appliedData.getTransformation(), null);
-                //print("painted graphic: " + name + ", cost: " + (System.currentTimeMillis() - t) + "ms");
                 break;
             case MODE_SHAPE:
                 g.setColor(color);

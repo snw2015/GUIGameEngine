@@ -2,12 +2,10 @@ package snw.engine.componentAVG;
 
 import snw.engine.animation.Animation;
 import snw.engine.component.Button;
-import snw.engine.component.FrameComponent;
 import snw.engine.component.Graphic;
 import snw.engine.component.ListPanel;
 import snw.engine.component.ListPanelFactory;
-import snw.engine.component.ScrollBar;
-import snw.engine.component.reaction.ReactionCommand;
+import snw.engine.component.reaction.Reaction;
 
 public class MainMenuC extends PanelC {
     private Graphic background;
@@ -18,7 +16,7 @@ public class MainMenuC extends PanelC {
 
     private ListPanel list;
 
-    private ReactionCommand reaction = null;
+    private Reaction<Integer> reaction = null;
     public static final int COMMAND_START = 1;
     public static final int COMMAND_CONTINUE = 2;
     public static final int COMMAND_EXIT = 0;
@@ -47,55 +45,55 @@ public class MainMenuC extends PanelC {
     }
 
     private void addButtons() {
-        buttonStart = new Button("buttonStart", 300, 800 - 425, getImage("button_common"),
+        buttonStart = new Button("buttonStart", 300, 0, getImage("button_common"),
                 "New Game");
-        buttonStart.setAlignment(ALIGNMENT_BOTTOMMID);
-        buttonStart.setReactionClicked(() ->
+        buttonStart.setAlignment(ALIGNMENT_TOPMID);
+        buttonStart.setReactionClicked((e) ->
         {
             if (reaction != null) {
                 reaction.react(COMMAND_START);
             }
         });
-        buttonStart.setReactionIn(() ->
+        buttonStart.setReactionIn((e) ->
         {
             buttonStart.setAnimation(flash);
         });
-        buttonStart.setReactionOut(() ->
+        buttonStart.setReactionOut((e) ->
         {
             buttonStart.setAnimation(null);
         });
 
-        buttonContinue = new Button("buttonContinue", 300, 800 - 225,
+        buttonContinue = new Button("buttonContinue", 300, 200,
                 getImage("button_common"), "Continue");
-        buttonContinue.setAlignment(ALIGNMENT_BOTTOMMID);
-        buttonContinue.setReactionClicked(() ->
+        buttonContinue.setAlignment(ALIGNMENT_TOPMID);
+        buttonContinue.setReactionClicked((e) ->
         {
             if (reaction != null) {
                 reaction.react(COMMAND_CONTINUE);
             }
         });
-        buttonContinue.setReactionIn(() ->
+        buttonContinue.setReactionIn((e) ->
         {
             buttonContinue.setAnimation(flash);
         });
-        buttonContinue.setReactionOut(() ->
+        buttonContinue.setReactionOut((e) ->
         {
             buttonContinue.setAnimation(null);
         });
-        buttonExit = new Button("buttonExit", 300, 800 - 25, getImage("button_common"),
+        buttonExit = new Button("buttonExit", 300, 400, getImage("button_common"),
                 "Exit");
-        buttonExit.setAlignment(ALIGNMENT_BOTTOMMID);
-        buttonExit.setReactionClicked(() ->
+        buttonExit.setAlignment(ALIGNMENT_TOPMID);
+        buttonExit.setReactionClicked((e) ->
         {
             if (reaction != null) {
                 reaction.react(COMMAND_EXIT);
             }
         });
-        buttonExit.setReactionIn(() ->
+        buttonExit.setReactionIn((e) ->
         {
             buttonExit.setAnimation(flash);
         });
-        buttonExit.setReactionOut(() ->
+        buttonExit.setReactionOut((e) ->
         {
             buttonExit.setAnimation(null);
         });
@@ -109,7 +107,7 @@ public class MainMenuC extends PanelC {
         add(list);
     }
 
-    public void setReaction(ReactionCommand reaction) {
+    public void setReaction(Reaction<Integer> reaction) {
         this.reaction = reaction;
     }
 }

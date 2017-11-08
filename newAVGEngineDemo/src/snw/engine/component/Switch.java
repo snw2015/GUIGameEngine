@@ -1,9 +1,9 @@
 package snw.engine.component;
 
+import snw.engine.component.reaction.Reaction;
+
 import java.awt.Image;
 import java.awt.event.KeyEvent;
-
-import snw.engine.component.reaction.ReactionSwitch;
 
 public class Switch extends FrameComponent {
     private Graphic graphicOn;
@@ -16,7 +16,7 @@ public class Switch extends FrameComponent {
 
     public int[] clickKey = new int[]{KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
             KeyEvent.VK_ENTER};
-    private ReactionSwitch reaction = null;
+    private Reaction<Boolean> reaction = null;
 
     public Switch(String name, int x, int y, int width, int height, Image imageOn,
                   Image imageOff, int initialState) {
@@ -134,7 +134,7 @@ public class Switch extends FrameComponent {
         }
     }
 
-    public void setReaction(ReactionSwitch reaction) {
+    public void setReaction(Reaction<Boolean> reaction) {
         this.reaction = reaction;
     }
 }

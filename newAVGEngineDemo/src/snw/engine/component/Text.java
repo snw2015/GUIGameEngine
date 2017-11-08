@@ -1,16 +1,15 @@
 package snw.engine.component;
 
 import java.awt.*;
-import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
 import snw.engine.animation.AnimationData;
 import snw.math.VectorInt;
-import snw.text.ExtensibleText;
+import snw.text.ExtensibleTextOld;
 
 public class Text extends Component {
 
-    private ExtensibleText content;
+    private ExtensibleTextOld content;
     private int font;
     private int color;
     private int lineWidth;
@@ -19,7 +18,7 @@ public class Text extends Component {
 
     public Text(String name, String rawText, int x, int y, int width, int height) {
         super(name, x, y, width, height);
-        content = new ExtensibleText(rawText, 0, 0, width);
+        content = new ExtensibleTextOld(rawText, 0, 0, width);
         renderLength = content.getLength();
         font = 0;
         color = 0;
@@ -27,7 +26,8 @@ public class Text extends Component {
     }
 
     @Override
-    public void paint(Graphics2D g, Shape clip, AnimationData finalData) {
+    public void paint(Graphics2D g, AnimationData finalData) {
+
         if (!hasProcessed) {
             VectorInt renderBound = content.processPos(g);
             setSize(renderBound);
@@ -59,19 +59,20 @@ public class Text extends Component {
                 }
             }
 
-            drawString(g, clip, string.substring(i, i + 1), pos[i].x, pos[i].y, finalData);
+            drawString(g, string.substring(i, i + 1), pos[i].x, pos[i].y, finalData);
         }
     }
 
-    private void drawString(Graphics2D g, Shape clip, String string, int x, int y, AnimationData finalData) {
+    private void drawString(Graphics2D g, String string, int x, int y, AnimationData finalData) {
         Point pSrc = new Point(x, y);
         Point pDst = new Point(0, 0);
 
         finalData.getTransformation().transform(pSrc, pDst);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, finalData.getAlphaFloat()));
-        g.setClip(finalData.getTransformation().createTransformedShape(clip));
 
         g.drawString(string, pDst.x, pDst.y);
+        print(g.getClipBounds());
+        print(string + "," + pDst.x + "," + pDst.y);
     }
 
     public void addString(String raw) {
@@ -80,16 +81,16 @@ public class Text extends Component {
     }
 
     public void setString(String rawText) {
-        content = new ExtensibleText(rawText, 0, 0, width);
+        content = new ExtensibleTextOld(rawText, 0, 0, width);
         setRenderLength(content.getLength());
         hasProcessed = false;
     }
 
-    public ExtensibleText getContent() {
+    public ExtensibleTextOld getContent() {
         return content;
     }
 
-    public void setContent(ExtensibleText newContent) {
+    public void setContent(ExtensibleTextOld newContent) {
         content = newContent;
     }
 

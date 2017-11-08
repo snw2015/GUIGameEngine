@@ -22,7 +22,7 @@ public class Launcher {
 
 
         MainPanelC panel = new MainPanelC();
-        MainFrame frame = new MainFrame("0.0.3", panel);
+        MainFrame frame = new MainFrame("0.0.3", panel,true);
         frame.setCursor(frame.getToolkit().createCustomCursor(
                 new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(), null));
 

@@ -192,22 +192,22 @@ public class ListPanel extends FrameComponent {
 
     @Override
     public boolean mouseMoved(int mouseX, int mouseY) {
-        boolean b = super.mouseMoved(mouseX,mouseY);
+        boolean b = super.mouseMoved(mouseX, mouseY);
         resetEffect();
         return (b);
     }
 
     public void resetEffect() {
-        if (componentFocus != null) {
-            //setEffect(componentFocus.getWidth(), componentFocus.getHeight());
-            //if (isFlashing) {
-            //effect.setAnimation(flash);
-            //}
-            effect.setPos(componentFocus.getPos());
-            effect.setAlignment(componentFocus.getAlignment());
-            effect.setAlpha(effectAlpha);
-        } else {
-            if (effect != null) {
+        if (effect != null) {
+            if (componentFocus != null) {
+                //setEffect(componentFocus.getWidth(), componentFocus.getHeight());
+                //if (isFlashing) {
+                //effect.setAnimation(flash);
+                //}
+                effect.setPos(componentFocus.getPos());
+                effect.setAlignment(componentFocus.getAlignment());
+                effect.setAlpha(effectAlpha);
+            } else {
                 effect.setAlpha(0);
             }
         }

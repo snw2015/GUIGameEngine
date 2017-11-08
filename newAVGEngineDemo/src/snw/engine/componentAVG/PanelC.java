@@ -2,7 +2,7 @@ package snw.engine.componentAVG;
 
 import snw.engine.component.FrameComponent;
 import snw.engine.component.MessageBox;
-import snw.engine.component.reaction.ReactionMessageClicked;
+import snw.engine.component.reaction.Reaction;
 
 public class PanelC extends FrameComponent
 {
@@ -16,17 +16,17 @@ public class PanelC extends FrameComponent
 	}
 
 	protected void showMessageBox(String messageContent,
-			ReactionMessageClicked reactionOfMessageBox)
+			Reaction<Integer> reactionOfMessageBox)
 	{
 		remove(msgBox);
 		msgBox = new MessageBox("messageBox", getImage("textbox_common"), messageContent,
 				width / 2, height / 2, 650, 450, "Yes");
 		msgBox.setAlignment(ALIGNMENT_CENTER);
-		msgBox.setReactionClicked(() ->
+		msgBox.setReactionClicked((e) ->
 		{
 			if (reactionOfMessageBox != null)
 			{
-				reactionOfMessageBox.react();
+				reactionOfMessageBox.react(e);
 			}
 			removeMessageBox();
 		});

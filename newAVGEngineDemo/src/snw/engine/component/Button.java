@@ -2,11 +2,9 @@ package snw.engine.component;
 
 import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 import snw.engine.component.reaction.*;
 import snw.math.VectorInt;
-import snw.text.ExtensibleText;
 
 /**
  * Need refactor constructors.
@@ -14,9 +12,9 @@ import snw.text.ExtensibleText;
 public class Button extends FrameComponent {
     private Graphic background = null;
     private Text text = null;
-    private ReactionButtonClicked reactionClicked = null;
-    private ReactionButtonIn reactionIn = null;
-    private ReactionButtonOut reactionOut = null;
+    private Reaction<VectorInt> reactionClicked = null;
+    private Reaction<VectorInt> reactionIn = null;
+    private Reaction<VectorInt> reactionOut = null;
     private VectorInt borderSize = new VectorInt(0, 0);
 
     private int clickKey = KeyEvent.VK_ENTER;
@@ -96,8 +94,7 @@ public class Button extends FrameComponent {
         add(text);
     }
 
-    public Button(String name, int x,int y, Graphic background, String rawtext)
-    {
+    public Button(String name, int x, int y, Graphic background, String rawtext) {
         super(name, x, y, background.getWidth(), background.getHeight());
 
         setText(rawtext);
@@ -110,7 +107,7 @@ public class Button extends FrameComponent {
     @Override
     public void mouseClicked(int mouseX, int mouseY) {
         if (reactionClicked != null) {
-            reactionClicked.react();
+            reactionClicked.react(new VectorInt(mouseX, mouseY));
         }
     }
 
@@ -118,7 +115,7 @@ public class Button extends FrameComponent {
     public void mouseEntered() {
         super.mouseEntered();
         if (reactionIn != null) {
-            reactionIn.react();
+            reactionIn.react(null);
         }
     }
 
@@ -126,7 +123,7 @@ public class Button extends FrameComponent {
     public void mouseExited() {
         super.mouseExited();
         if (reactionOut != null) {
-            reactionOut.react();
+            reactionOut.react(null);
         }
     }
 
@@ -134,7 +131,7 @@ public class Button extends FrameComponent {
     public void keyPressed(int key) {
         if (key == clickKey) {
             if (reactionClicked != null) {
-                reactionClicked.react();
+                reactionClicked.react(null);
             }
         }
     }
@@ -159,15 +156,15 @@ public class Button extends FrameComponent {
         text = comText;
     }
 
-    public void setReactionClicked(ReactionButtonClicked reactionClicked) {
+    public void setReactionClicked(Reaction<VectorInt> reactionClicked) {
         this.reactionClicked = reactionClicked;
     }
 
-    public void setReactionIn(ReactionButtonIn reactionIn) {
+    public void setReactionIn(Reaction<VectorInt> reactionIn) {
         this.reactionIn = reactionIn;
     }
 
-    public void setReactionOut(ReactionButtonOut reactionOut) {
+    public void setReactionOut(Reaction<VectorInt> reactionOut) {
         this.reactionOut = reactionOut;
     }
 

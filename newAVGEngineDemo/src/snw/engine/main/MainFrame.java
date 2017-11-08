@@ -70,13 +70,15 @@ public class MainFrame extends JFrame {
 
         public void paint(Graphics g) {
             if (panel != null) {
-                panel.render((Graphics2D) g, new Rectangle(getWidth(), getHeight()), new AnimationData(AffineTransform.getTranslateInstance(0, 0)));
+                panel.render((Graphics2D) g, new AnimationData(AffineTransform.getTranslateInstance(0, 0)));
             }
         }
     }
 
 
-    public MainFrame(String title, TopLevelComponent panel) {
+    public MainFrame(String title, TopLevelComponent panel, boolean decorated) {
+        setUndecorated(!decorated);
+
         this.setTitle(title);
 
         this.panel = panel;

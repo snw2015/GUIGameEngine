@@ -1,15 +1,15 @@
 package snw.engine.component;
 
-import java.awt.event.KeyEvent;
+import snw.engine.component.reaction.Reaction;
 
-import snw.engine.component.reaction.ReactionSetSwitch;
+import java.awt.event.KeyEvent;
 
 public class SetSwitch extends FrameComponent
 {
 	private Text text;
 	private boolean isLoop = true;
 	private String[] contents;
-	private ReactionSetSwitch reaction;
+	private Reaction<String> reaction;
 	private int font = 0;
 
 	public int[] clickKey = new int[] { KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT };
@@ -93,6 +93,8 @@ public class SetSwitch extends FrameComponent
 	private void switchText()
 	{
 		String result = contents[index];
+
+		print(result);
 
 		text.setString(result);
 		if (reaction != null)
