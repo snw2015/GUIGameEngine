@@ -12,7 +12,7 @@ import snw.engine.database.Database;
 import snw.engine.main.MainFrame;
 
 public class Launcher {
-    public final static int fps = 10;
+    public final static int fps = 20;
     public final static int gcInterval = 10;
     public static int counter = 0;
 

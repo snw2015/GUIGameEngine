@@ -99,7 +99,7 @@ public class SnakeProcessor {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (map[i][j]) {
-                    if (posAvailable++ > foodIndex) {
+                    if (posAvailable++ >= foodIndex) {
                         foodPos[k] = new Point(i, j);
                         return;
                     }
@@ -139,7 +139,6 @@ public class SnakeProcessor {
     private boolean eat(Point newHead) {
         for (Point pos : foodPos) {
             if (pos.equals(newHead)) {
-
                 return true;
             }
         }

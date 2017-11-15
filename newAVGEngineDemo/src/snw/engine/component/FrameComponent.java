@@ -152,8 +152,8 @@ public class FrameComponent extends Component {
             for (Component sub : subComponents) {
                 if (sub != null) {
                     if (sub.getClipOnBound(bound).intersects(bound)) {
-                        print(name + " render: " + sub.name);
-                        print(g.getClipBounds());
+                        //print(name + " render: " + sub.name);
+                        //print(g.getClipBounds());
                         sub.render(g, appliedData);
                     }
                 }

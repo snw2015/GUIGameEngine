@@ -85,12 +85,25 @@ public class LengthList<S> implements Cloneable {
         }
     }
 
-    public void insert(LengthList<S> list, int index) {
-        LengthList<S> laterList = subList(index);
-        removeAll(index);
+    public void insert(LengthList<S> list, int dis) {
+        //TODO dis
+        if (dis < 0) {
+            //TODO throw error
+            return;
+        }
 
-        append(list);
-        append(laterList);
+        if (length() == 0) {
+            append(list);
+        } else {
+            int index = firstOver(dis);
+
+            index = index < 0 ? length() : index;
+            LengthList<S> laterList = subList(index);
+            removeAll(index);
+
+            append(list);
+            append(laterList);
+        }
     }
 
     public void remove(int index) {
@@ -98,6 +111,7 @@ public class LengthList<S> implements Cloneable {
     }
 
     public void removeAll(int beginIndex, int endIndex) {
+        //TODO dis
         if (beginIndex < endIndex) {
             LengthList<S> laterList = subList(endIndex);
             removeAll(beginIndex);
@@ -107,6 +121,7 @@ public class LengthList<S> implements Cloneable {
     }
 
     public void removeAllBy(int endIndex) {
+        //TODO dis
         if (endIndex <= 0) return;
         if (endIndex > length()) {
             this.contents = new ArrayList<>();
@@ -124,6 +139,7 @@ public class LengthList<S> implements Cloneable {
     }
 
     public void removeAll(int beginIndex) {
+        //TODO dis
         beginIndex = trimToBound(beginIndex);
 
         indices = new ArrayList<>(indices.subList(0, beginIndex));
@@ -131,6 +147,7 @@ public class LengthList<S> implements Cloneable {
     }
 
     public LengthList<S> subList(int beginIndex, int endIndex) {
+        //TODO dis
         LengthList<S> sub = new LengthList<>();
         if (beginIndex < endIndex) {
             sub = this.subList(beginIndex);
@@ -140,6 +157,7 @@ public class LengthList<S> implements Cloneable {
     }
 
     public LengthList<S> subList(int beginIndex) {
+        //TODO dis
         LengthList<S> sub = new LengthList<>(this);
         sub.removeAllBy(beginIndex);
 
@@ -157,6 +175,22 @@ public class LengthList<S> implements Cloneable {
         return (0);
     }
 
+    public boolean increaseFinal(int diff) {
+        if (length() != 0 && diff >= 0) {
+            indices.set(length() - 1, indices.get(length() - 1) + diff);
+            return true;
+        }
+        return false;
+    }
+
+    public S getLastContent() {
+        if (length() == 0) {
+            return null;
+        } else {
+            return contents.get(length() - 1);
+        }
+    }
+
     public ArrayList<S> getContents() {
         return contents;
     }
@@ -169,6 +203,11 @@ public class LengthList<S> implements Cloneable {
         if (!outOfBound(index)) {
             return contents.get(index);
         }
+        return null;
+    }
+
+    public S contentsOf(int dis) {
+        //TODO
         return null;
     }
 

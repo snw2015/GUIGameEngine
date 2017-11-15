@@ -19,8 +19,8 @@ public class Database {
 
     //TODO user setting
     private static final Color DEFAULT_COLOR = Color.BLACK;//TODO user setting
-    private static final Font DEFAULT_FONT = Font.getFont("Serif");
-
+    private static final String DEFAULT_FONT = "Serif";
+    private static final int DEFAULT_SIZE = 10;
 
     public static class CursorData {
         private HashMap<String, Image[]> imageSetsByTypeNames = new HashMap<String, Image[]>();
@@ -106,6 +106,18 @@ public class Database {
         public int getGlobalStringLimit() {
             return globalStringLimit;
         }
+    }
+
+    public static Color getDefaultColor() {
+        return DEFAULT_COLOR;
+    }
+
+    public static String getDefaultFont() {
+        return DEFAULT_FONT;
+    }
+
+    public static int getDefaultSize() {
+        return DEFAULT_SIZE;
     }
 
     public static CursorData getCursorData() {
