@@ -94,7 +94,7 @@ public class SetSwitch extends FrameComponent
 	{
 		String result = contents[index];
 
-		print(result);
+		//print(result);
 
 		text.setString(result);
 		if (reaction != null)

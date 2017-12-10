@@ -1,6 +1,7 @@
 package snw.engine.component;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import snw.engine.animation.AnimationData;
@@ -27,7 +28,6 @@ public class Text extends Component {
 
     @Override
     public void paint(Graphics2D g, AnimationData finalData) {
-
         if (!hasProcessed) {
             VectorInt renderBound = content.processPos(g);
             setSize(renderBound);
@@ -68,11 +68,14 @@ public class Text extends Component {
         Point pDst = new Point(0, 0);
 
         finalData.getTransformation().transform(pSrc, pDst);
+
+        //g.setClip(0,0,1000,1000);
+
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, finalData.getAlphaFloat()));
 
         g.drawString(string, pDst.x, pDst.y);
-        print(g.getClipBounds());
-        print(string + "," + pDst.x + "," + pDst.y);
+        //println(g.getClipBounds());
+        //println(string + "," + pDst.x + "," + pDst.y);
     }
 
     public void addString(String raw) {
@@ -81,7 +84,7 @@ public class Text extends Component {
     }
 
     public void setString(String rawText) {
-        content = new ExtensibleTextOld(rawText, 0, 0, width);
+        content = new ExtensibleTextOld(rawText, 0, 0, lineWidth);
         setRenderLength(content.getLength());
         hasProcessed = false;
     }
@@ -133,5 +136,11 @@ public class Text extends Component {
             return (true);
         }
         return (false);
+    }
+
+    @Override
+    public String toString()
+    {
+        return name + "[" + content.getContent() + "]";
     }
 }

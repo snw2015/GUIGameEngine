@@ -12,7 +12,6 @@ import java.util.HashMap;
 
 public class ExtendText implements Cloneable {
     public final static HashMap<String, Color> colorNameMap = new HashMap<>();
-
     static {
         colorNameMap.put("WHITE", Color.white);
         colorNameMap.put("white", Color.white);
@@ -35,6 +34,8 @@ public class ExtendText implements Cloneable {
     private ArrayList<Integer> contentsWidth;
 
     private int next = 0;
+
+
     //TODO default width and height
     private static final Graphics g = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR).getGraphics();
 
@@ -99,6 +100,24 @@ public class ExtendText implements Cloneable {
 
         public void setWidth(int width) {
             this.width = width;
+        }
+
+        public void render(Graphics g, int x, int y) {
+            g.setFont(new Font(font, Font.PLAIN, size));
+            g.setColor(color);
+
+            g.drawString("" + contents, x, y);
+        }
+
+        @Override
+        public String toString() {
+            String s = "ExtendChar: " + contents + "\n";
+            s += "Color: " + color + "\n";
+            s += "Font: " + font + "\n";
+            s += "Size: " + size + "\n";
+            s += "Width: " + width + "\n";
+
+            return s;
         }
     }
 
@@ -270,31 +289,31 @@ public class ExtendText implements Cloneable {
         return sumText;
     }
 
-    public void insert(int index, String rawText) {
-        insert(index, new ExtendText(rawText));
-    }
+    public void insertString(int index, String text) {
+        int textLength = text.length();
+        contents = contents.substring(0, index) + text + contents.substring(index);
+        colorList.increseIndices(textLength, colorList.firstOver(index));
+        fontList.increseIndices(textLength, fontList.firstOver(index));
+        sizeList.increseIndices(textLength, sizeList.firstOver(index));
 
-    public void insert(int index, ExtendText text) {
-        contents = contents.substring(0, index) + text.contents + contents.substring(index);
-        colorList.insert(text.colorList, index);
-        fontList.insert(text.fontList, index);
-        sizeList.insert(text.sizeList, index);
-        contentsWidth.addAll(index, text.contentsWidth);
+        ExtendText textForWidth = new ExtendText(text);
+        contentsWidth.addAll(index, textForWidth.contentsWidth);
     }
 
     public void remove(int index) {
-        //TODO
+        removeAll(index, index + 1);
     }
 
-    public void removeAll(int startIndex, int endIndex) {
+    public void removeAll(int beginIndex, int endIndex) {
         //TODO
     }
 
     public void removeAll(int startIndex) {
-        //TODO
+        removeAll(startIndex, length());
     }
 
     public void removeAllBy(int endIndex) {
+        removeAll(0, endIndex);
     }
 
     public ExtendText subText(int beginIndex, int endIndex) {
@@ -311,15 +330,23 @@ public class ExtendText implements Cloneable {
      * Note: Slow. Use {@link #nextChar()} instead if possible.
      *
      * @param index
-     * @return
+     * @return the extendChar
      */
     public ExtendChar charAt(int index) {
-        //TODO
-        return null;
+        char c = contents.charAt(index);
+        Color color = colorList.contentsOf(index);
+        String font = fontList.contentsOf(index);
+        int size = sizeList.contentsOf(index);
+
+        ExtendChar exChar = new ExtendChar(c, color, size, font);
+
+        return exChar;
     }
 
     public ExtendChar firstChar() {
         //TODO
+
+
         return null;
     }
 
@@ -327,12 +354,6 @@ public class ExtendText implements Cloneable {
         //TODO
         return null;
     }
-
-    public ExtendText restChars() {
-        //TODO
-        return null;
-    }
-
 
     public int length() {
         return contents.length();

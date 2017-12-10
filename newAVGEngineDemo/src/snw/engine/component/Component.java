@@ -9,6 +9,8 @@ import snw.engine.database.ImageBufferData;
 import snw.math.VectorDbl;
 import snw.math.VectorInt;
 
+import snw.engine.debug.Log;
+
 public abstract class Component {
     protected final String name;
     protected int x;
@@ -46,6 +48,11 @@ public abstract class Component {
     protected String[] preLoadImageNames = null;
     private boolean[] preLoaded = null;
 
+
+    public Component(String name, int x, int y, int width, int height) {
+        this(name,x,y,width,height,true);
+    }
+
     public Component(String name, int x, int y, int width, int height, boolean focusable) {
         this.name = name;
         this.x = x;
@@ -56,18 +63,6 @@ public abstract class Component {
         this.height = height;
         this.focusable = focusable;
     }
-
-    public Component(String name, int x, int y, int width, int height) {
-        this.name = name;
-        this.x = x;
-        initialX = x;
-        this.y = y;
-        initialY = y;
-        this.width = width;
-        this.height = height;
-        focusable = true;
-    }
-
     public void preProcess() {
         preLoadImages();
     }
@@ -128,7 +123,6 @@ public abstract class Component {
             }
         }
     }
-
 
     protected Image getImage(String name) {
         return (ImageBufferData.getImage(name));
@@ -191,10 +185,6 @@ public abstract class Component {
 
     public VectorInt getPosVec() {
         return (new VectorInt(x, y));
-    }
-
-    public static void print(Object s) {
-        System.out.println(s);
     }
 
     public int getX() {
@@ -384,5 +374,15 @@ public abstract class Component {
 
     public String toString() {
         return name;
+    }
+
+    public void print(Object... objects)
+    {
+        Log.print(objects);
+    }
+
+    public void println(Object... objects)
+    {
+        Log.println(objects);
     }
 }

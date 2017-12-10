@@ -56,8 +56,7 @@ public class ExtensibleTextOld
 
 	}
 
-	public VectorInt processPos(Graphics g)
-	{
+	public VectorInt processPos(Graphics g)	{
 		// TODO Auto-generated method stub
 		Iterator<Integer> itrf = fontIndex.iterator();
 		Iterator<Font> itr = fonts.iterator();
@@ -123,11 +122,9 @@ public class ExtensibleTextOld
 		}
 
 		return (new VectorInt(renderWidth, renderHeight));
-
 	}
 
-	public String getContent()
-	{
+	public String getContent()	{
 		return content;
 	}
 

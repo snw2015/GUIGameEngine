@@ -6,14 +6,21 @@ public class LengthList<S> implements Cloneable {
     private ArrayList<S> contents;
     private ArrayList<Integer> indices;
 
+    private int next;
+    private int nextContents;
+
     public LengthList() {
         contents = new ArrayList<>();
         indices = new ArrayList<>();
+        next = 0;
+        nextContents = 0;
     }
 
     public LengthList(LengthList src) {
         this.contents = src.contents;
         this.indices = src.indices;
+        next = 0;
+        nextContents = 0;
     }
 
 
@@ -120,6 +127,10 @@ public class LengthList<S> implements Cloneable {
         }
     }
 
+    public void removeAllDis(int beginDis, int endDis) {
+        //TODO
+    }
+
     public void removeAllBy(int endIndex) {
         //TODO dis
         if (endIndex <= 0) return;
@@ -131,9 +142,7 @@ public class LengthList<S> implements Cloneable {
 
         int delta = -indices.get(endIndex - 1);
         indices = new ArrayList<>(indices.subList(endIndex, length()));
-        for (int i = 0; i < indices.size(); i++) {
-            indices.set(i, indices.get(i) + delta);
-        }
+        increseIndices(0, delta);
 
         contents = new ArrayList<>(contents.subList(endIndex, length()));
     }
@@ -172,7 +181,7 @@ public class LengthList<S> implements Cloneable {
         if (length() > 0) {
             return (indices.get(length() - 1));
         }
-        return (0);
+        return (-1);
     }
 
     public boolean increaseFinal(int diff) {
@@ -207,8 +216,9 @@ public class LengthList<S> implements Cloneable {
     }
 
     public S contentsOf(int dis) {
-        //TODO
-        return null;
+        if (dis >= endMark()) return null;
+
+        return contentsAt(firstOver(dis));
     }
 
     public int indexAt(int index) {
@@ -238,14 +248,54 @@ public class LengthList<S> implements Cloneable {
         return -1;
     }
 
+    public void increaseIndex(int value, int index) {
+        indices.set(index, indices.get(index) + value);
+    }
+
+    public void increaseIndices(int value, int indexBegin, int indexEnd) {
+        for (int i = indexBegin; i < indexEnd; i++) {
+            increaseIndex(value, i);
+        }
+    }
+
+    public void increseIndices(int value, int indexBegin) {
+        increaseIndices(value, indexBegin, length());
+    }
+
     private boolean outOfBound(int index) {
-        return (index >= 0 && index < length());
+        return (index < 0 && index >= length());
     }
 
     private int trimToBound(int index) {
         if (index < 0) return 0;
         if (index >= length()) return length() - 1;
         return index;
+    }
+
+    public S first() {
+        next = 0;
+        nextContents = 0;
+        return next();
+    }
+
+    public boolean hasNext() {
+        if (nextContents < length()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public S next() {
+        //TODO
+        if (!hasNext()) return null;
+        S nextS = contents.get(nextContents);
+        next++;
+        if (indices.get(nextContents) < next) {
+            nextContents++;
+        }
+
+        return nextS;
     }
 
     @Override

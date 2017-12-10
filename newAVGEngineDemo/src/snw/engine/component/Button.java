@@ -3,7 +3,7 @@ package snw.engine.component;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 
-import snw.engine.component.reaction.*;
+import snw.engine.component.reaction.Reaction;
 import snw.math.VectorInt;
 
 /**
@@ -19,81 +19,7 @@ public class Button extends FrameComponent {
 
     private int clickKey = KeyEvent.VK_ENTER;
 
-    public Button(String name, int x, int y, int width, int height) {
-        super(name, x, y, width, height);
-    }
-
-    public Button(String name, int x, int y, int width, int height, String rawtext) {
-        super(name, x, y, width, height);
-
-        setText(rawtext);
-
-        add(text);
-    }
-
-    public Button(String name, int x, int y, Image backgroundImg, String rawtext,
-                  int borderX, int borderY) {
-        super(name, x, y, backgroundImg.getWidth(null), backgroundImg.getHeight(null));
-        borderSize.x = borderX;
-        borderSize.y = borderY;
-
-        setBackground(backgroundImg);
-        setText(rawtext);
-
-        add(background);
-        add(text);
-    }
-
-    public Button(String name, int x, int y, int width, int height, Image backgroundImg) {
-        super(name, x, y, width, height);
-
-        setBackground(backgroundImg);
-
-        add(background);
-    }
-
-    public Button(String name, int x, int y, int width, int height, Image backgroundImg,
-                  String rawtext, int borderX, int borderY) {
-        super(name, x, y, width, height);
-        borderSize.x = borderX;
-        borderSize.y = borderY;
-
-        setBackground(backgroundImg);
-        setText(rawtext);
-
-        add(background);
-        add(text);
-    }
-
-    public Button(String name, int x, int y, int width, int height, Image backgroundImg,
-                  String rawtext) {
-        super(name, x, y, width, height);
-
-        setBackground(backgroundImg);
-        setText(rawtext);
-
-        add(background);
-        add(text);
-    }
-
-    public Button(String name, int x, int y, Image backgroundImg) {
-        super(name, x, y, backgroundImg.getWidth(null), backgroundImg.getHeight(null));
-
-        setBackground(backgroundImg);
-
-        add(background);
-    }
-
-    public Button(String name, int x, int y, Image backgroundImg, String rawtext) {
-        super(name, x, y, backgroundImg.getWidth(null), backgroundImg.getHeight(null));
-
-        setBackground(backgroundImg);
-        setText(rawtext);
-
-        add(background);
-        add(text);
-    }
-
+    //TODO you know how to improve it
     public Button(String name, int x, int y, Graphic background, String rawtext) {
         super(name, x, y, background.getWidth(), background.getHeight());
 
@@ -102,6 +28,49 @@ public class Button extends FrameComponent {
 
         add(background);
         add(text);
+    }
+
+    public Button(String name, int x, int y, Image backgroundImg) {
+        this(name,x,y,backgroundImg,"");
+    }
+
+    public Button(String name, int x, int y, int width, int height, String rawtext) {
+        this(name, x, y, width, height, null, rawtext);
+    }
+
+    public Button(String name, int x, int y, Image backgroundImg, String rawtext) {
+        this(name, x, y, backgroundImg, rawtext, 0, 0);
+    }
+    public Button(String name, int x, int y, Image backgroundImg, String rawtext,
+                  int borderX, int borderY) {
+        this(name, x, y, backgroundImg.getWidth(null), backgroundImg.getHeight(null), backgroundImg, rawtext, borderX, borderY);
+    }
+
+    public Button(String name, int x, int y, int width, int height) {
+        this(name, x, y, width, height,"");
+    }
+
+    public Button(String name, int x, int y, int width, int height, Image backgroundImg) {
+        this(name,x,y,width,height,backgroundImg,"");
+    }
+
+    public Button(String name, int x, int y, int width, int height, Image backgroundImg,
+                  String rawtext) {
+        this(name,x,y,width,height,backgroundImg,rawtext,0,0);
+    }
+
+    public Button(String name, int x, int y, int width, int height, Image backgroundImg,
+                  String rawtext, int borderX, int borderY) {
+        super(name, x, y, width, height);
+        borderSize.x = borderX;
+        borderSize.y = borderY;
+
+
+        if (backgroundImg != null) {
+            setBackground(backgroundImg);
+        }
+
+        setText(rawtext);
     }
 
     @Override
@@ -141,8 +110,11 @@ public class Button extends FrameComponent {
     }
 
     public void setBackground(Image image) {
+        remove(background);
+
         background = new Graphic(name + "_background", image, 0, 0, width,
                 height, false);
+        add(background,0);
     }
 
     public Text getText() {
@@ -150,10 +122,12 @@ public class Button extends FrameComponent {
     }
 
     public void setText(String rawtext) {
-        Text comText = new Text(name + "_text", rawtext, width / 2, height / 2,
+        remove(text);
+
+        text = new Text(name + "_text", rawtext, width / 2, height / 2,
                 width - borderSize.x * 2, height - borderSize.y * 2);
-        comText.setAlignment(ALIGNMENT_CENTER);
-        text = comText;
+        text.setAlignment(ALIGNMENT_CENTER);
+        add(text,1);
     }
 
     public void setReactionClicked(Reaction<VectorInt> reactionClicked) {
