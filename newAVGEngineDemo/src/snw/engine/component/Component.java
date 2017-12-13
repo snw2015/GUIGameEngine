@@ -50,7 +50,7 @@ public abstract class Component {
 
 
     public Component(String name, int x, int y, int width, int height) {
-        this(name,x,y,width,height,true);
+        this(name, x, y, width, height, true);
     }
 
     public Component(String name, int x, int y, int width, int height, boolean focusable) {
@@ -63,6 +63,7 @@ public abstract class Component {
         this.height = height;
         this.focusable = focusable;
     }
+
     public void preProcess() {
         preLoadImages();
     }
@@ -372,17 +373,34 @@ public abstract class Component {
         this.alpha = alpha;
     }
 
+
+    public void load(String msg) {
+        println("load " + name);
+    }
+
+    public void resume(String msg) {
+        println("resume " + name);
+    }
+
+    public void release(String msg) {
+        println("release " + name);
+    }
+
+    public void suspend(String msg) {
+        println("suspend " + name);
+    }
+
+    ;
+
     public String toString() {
         return name;
     }
 
-    public void print(Object... objects)
-    {
+    public void print(Object... objects) {
         Log.print(objects);
     }
 
-    public void println(Object... objects)
-    {
+    public void println(Object... objects) {
         Log.println(objects);
     }
 }

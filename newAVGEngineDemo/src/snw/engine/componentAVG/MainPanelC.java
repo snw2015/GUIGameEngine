@@ -9,7 +9,7 @@ public class MainPanelC extends TopLevelComponent {
     boolean isDragging = false;
 
     public MainPanelC() {
-        super("mainPanel", 0, 0, 1680, 1050, true);
+        super("mainPanel", 0, 0, 1680, 1050);
         // TODO Auto-generated constructor stub
     }
 

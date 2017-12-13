@@ -24,7 +24,7 @@ public class ComponentTests extends TopLevelComponent {
     public static int counter = 0;
 
     public ComponentTests() {
-        super("testMain", 0, 0, 1680, 1050, true);
+        super("testMain", 0, 0, 1680, 1050);
         Graphic back = new Graphic("back", Color.white, new Rectangle(1680, 1050), 0, 0, false);
         add(back);
 
@@ -82,16 +82,15 @@ public class ComponentTests extends TopLevelComponent {
          SetSwitch ss = new SetSwitch("ss", 200, 400, 200, 200, new String[]{"1", "2", "3"});
          add(ss);
 
-        Button b = new Button("b1",200,200,getImage("button_common"),"a");
-        add(b);
-        b.setReactionClicked(new Reaction<VectorInt>() {
-            @Override
-            public void react(VectorInt pos) {
-                b.setBackground(getImage("textbox_common"));
-            }
+         Button b = new Button("b1",200,200,getImage("button_common"),"a");
+         add(b);
+         b.setReactionClicked(new Reaction<VectorInt>() {
+        @Override public void react(VectorInt pos) {
+        b.setBackground(getImage("textbox_common"));
+        }
         });*/
 
-        SetSwitch ss = new SetSwitch("ss",200,200,100,30,new String[]{"a","b"});
+        SetSwitch ss = new SetSwitch("ss", 200, 200, 100, 30, new String[]{"a", "b"});
         add(ss);
     }
 

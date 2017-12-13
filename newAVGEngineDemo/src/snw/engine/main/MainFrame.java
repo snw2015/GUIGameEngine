@@ -22,7 +22,6 @@ public class MainFrame extends JFrame {
 
     private TopLevelComponent panel = null;
     private JPanel contentPanel = null;
-    private Image image = null;
 
     class ContentPanel extends JPanel {
         public ContentPanel() {
@@ -109,8 +108,6 @@ public class MainFrame extends JFrame {
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
-
-        image = createImage(contentPanel.getWidth(), contentPanel.getHeight());
     }
 
     public static void print(String s) {

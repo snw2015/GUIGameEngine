@@ -27,8 +27,11 @@ public class FrameComponent extends Component {
         super(name, x, y, width, height);
     }
 
-    protected void add(Component sub, int priority) {
+    public void add(Component sub, int priority) {
         synchronized (this) {
+            // Repeated adding
+            if (subComponents.contains(sub)) return;
+
             int index = subPriorities.size();
             for (int i = 0; i < subPriorities.size(); i++) {
                 if (subPriorities.get(i) > priority) {
@@ -42,7 +45,7 @@ public class FrameComponent extends Component {
         }
     }
 
-    protected void add(Component sub) {
+    public void add(Component sub) {
         add(sub, 0);
     }
 
@@ -65,7 +68,7 @@ public class FrameComponent extends Component {
         }
     }
 
-    protected boolean remove(Component sub) {
+    public boolean remove(Component sub) {
         synchronized (this) {
             int index = 0;
 
@@ -92,7 +95,7 @@ public class FrameComponent extends Component {
         }
     }
 
-    protected boolean removeAll() {
+    public boolean removeAll() {
         synchronized (this) {
             if (subComponents.isEmpty()) {
                 return false;

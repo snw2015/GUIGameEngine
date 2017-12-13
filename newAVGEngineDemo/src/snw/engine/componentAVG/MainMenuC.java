@@ -38,6 +38,11 @@ public class MainMenuC extends PanelC {
         addList();
     }
 
+    @Override
+    public void load(String msg) {
+        preProcess();
+    }
+
     private void addBackground() {
         background = new Graphic("background", getImage("background_main_menu"), 0, 0,
                 width, height, false);
