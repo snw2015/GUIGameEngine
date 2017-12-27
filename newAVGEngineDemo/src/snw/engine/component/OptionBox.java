@@ -53,6 +53,7 @@ public class OptionBox extends FrameComponent {
         this.reaction = reaction;
     }
 
+
     @Override
     public void keyPressed(int key) {
         if (reaction != null) {

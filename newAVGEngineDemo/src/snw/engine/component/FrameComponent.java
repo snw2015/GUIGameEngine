@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.ColorModel;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.sun.scenario.animation.shared.AnimationAccessor;
 import snw.engine.animation.AnimationData;
@@ -148,13 +149,25 @@ public class FrameComponent extends Component {
         return subComponents;
     }
 
+    public boolean hasSub(String name) {
+        for (Component sub : subComponents) {
+            if (sub.name.equals(name)) return true;
+        }
+        return false;
+    }
+
+    public boolean hasSub(Component sub) {
+        return (subComponents.contains(sub));
+    }
+
+
     @Override
     public void paint(Graphics2D g, AnimationData appliedData) {
         synchronized (this) {
-            Rectangle bound = g.getClipBounds();
+            Rectangle bound = new Rectangle(-getXDelta(), -getYDelta(), width, height);
             for (Component sub : subComponents) {
                 if (sub != null) {
-                    if (sub.getClipOnBound(bound).intersects(bound)) {
+                    if (sub.getBound().intersects(bound)) {
                         //print(name + " render: " + sub.name);
                         //print(g.getClipBounds());
                         sub.render(g, appliedData);
@@ -174,10 +187,6 @@ public class FrameComponent extends Component {
                 }
             }
         }
-    }
-
-    protected boolean hasSub(Component sub) {
-        return (subComponents.contains(sub));
     }
 
     private boolean isInBound(Component sub, int x, int y, int width, int height) {
@@ -218,7 +227,6 @@ public class FrameComponent extends Component {
 
     @Override
     public boolean mouseMoved(int mouseX, int mouseY) {
-        // print("move in " + name);
         this.mouseX = mouseX;
         this.mouseY = mouseY;
         return refocusMouse();
@@ -227,12 +235,14 @@ public class FrameComponent extends Component {
     public boolean refocusMouse() {
         Component sub = null;
 
+        //println(Arrays.toString(subComponents.toArray()), "focus: " + componentFocus);
         for (int i = subComponents.size() - 1; i >= 0; i--) {
             sub = subComponents.get(i);
-
-            if (sub != null && sub.isFocusable() && sub.getBound().contains(mouseX, mouseY)) {
+            //println(sub + ": " + sub.getClip().contains(mouseX, mouseY));
+            if (sub != null && sub.isFocusable() && sub.getClip().contains(mouseX, mouseY)) {
                 boolean changed = componentFocus != sub;
                 if (changed) {
+                    //println("changed! ", componentFocus + "->" + sub);
                     if (componentFocus != null) {
                         componentFocus.mouseExited();
                     }
@@ -240,12 +250,14 @@ public class FrameComponent extends Component {
                     componentFocus = sub;
                 }
 
-                sub.mouseMoved(mouseX - sub.getAlignedX(), mouseY - sub.getAlignedY());
+                VectorInt mousePos = sub.getInverseTransformedPos(mouseX - sub.getAlignedX(), mouseY - sub.getAlignedY());
+                sub.mouseMoved(mousePos.x, mousePos.y);
 
                 return (changed);
             }
         }
         if (componentFocus != null) {
+            //println("no!");
             componentFocus.mouseExited();
             componentFocus = null;
 

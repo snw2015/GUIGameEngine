@@ -1,7 +1,6 @@
 package snw.engine.game;
 
 import snw.engine.animation.AnimationData;
-import snw.engine.component.Button;
 import snw.engine.component.Component;
 import snw.engine.component.TopLevelComponent;
 import snw.engine.componentAVG.MainGameScreenC;
@@ -12,13 +11,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import static snw.engine.debug.Log.*;
 
 public class Game {
-    static final private Game game = new Game();
+    static final private Game GAME = new Game();
 
     //TODO database, you know
     private static final int DEFAULT_WIDTH = 1680;
@@ -32,19 +29,23 @@ public class Game {
     private Game() {
     }
 
-    static Game getInstance() {
-        return game;
+    public static Game getInstance() {
+        return GAME;
     }
 
-    public static TopLevelComponent getPanel() {
-        return game.panel;
+    public TopLevelComponent getPanel() {
+        return panel;
     }
 
-    public static void setSize(VectorInt size) {
+    public void refocusMouse() {
+        panel.refocusMouse();
+    }
+
+    public void setSize(VectorInt size) {
         getPanel().setSize(size);
     }
 
-    public static void setSize(int width, int height) {
+    public void setSize(int width, int height) {
         getPanel().setSize(width, height);
     }
 
@@ -137,41 +138,58 @@ public class Game {
     }
 
     public boolean hideState(String name) {
-        //TODO
         GameState state = getState(name);
         if (state == null) return false;
         panel.remove(state.getComponent());
         return true;
     }
 
-    public String[] getStateList() {
+    public String[] getStateListStr() {
         String[] list = new String[stateMap.size()];
 
         int i = 0;
         for (GameState state : stateMap.values()) {
-            list[i++] = state.toString();
+            list[i++] = state.toString() + (panel.hasSub(state.getComponent()) ? " <- Showing" : "");
         }
 
         return list;
     }
 
+    @Override
+    public String toString() {
+        String s = "Game:\n";
+        s += "\tTop panel size: " + getPanel().getWidth() + " x " + getPanel().getHeight() + "\n";
+        s += "\tState list: ";
+        if (getStateListStr().length == 0) {
+            s += "null\n";
+        } else {
+            for (String strState : getStateListStr()) {
+                s += "\n\t\t" + strState + ";";
+            }
+            s += "\n";
+        }
+        s += "\tLoading component: " + getLoading() + "\n";
+        return s;
+    }
+
     public static void main(String[] args) {
+        //Test
         JFrame frame = new JFrame() {
             @Override
             public void paint(Graphics g) {
-                println(game.panel.getSubs());
-                game.panel.render((Graphics2D) g, new AnimationData(AffineTransform.getTranslateInstance(0, 0)));
+                println(GAME.panel.getSubs());
+                GAME.panel.render((Graphics2D) g, new AnimationData(AffineTransform.getTranslateInstance(0, 0)));
             }
         };
         frame.setBounds(0, 0, 2000, 1200);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
-        game.addState(new GameState("1", MainMenuC.class));
-        game.addState(new GameState("2", MainGameScreenC.class));
+        GAME.addState(new GameState("1", MainMenuC.class));
+        GAME.addState(new GameState("2", MainGameScreenC.class));
 
-        game.loadState("1");
-        game.showState("1");
+        GAME.loadState("1");
+        GAME.showState("1");
 
         frame.repaint();
         try {
@@ -179,7 +197,11 @@ public class Game {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        game.hideState("1");
+        GAME.hideState("1");
+        GAME.releaseState("1");
+
+        GAME.loadState("2");
+        GAME.showState("2");
         frame.repaint();
     }
 }

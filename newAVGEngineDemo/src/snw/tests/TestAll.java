@@ -1,16 +1,17 @@
 package snw.tests;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TestAll {
 
     public static void main(String[] args) {
-        ArrayList<String> t= new ArrayList<>();
-        t.add("1");
-        t.add("3");
-        println(t);
-        t.remove(1);
-        println(t);
+        AffineTransform transform = AffineTransform.getTranslateInstance(-20, -20);
+        double[] point = new double[2];
+        transform.transform(new double[]{10, 10}, 0, point, 0, 1);
+        println(Arrays.toString(point));
     }
 
 

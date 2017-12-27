@@ -1,13 +1,9 @@
 package snw.engine.component;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import snw.engine.animation.Animation;
@@ -17,7 +13,7 @@ import snw.engine.animation.Animation;
  */
 public class ListPanel extends FrameComponent {
     private HashMap<Component, Component[]> successor = new HashMap<Component, Component[]>();
-    private Animation flash = new Animation(100, "file/flash.anm");
+    private Animation flash = new Animation(100, "flash");
     private boolean isFlashing = false;
     private Color color = Color.WHITE;
     private Graphic effect = null;
@@ -127,7 +123,7 @@ public class ListPanel extends FrameComponent {
             remove(effect);
         }
         effect = new Graphic(name + "_effect", color, shape, 0, 0, false);
-        this.add(effect);
+        this.add(effect, 1);
         resetEffect();
     }
 
@@ -137,7 +133,7 @@ public class ListPanel extends FrameComponent {
         }
         effect = new Graphic(name + "_effect", color, new Rectangle(0, 0, width, height),
                 0, 0, false);
-        add(effect);
+        add(effect, 1);
         resetEffect();
     }
 
@@ -147,7 +143,7 @@ public class ListPanel extends FrameComponent {
         }
         setFlashColor(color);
         effect = new Graphic(name + "_effect", color, shape, 0, 0, false);
-        add(effect);
+        add(effect, 1);
         resetEffect();
     }
 
@@ -158,7 +154,7 @@ public class ListPanel extends FrameComponent {
         setFlashColor(color);
         effect = new Graphic(name + "_effect", color, new Rectangle(0, 0, width, height),
                 0, 0, false);
-        add(effect);
+        add(effect, 1);
         resetEffect();
     }
 

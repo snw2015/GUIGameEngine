@@ -8,7 +8,11 @@ public class TopLevelComponent extends FrameComponent {
     private MovingGraphic cursor;
 
     public TopLevelComponent(String name, int x, int y, int width, int height) {
-        super(name, x, y, width, height, true);
+        this(name, x, y, width, height, true);
+    }
+
+    public TopLevelComponent(String name, int x, int y, int width, int height, boolean focusable) {
+        super(name, x, y, width, height, focusable);
     }
 
     @Override

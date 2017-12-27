@@ -28,7 +28,7 @@ public class ComponentTests extends TopLevelComponent {
         Graphic back = new Graphic("back", Color.white, new Rectangle(1680, 1050), 0, 0, false);
         add(back);
 
-        /**
+        /*
          Component[][] comps = new Component[6][2];
 
          for (int i = 0; i < comps.length; i++) {
@@ -90,8 +90,25 @@ public class ComponentTests extends TopLevelComponent {
         }
         });*/
 
-        SetSwitch ss = new SetSwitch("ss", 200, 200, 100, 30, new String[]{"a", "b"});
-        add(ss);
+        //SetSwitch ss = new SetSwitch("ss", 200, 200, 100, 30, new String[]{"a", "b"});
+        //add(ss);
+
+        Graphic g1 = new Graphic("g1", getImage("a_1"), 0, 0, true);
+        Graphic g2 = new Graphic("g2", getImage("a_2"), 400, 0, true);
+        Graphic g3 = new Graphic("g3", getImage("a_3"), 0, 400, true);
+        Graphic g4 = new Graphic("g4", getImage("a_4"), 400, 400, true);
+
+        ListPanel lp = ListPanelFactory.getGridInstance("ListPaneA", 50, 250, 800, 800, new Component[][]{{g1, g2}, {g3, g4}});
+        lp.setEffect(200, 200);
+        lp.setFlashColor(Color.BLACK);
+        lp.setFlash(true);
+        lp.setAnimation(new Animation(30, "animation1"));
+        add(lp);
+    }
+
+    @Override
+    public void refresh(){
+        refocusMouse();
     }
 
     @Override

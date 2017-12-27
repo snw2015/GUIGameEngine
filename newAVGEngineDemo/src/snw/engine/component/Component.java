@@ -2,9 +2,12 @@ package snw.engine.component;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
+import java.util.Arrays;
 
 import snw.engine.animation.Animation;
 import snw.engine.animation.AnimationData;
+import snw.engine.core.Engine;
 import snw.engine.database.ImageBufferData;
 import snw.math.VectorDbl;
 import snw.math.VectorInt;
@@ -70,31 +73,27 @@ public abstract class Component {
 
     public void render(Graphics2D g, AnimationData appliedData) {
         AnimationData finalData = getFinalAnimationData().preAdd(appliedData);
-        Rectangle bound = trimClip(g);
+        Rectangle bound = g.getClipBounds();
 
+        Rectangle selfBound = getBound(finalData.getTransformation());
+        //println(name + ": " + selfBound);
+
+        g.clip(selfBound);
         paint(g, finalData);
 
         g.setClip(bound);
     }
 
-    protected Rectangle trimClip(Graphics2D g) {
-        Rectangle bound = g.getClipBounds();
-        Rectangle clip = getClipOnBound(bound);
-        g.setClip(clip.intersection(bound));
-        return bound;
-    }
-
-    protected Rectangle getClipOnBound(Rectangle bound) {
-        Rectangle clip = getClip();
-        clip.translate((int) bound.getX(), (int) bound.getY());
-        return clip;
-    }
-
     public abstract void paint(Graphics2D g, AnimationData appliedData);
 
     public void update() {
+        refresh();
         updateAnimation();
     }
+
+    public void refresh() {
+    }
+
 
     public AnimationData getFinalAnimationData() {
         AnimationData finalData = new AnimationData(AffineTransform.getTranslateInstance(getAlignedX(), getAlignedY()));
@@ -116,7 +115,7 @@ public abstract class Component {
         if (preLoadImageNames != null) {
             preLoaded = new boolean[preLoadImageNames.length];
             for (int i = 0; i < preLoadImageNames.length; i++) {
-                if (ImageBufferData.storeImage(preLoadImageNames[i])) {
+                if (Engine.storeImage(preLoadImageNames[i])) {
                     preLoaded[i] = true;
                 } else {
                     preLoaded[i] = false;
@@ -126,14 +125,14 @@ public abstract class Component {
     }
 
     protected Image getImage(String name) {
-        return (ImageBufferData.getImage(name));
+        return (Engine.getImage(name));
     }
 
     private void releaseImages() {
         if (preLoadImageNames != null) {
             for (int i = 0; i < preLoadImageNames.length; i++) {
                 if (preLoaded[i]) {
-                    ImageBufferData.releaseImage(preLoadImageNames[i]);
+                    Engine.releaseImage(preLoadImageNames[i]);
                 }
             }
         }
@@ -154,6 +153,7 @@ public abstract class Component {
     }
 
     public void mouseClicked(int mouseX, int mouseY) {
+        //println("click on " + name);
     }
 
     public void mousePressed(int mouseX, int mouseY) {
@@ -163,11 +163,11 @@ public abstract class Component {
     }
 
     public void mouseEntered() {
-        //print("move into " + name);
+        //println("move into " + name);
     }
 
     public void mouseExited() {
-        //print("move out of " + name);
+        //println("move out of " + name);
     }
 
     public boolean mouseMoved(int mouseX, int mouseY) {
@@ -216,10 +216,6 @@ public abstract class Component {
         return (new VectorInt(x, y));
     }
 
-    public Rectangle getBound() {
-        return (new Rectangle(getAlignedX(), getAlignedY(), width, height));
-    }
-
     public void setPos(VectorInt pos) {
         setX(pos.x);
         setY(pos.y);
@@ -254,13 +250,52 @@ public abstract class Component {
         animation.setLoop(isLoop);
     }
 
-    public Rectangle getClip() {
-        return new Rectangle(getAlignedX(), getAlignedY(), width, height);
+    public Shape getClip() {
+        if (animationData == null) return new Rectangle(getAlignedX(), getAlignedY(), width, height);
+        double[] originPoints = new double[]{
+                getAlignedX(), getAlignedY(),
+                getAlignedX() + width, getAlignedY(),
+                getAlignedX() + width, getAlignedY() + height,
+                getAlignedX(), getAlignedY() + height};
+
+        AffineTransform transform = animationData.getTransformation();
+
+        double[] newPoints = new double[8];
+        transform.transform(originPoints, 0, newPoints, 0, 4);
+
+        //println(name + ": " + Arrays.toString(newPoints));
+
+        return new Polygon(new int[]{(int) newPoints[0], (int) newPoints[2], (int) newPoints[4], (int) newPoints[6]},
+                new int[]{(int) newPoints[1], (int) newPoints[3], (int) newPoints[5], (int) newPoints[7]}, 4);
+    }
+
+    public Shape getClip(AffineTransform transform) {
+        double[] originPoints = new double[]{
+                0, 0,
+                width, 0,
+                width, height,
+                0, height};
+
+        double[] newPoints = new double[8];
+        transform.transform(originPoints, 0, newPoints, 0, 4);
+
+        //println(name + ": " + Arrays.toString(newPoints));
+
+        return new Polygon(new int[]{(int) newPoints[0], (int) newPoints[2], (int) newPoints[4], (int) newPoints[6]},
+                new int[]{(int) newPoints[1], (int) newPoints[3], (int) newPoints[5], (int) newPoints[7]}, 4);
+    }
+
+    public Rectangle getBound(AffineTransform transform) {
+        return getClip(transform).getBounds();
+    }
+
+    public Rectangle getBound() {
+        return getClip().getBounds();
     }
 
     public Shape getClip(Shape boundClip) {
         if (boundClip instanceof Rectangle) {
-            Rectangle absoluteClip = new Rectangle(getClip());
+            Rectangle absoluteClip = new Rectangle(getBound());
             absoluteClip.translate((int) ((Rectangle) boundClip).getX(), (int) ((Rectangle) boundClip).getY());
 
             //print(name);
@@ -273,6 +308,24 @@ public abstract class Component {
             //TODO
         }
         return boundClip;
+    }
+
+    public VectorInt getTransformedPos(int x, int y) {
+        if (animationData == null) return new VectorInt(x, y);
+        double[] newPoint = new double[2];
+        animationData.getTransformation().transform(new double[]{x, y}, 0, newPoint, 0, 1);
+        return new VectorInt((int) newPoint[0], (int) newPoint[1]);
+    }
+
+    public VectorInt getInverseTransformedPos(int x, int y) {
+        if (animationData == null) return new VectorInt(x, y);
+        double[] newPoint = new double[2];
+        try {
+            animationData.getTransformation().inverseTransform(new double[]{x, y}, 0, newPoint, 0, 1);
+        } catch (NoninvertibleTransformException e) {
+            e.printStackTrace();
+        }
+        return new VectorInt((int) newPoint[0], (int) newPoint[1]);
     }
 
     public int getWidth() {

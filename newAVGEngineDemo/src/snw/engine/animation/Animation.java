@@ -16,128 +16,102 @@ import javax.swing.ImageIcon;
 import snw.engine.script.ScriptLine;
 import snw.file.FileDirectReader;
 
-public class Animation
-{
-	private int counter = 0;
-	private int frameCounter = 0;
-	private int speed = 0;
-	private boolean isEnded = false;
-	private boolean isLoop = true;
-	private ArrayList<AnimationData> datas = new ArrayList<AnimationData>();
+public class Animation {
+    private int counter = 0;
+    private int frameCounter = 0;
+    private int speed = 0;
+    private boolean isEnded = false;
+    private boolean isLoop = true;
+    private ArrayList<AnimationData> datas = new ArrayList<AnimationData>();
 
-	public Animation(int speed, BufferedReader animationFile)
-	{
-		// TODO
+    public Animation(int speed, BufferedReader animationFile) {
+        // TODO
 
-		this.speed = speed;
-		String line = null;
-		try
-		{
-			line = animationFile.readLine();
-		} catch (IOException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		while (line != null)
-		{
-			datas.add(new AnimationData(line));
-			try
-			{
-				line = animationFile.readLine();
-			} catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+        this.speed = speed;
+        String line = null;
+        try {
+            line = animationFile.readLine();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        while (line != null) {
+            datas.add(new AnimationData(line));
+            try {
+                line = animationFile.readLine();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
 
-	}
+    }
 
-	public Animation(int speed, String path)
-	{
-		this.speed = speed;
-		String line = null;
+    public Animation(int speed, String name) {
+        this.speed = speed;
+        String line = null;
 
-		BufferedReader animationFile = null;
-		File file = new File(path);
-		try
-		{
-			animationFile = new BufferedReader(
-					(new InputStreamReader(new FileInputStream(file))));
-		} catch (FileNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try
-		{
-			line = animationFile.readLine();
-		} catch (IOException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		while (line != null)
-		{
-			datas.add(new AnimationData(line));
-			try
-			{
-				line = animationFile.readLine();
-			} catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		try
-		{
-			animationFile.close();
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        BufferedReader animationFile = null;
+        File file = new File("file/" + name+".anm");
+        try {
+            animationFile = new BufferedReader(
+                    (new InputStreamReader(new FileInputStream(file))));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
+            line = animationFile.readLine();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        while (line != null) {
+            datas.add(new AnimationData(line));
+            try {
+                line = animationFile.readLine();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        try {
+            animationFile.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-	}
+    }
 
-	public AnimationData getFirstFrame()
-	{
-		return (datas.get(0));
-	}
+    public AnimationData getFirstFrame() {
+        return (datas.get(0));
+    }
 
-	public AnimationData getNextFrame()
-	{
-		if (speed > 0 && !isEnded)
-		{
-			int maxmumFrame = 100 / speed;
-			if (counter++ > maxmumFrame)
-			{
-				counter = 0;
-				if (++frameCounter >= datas.size())
-				{
-					if (isLoop)
-					{
-						frameCounter = 0;
-					} else
-					{
-						frameCounter--;
-						isEnded = true;
-					}
-				}
-			}
-		}
-		return (datas.get(frameCounter));
-	}
+    public AnimationData getNextFrame() {
+        if (speed > 0 && !isEnded) {
+            int maxmumFrame = 100 / speed;
+            if (counter++ > maxmumFrame) {
+                counter = 0;
+                if (++frameCounter >= datas.size()) {
+                    if (isLoop) {
+                        frameCounter = 0;
+                    } else {
+                        frameCounter--;
+                        isEnded = true;
+                    }
+                }
+            }
+        }
+        return (datas.get(frameCounter));
+    }
 
-	public void setLoop(boolean isLoop)
-	{
-		this.isLoop = isLoop;
-	}
+    public void setLoop(boolean isLoop) {
+        this.isLoop = isLoop;
+    }
 
-	@Override
-	public String toString()
-	{
-		return (datas.toString());
-	}
+    @Override
+    public String toString() {
+        return (datas.toString());
+    }
 }

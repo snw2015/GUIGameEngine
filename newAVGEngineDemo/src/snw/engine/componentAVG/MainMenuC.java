@@ -21,7 +21,7 @@ public class MainMenuC extends PanelC {
     public static final int COMMAND_CONTINUE = 2;
     public static final int COMMAND_EXIT = 0;
 
-    private final Animation flash = new Animation(100, "file/flash.anm");
+    private final Animation flash = new Animation(100, "flash");
 
     public MainMenuC() {
         super("mainMenu");
