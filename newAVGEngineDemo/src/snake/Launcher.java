@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.Timer;
 
+import snw.engine.animation.Animation;
 import snw.engine.database.Database;
 import snw.engine.main.MainFrame;
 
@@ -20,6 +21,11 @@ public class Launcher {
         Database.loadUserData();
 
         SnakeScreenDemo panel = new SnakeScreenDemo("panel", 0, 0, 500, 500, 20, 20);
+
+        //Just have fun
+        //How many you can achieve with this?
+        panel.setAnimation(new Animation(50, "animation1"));
+
         MainFrame frame = new MainFrame("Snake", panel, true);
 
         SnakeProcessor processor = new SnakeProcessor(20, 20, 3, panel);
