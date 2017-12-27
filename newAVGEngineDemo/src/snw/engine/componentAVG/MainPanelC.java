@@ -68,7 +68,6 @@ public class MainPanelC extends TopLevelComponent {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY) {
-        print("Clicked at: " + mouseX + " , " + mouseY);
         super.mouseClicked(mouseX, mouseY);
     }
 

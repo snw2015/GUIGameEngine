@@ -164,12 +164,13 @@ public class FrameComponent extends Component {
     @Override
     public void paint(Graphics2D g, AnimationData appliedData) {
         synchronized (this) {
-            Rectangle bound = new Rectangle(-getXDelta(), -getYDelta(), width, height);
+            Rectangle bound = new Rectangle(0, 0, width, height);
             for (Component sub : subComponents) {
                 if (sub != null) {
+                    //println("sub[" + sub + "]: " + sub.getBound());
                     if (sub.getBound().intersects(bound)) {
-                        //print(name + " render: " + sub.name);
-                        //print(g.getClipBounds());
+                        //println(name + " render: " + sub.name);
+                        //println(g.getClipBounds());
                         sub.render(g, appliedData);
                     }
                 }

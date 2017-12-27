@@ -108,7 +108,7 @@ public class ComponentTests extends TopLevelComponent {
 
     @Override
     public void refresh(){
-        refocusMouse();
+        //refocusMouse();
     }
 
     @Override
