@@ -4,12 +4,15 @@ import snw.engine.component.Component;
 import snw.engine.component.Graphic;
 import snw.engine.component.TopLevelComponent;
 import snw.engine.componentAVG.MainGameScreenC;
+import snw.engine.database.EngineData;
+import snw.engine.database.EngineProperties;
 import snw.engine.database.ImageBufferData;
 import snw.engine.game.Game;
 import snw.engine.game.GameState;
 import snw.math.VectorInt;
 
 import java.awt.*;
+import java.util.HashMap;
 
 public final class Engine {
     private static Game GAME;
@@ -185,13 +188,162 @@ public final class Engine {
         return getImageBufferData().attainImage(name);
     }
 
+    public static EngineProperties getEngineProperties() {
+        return EngineProperties.getInstance();
+    }
+
+    public static HashMap<String, String> getEnginePropertiesMap() {
+        return getEngineProperties().getProperties();
+    }
+
+    public static String[] getEnginePropertiesStr() {
+        return getEngineProperties().getPropertiesStr();
+    }
+
+    public static String getEngineProperty(String name) {
+        return getEngineProperties().get(name);
+    }
+
+    public static boolean setEngineProperty(String name, String value) {
+        return getEngineProperties().set(name, value);
+    }
+
+    public static boolean loadEngineProperty(String propertyStr) {
+        return getEngineProperties().load(propertyStr);
+    }
+
+    public static boolean loadEngineProperties(String... propertiesStr) {
+        return getEngineProperties().loadAll(propertiesStr);
+    }
+
+    public static boolean loadEngineProperties(String propertiesStr) {
+        return getEngineProperties().loadAll(propertiesStr);
+    }
+
+    public static boolean removeEngineProperty(String name) {
+        return getEngineProperties().remove(name);
+    }
+
+    //TODO
+    /*
+    load file
+    auto load (in Properties)
+    reload
+    save
+     */
+
+
+    public static EngineData getEngineData() {
+        return EngineData.getInstance();
+
+    }
+
+    public static HashMap<String, Object> getDataMap() {
+        return getEngineData().getDataMap();
+    }
+
+    public static String[] getDataMapList() {
+        return getEngineData().getDataMapList();
+    }
+
+    public static String getDataMapStr() {
+        return getEngineData().getDataMapStr();
+    }
+
+    public static Object getData(String name) {
+        return getEngineData().get(name);
+    }
+
+    public static Object[] getData(String[] names) {
+        return getEngineData().get(names);
+    }
+
+    public static boolean setData(String name, Object value) {
+        return getEngineData().set(name, value);
+    }
+
+    public static boolean setData(String name, long value) {
+        return getEngineData().set(name, value);
+    }
+
+    public static boolean setData(String name, int value) {
+        return getEngineData().set(name, value);
+    }
+
+    public static boolean setData(String name, short value) {
+        return getEngineData().set(name, value);
+    }
+
+    public static boolean setData(String name, char value) {
+        return getEngineData().set(name, value);
+    }
+
+    public static boolean setData(String name, byte value) {
+        return getEngineData().set(name, value);
+    }
+
+    public static boolean setData(String name, double value) {
+        return getEngineData().set(name, value);
+    }
+
+    public static boolean setData(String name, float value) {
+        return getEngineData().set(name, value);
+    }
+
+    public static boolean setData(String name, boolean value) {
+        return getEngineData().set(name, value);
+    }
+
+    public static boolean setData(String[] names, Object[] values) {
+        return getEngineData().set(names, values);
+    }
+
+    public static boolean loadData(String dataInfo) {
+        return getEngineData().load(dataInfo);
+    }
+
+    public static boolean loadDataList(String... dataInfo) {
+        return getEngineData().loadList(dataInfo);
+    }
+
+    public static boolean loadDataListStr(String dataInfoList) {
+        return getEngineData().loadDataListStr(dataInfoList);
+    }
+
+    public static boolean removeData(String name) {
+        return getEngineData().remove(name);
+    }
+
+    public static void removeAllData() {
+        getEngineData().removeAll();
+    }
+
+    //TODO
+    /*
+     load file
+     save file
+     */
+
+
     public static void main(String[] args) {
         //Test method
-        System.out.println(getGame());
+        /*System.out.println(getGame());
         addState(new GameState("1", MainGameScreenC.class, GameState.TYPE_LOAD));
         System.out.println(getGame());
         loadState("1");
         showState("1");
-        System.out.println(getGame());
+        System.out.println(getGame());*/
+
+//        System.out.println(getEngineProperties());
+//
+//        System.out.println(getEngineProperty("etc"));
+//
+//        System.out.println(loadEngineProperties("1:2", "2: 1231231"));
+//
+//        System.out.println(getEngineProperties());
+
+        System.out.println(getEngineData());
+        setData("hi", 12f);
+        System.out.println(getEngineData().getAllDataInfoStr());
     }
 }

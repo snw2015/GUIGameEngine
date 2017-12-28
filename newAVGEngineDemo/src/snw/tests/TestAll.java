@@ -1,17 +1,23 @@
 package snw.tests;
 
+import snw.engine.database.Reloadable;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TestAll {
+public class TestAll implements Reloadable {
+
+    private String name;
+
+    public TestAll() {
+        System.out.println("new test all");
+        name = "default";
+    }
 
     public static void main(String[] args) {
-        AffineTransform transform = AffineTransform.getTranslateInstance(-20, -20);
-        double[] point = new double[2];
-        transform.transform(new double[]{10, 10}, 0, point, 0, 1);
-        println(Arrays.toString(point));
+        System.out.println(TestAll.class);
     }
 
 
@@ -25,5 +31,28 @@ public class TestAll {
         for (Object o : s) {
             System.out.println(o);
         }
+    }
+
+    @Override
+    public String save() {
+        return name;
+    }
+
+    @Override
+    public void reload(String info) {
+        name = info;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Test: name: " + name;
     }
 }

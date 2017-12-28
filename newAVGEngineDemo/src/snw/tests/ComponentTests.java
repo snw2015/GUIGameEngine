@@ -121,7 +121,7 @@ public class ComponentTests extends TopLevelComponent {
 
         ComponentTests panel = new ComponentTests();
 
-        // line *1 and *2 set the frame to fullscreen
+        // line *1 and *2 setData the frame to fullscreen
         //GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();//*1
 
         MainFrame frame = new MainFrame("0.0.3", panel, true);
