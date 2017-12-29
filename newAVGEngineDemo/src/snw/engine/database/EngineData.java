@@ -25,6 +25,10 @@ public class EngineData {
         return data;
     }
 
+    public void clear() {
+        removeAll();
+    }
+
     public String[] getDataMapList() {
         ArrayList<String> dataList = new ArrayList<>();
         for (Map.Entry<String, Object> entry : data.entrySet()) {
@@ -107,8 +111,8 @@ public class EngineData {
     public boolean load(String dataInfo) {
         String[] infoArray = dataInfo.split(":", 2);
         if (infoArray.length < 2) return false;
-        String name = infoArray[0];
-        String valueStr = infoArray[1];
+        String name = infoArray[0].trim();
+        String valueStr = infoArray[1].trim();
         //TODO
 
         DataType type = DataType.getType(valueStr);
@@ -267,4 +271,5 @@ public class EngineData {
 
         System.out.println(ed);
     }
+
 }

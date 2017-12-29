@@ -3,8 +3,6 @@ package snw.engine.database;
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import snw.file.FileDirectReader;
 
@@ -14,7 +12,7 @@ import snw.file.FileDirectReader;
    Must be improved!
  */
 public class ImageBufferData {
-    private final static ImageBufferData DATA = new ImageBufferData();
+    private final static ImageBufferData INSTANCE = new ImageBufferData();
 
     private final HashMap<String, Image> bufferData;
     private final HashMap<String, Integer> referenceCounters;
@@ -25,7 +23,11 @@ public class ImageBufferData {
     }
 
     public static ImageBufferData getInstance() {
-        return DATA;
+        return INSTANCE;
+    }
+
+    public void clear(){
+        releaseAll();
     }
 
     /**
@@ -90,6 +92,12 @@ public class ImageBufferData {
             return (true);
         } else {
             return (false);
+        }
+    }
+
+    public void releaseAll(){
+        for(String name: bufferData.keySet()){
+            releaseImage(name);
         }
     }
 

@@ -41,6 +41,12 @@ public class Game {
         panel.refocusMouse();
     }
 
+    public void clear(){
+        setSize(DEFAULT_WIDTH,DEFAULT_HEIGHT);
+        removeAllStates();
+        setLoading(null);
+    }
+
     public void setSize(VectorInt size) {
         getPanel().setSize(size);
     }

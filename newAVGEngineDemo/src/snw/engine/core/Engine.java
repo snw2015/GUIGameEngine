@@ -9,14 +9,52 @@ import snw.engine.database.EngineProperties;
 import snw.engine.database.ImageBufferData;
 import snw.engine.game.Game;
 import snw.engine.game.GameState;
+import snw.file.FileIOHelper;
 import snw.math.VectorInt;
 
 import java.awt.*;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public final class Engine {
     private static Game GAME;
     private static ImageBufferData IMAGE_BUFFER_DATA;
+    private static EngineProperties ENGINE_PROPERTIES;
+    private static EngineData ENGINE_DATA;
+
+    /*
+      File I/O methods
+     */
+    public static File readFile(String filePath) {
+        return FileIOHelper.readFile(filePath);
+    }
+
+    public static BufferedReader getFileReader(String filePath) {
+        return FileIOHelper.getFileReader(filePath);
+    }
+
+    public static String[] readFileStrArr(String filePath) {
+        return FileIOHelper.readFileStrArr(filePath);
+    }
+
+    public static String readFileStr(String filePath) {
+        return FileIOHelper.readFileStr(filePath);
+    }
+
+    public static BufferedWriter getFileWriter(String filePath) {
+        return FileIOHelper.getFileWriter(filePath);
+    }
+
+    public static boolean writeFile(String filePath, Object... contents) {
+        return FileIOHelper.writeFile(filePath, contents);
+    }
+
+
+
+    /*
+     Game methods
+     */
 
     /**
      * Get the Game of this engine
@@ -37,6 +75,10 @@ public final class Engine {
 
     public static void refocusMouse() {
         getGame().refocusMouse();
+    }
+
+    public static void clearGame() {
+        getGame().clear();
     }
 
     public static void setSize(VectorInt size) {
@@ -117,6 +159,11 @@ public final class Engine {
         return getGame().getStateListStr();
     }
 
+
+    /*
+     ImageBufferData methods
+     */
+
     /**
      * Get the ImageBufferData of this engine
      */
@@ -188,54 +235,98 @@ public final class Engine {
         return getImageBufferData().attainImage(name);
     }
 
+    public static void clearImageBufferData() {
+        getImageBufferData().clear();
+    }
+
+    /*
+     EngineProperties methods
+     */
+
     public static EngineProperties getEngineProperties() {
-        return EngineProperties.getInstance();
+        if (ENGINE_PROPERTIES == null) {
+            ENGINE_PROPERTIES = EngineProperties.getInstance();
+        }
+        return ENGINE_PROPERTIES;
     }
 
-    public static HashMap<String, String> getEnginePropertiesMap() {
-        return getEngineProperties().getProperties();
+    public static void clearEngineProperties(){
+        getEngineProperties().clear();
     }
 
-    public static String[] getEnginePropertiesStr() {
-        return getEngineProperties().getPropertiesStr();
+    public static String[] getProperties() {
+        return getEngineProperties().getAllProperties();
     }
 
-    public static String getEngineProperty(String name) {
+    public static String getPropertiesStr() {
+        return getEngineProperties().getAllPropertiesStr();
+    }
+
+    public static String[] getDefaultProperties() {
+        return getEngineProperties().getDefaultProperties();
+    }
+
+    public static String getDefaultPropertiesStr() {
+        return getEngineProperties().getDefaultPropertiesStr();
+    }
+
+    public static String getProperty(String name) {
         return getEngineProperties().get(name);
     }
 
-    public static boolean setEngineProperty(String name, String value) {
+    public static String getDefaultProperty(String name) {
+        return getEngineProperties().getDefault(name);
+    }
+
+    public static boolean setProperty(String name, String value) {
         return getEngineProperties().set(name, value);
     }
 
-    public static boolean loadEngineProperty(String propertyStr) {
+    public static boolean loadProperty(String propertyStr) {
         return getEngineProperties().load(propertyStr);
     }
 
-    public static boolean loadEngineProperties(String... propertiesStr) {
+    public static boolean loadProperties(String... propertiesStr) {
         return getEngineProperties().loadAll(propertiesStr);
     }
 
-    public static boolean loadEngineProperties(String propertiesStr) {
+    public static boolean loadProperties(String propertiesStr) {
         return getEngineProperties().loadAll(propertiesStr);
     }
 
-    public static boolean removeEngineProperty(String name) {
+    public static boolean removeProperty(String name) {
         return getEngineProperties().remove(name);
     }
 
-    //TODO
+    public static void readPropertiesFile(String fileName) {
+        getEngineProperties().readPropertiesFile(fileName);
+    }
+
+    public static void reloadProperties() {
+        getEngineProperties().readPropertiesFile();
+    }
+
+    public static void savePropertiesFile(String fileName) {
+        getEngineProperties().savePropertiesFile(fileName);
+    }
+
+    public static void saveProperties() {
+        getEngineProperties().savePropertiesFile();
+    }
+
+
     /*
-    load file
-    auto load (in Properties)
-    reload
-    save
+     EngineData methods
      */
-
-
     public static EngineData getEngineData() {
-        return EngineData.getInstance();
+        if (ENGINE_DATA == null) {
+            ENGINE_DATA = EngineData.getInstance();
+        }
+        return ENGINE_DATA;
+    }
 
+    public static void clearEngineData(){
+        getEngineData().clear();
     }
 
     public static HashMap<String, Object> getDataMap() {
@@ -318,12 +409,26 @@ public final class Engine {
         getEngineData().removeAll();
     }
 
-    //TODO
-    /*
-     load file
-     save file
-     */
+    public static boolean saveDataFile(String fileName) {
+        return writeFile(getProperty("data_path") + fileName + getProperty("data_form"), getEngineData().getAllDataInfoStr());
+    }
 
+    public static boolean saveDataFile(String fileName, String... dataNames) {
+        return writeFile(getProperty("data_path") + fileName + getProperty("data_form"), getEngineData().getDataInfoStr(dataNames));
+    }
+
+    public static boolean loadDataFile(String fileName) {
+        String dataList = readFileStr(getProperty("data_path") + fileName + getProperty("data_form"));
+        if (dataList == null) return false;
+        else return loadDataListStr(dataList);
+    }
+
+    public static void clear(){
+        clearGame();
+        clearImageBufferData();
+        clearEngineData();
+        clearEngineProperties();
+    }
 
     public static void main(String[] args) {
         //Test method
@@ -341,9 +446,17 @@ public final class Engine {
 //        System.out.println(loadEngineProperties("1:2", "2: 1231231"));
 //
 //        System.out.println(getEngineProperties());
+        setData("hi", 12f);
+        System.out.println(getEngineData());
+
+        saveDataFile("testData");
+
+        clear();
 
         System.out.println(getEngineData());
-        setData("hi", 12f);
-        System.out.println(getEngineData().getAllDataInfoStr());
+
+        loadDataFile("testData");
+
+        System.out.println(getEngineData());
     }
 }
