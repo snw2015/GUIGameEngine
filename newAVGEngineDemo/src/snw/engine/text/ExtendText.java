@@ -1,7 +1,7 @@
 package snw.engine.text;
 
 import snw.engine.database.Database;
-import snw.engine.text.structure.LengthList;
+import snw.structure.LengthList;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -1,19 +1,18 @@
 package snw.engine.core;
 
+import snw.engine.audio.AudioManager;
 import snw.engine.component.Component;
 import snw.engine.component.Graphic;
 import snw.engine.component.TopLevelComponent;
 import snw.engine.componentAVG.MainGameScreenC;
-import snw.engine.database.EngineData;
-import snw.engine.database.EngineProperties;
-import snw.engine.database.ImageBufferData;
-import snw.engine.database.Reloadable;
+import snw.engine.database.*;
 import snw.engine.game.Game;
 import snw.engine.game.GameState;
 import snw.file.FileIOHelper;
 import snw.math.VectorInt;
 import snw.tests.TestAll;
 
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -22,6 +21,8 @@ import java.util.HashMap;
 public final class Engine {
     private static Game GAME;
     private static ImageBufferData IMAGE_BUFFER_DATA;
+    private static AudioBufferData AUDIO_BUFFER_DATA;
+    private static AudioManager AUDIO_MANAGER;
     private static EngineProperties ENGINE_PROPERTIES;
     private static EngineData ENGINE_DATA;
 
@@ -179,10 +180,10 @@ public final class Engine {
     /**
      * decorative method
      *
-     * @see ImageBufferData#storeImage(String name)
+     * @see ImageBufferData#store(String name)
      */
     public static boolean storeImage(String name) {
-        return getImageBufferData().storeImage(name);
+        return getImageBufferData().store(name);
     }
 
     public static boolean storeImage(String... names) {
@@ -195,20 +196,18 @@ public final class Engine {
 
     /**
      * decorative method
-     *
-     * @see ImageBufferData#storeImage(String name, Image image)
      */
     public static boolean storeImage(String name, Image image) {
-        return getImageBufferData().storeImage(name, image);
+        return getImageBufferData().store(name, image);
     }
 
     /**
      * decorative method
      *
-     * @see ImageBufferData#releaseImage(String name)
+     * @see ImageBufferData#release(String name)
      */
     public static boolean releaseImage(String name) {
-        return getImageBufferData().releaseImage(name);
+        return getImageBufferData().release(name);
     }
 
     public static boolean releaseImage(String... names) {
@@ -222,24 +221,184 @@ public final class Engine {
     /**
      * decorative method
      *
-     * @see ImageBufferData#getImage(String name)
+     * @see ImageBufferData#get(String name)
      */
     public static Image getImage(String name) {
-        return getImageBufferData().getImage(name);
+        return getImageBufferData().get(name);
+    }
+
+    public static Image[] getImages(String... names) {
+        Image[] images = new Image[names.length];
+        for (int i = 0; i < names.length; i++) {
+            images[i] = getImage(names[i]);
+        }
+        return images;
     }
 
     /**
      * decorative method
      *
-     * @see ImageBufferData#attainImage(String name)
+     * @see ImageBufferData#attain(String name)
      */
     public static Image attainImage(String name) {
-        return getImageBufferData().attainImage(name);
+        return getImageBufferData().attain(name);
     }
 
     public static void clearImageBufferData() {
         getImageBufferData().clear();
     }
+
+
+    /*
+     AudioBufferData methods
+     */
+    public static AudioBufferData getAudioBufferData() {
+        if (AUDIO_BUFFER_DATA == null) {
+            AUDIO_BUFFER_DATA = AudioBufferData.getInstance();
+        }
+        return AUDIO_BUFFER_DATA;
+    }
+
+    public static boolean storeAudio(String name) {
+        return getAudioBufferData().store(name);
+    }
+
+    public static boolean storeAudio(String... names) {
+        boolean b = true;
+        for (String name : names) {
+            b = b && storeAudio(name);
+        }
+        return b;
+    }
+
+    public static boolean storeAudio(String name, Clip clip) {
+        return getAudioBufferData().store(name, clip);
+    }
+
+    public static boolean releaseAudio(String name) {
+        return getAudioBufferData().release(name);
+    }
+
+    public static boolean releaseAudio(String... names) {
+        boolean b = true;
+        for (String name : names) {
+            b = b && releaseAudio(name);
+        }
+        return b;
+    }
+
+    public static Clip getClip(String name) {
+        return getAudioBufferData().get(name);
+    }
+
+    public static Clip[] getClips(String... names) {
+        Clip[] clips = new Clip[names.length];
+        for (int i = 0; i < names.length; i++) {
+            clips[i] = getClip(names[i]);
+        }
+        return clips;
+    }
+
+    public static Clip attainClip(String name) {
+        return getAudioBufferData().attain(name);
+    }
+
+    public static void clearAudioBufferData() {
+        getAudioBufferData().clear();
+    }
+
+
+    /*
+     AudioManager methods
+     */
+
+    public static AudioManager getAudioManager() {
+        if (AUDIO_MANAGER == null) {
+            AUDIO_MANAGER = AudioManager.getInstance();
+        }
+        return AUDIO_MANAGER;
+    }
+
+    public static float getBGMVol() {
+        return getAudioManager().getBGMVol();
+    }
+
+    public static void setBGMVol(float BGMVol) {
+        getAudioManager().setBGMVol(BGMVol);
+    }
+
+    public static float getSEVol() {
+        return getAudioManager().getSEVol();
+    }
+
+    public static void setSEVol(float SEVol) {
+        getAudioManager().setSEVol(SEVol);
+    }
+
+    public static float getMasterVol() {
+        return getAudioManager().getMasterVol();
+    }
+
+    public static void setMasterVol(float masterVol) {
+        getAudioManager().setMasterVol(masterVol);
+    }
+
+    public static String getCurrentBGM() {
+        return getAudioManager().getCurrentBGM();
+    }
+
+    public static void playBGM(String name) {
+        getAudioManager().playBGM(name);
+    }
+
+    public static void playBGM(String name, int loopTime) {
+        getAudioManager().playBGM(name, loopTime);
+    }
+
+    public static void stopBGM() {
+        getAudioManager().stopBGM();
+    }
+
+    public static void stopBGM(String name) {
+        getAudioManager().stopBGM(name);
+    }
+
+    public static void fadeInBGM(String name) {
+        getAudioManager().fadeInBGM(name);
+    }
+
+    public static void fadeInBGM(String name, float speed) {
+        getAudioManager().fadeInBGM(name, speed);
+    }
+
+    public static void fadeOutBGM() {
+        getAudioManager().fadeOutBGM();
+    }
+
+    public static void fadeOutBGM(String name) {
+        getAudioManager().fadeOutBGM(name);
+    }
+
+    public static void fadeOutBGM(float speed) {
+        getAudioManager().fadeOutBGM(speed);
+    }
+
+    public static void fadeOutBGM(String name, float speed) {
+        getAudioManager().fadeOutBGM(name, speed);
+    }
+
+    public static void playSE(String name) {
+        getAudioManager().playSE(name);
+    }
+
+    public static void playSE(String name, int loopTime) {
+        getAudioManager().playSE(name, loopTime);
+    }
+
+    public static void stopSE(String name) {
+        getAudioManager().stopSE(name);
+    }
+
 
     /*
      EngineProperties methods
@@ -467,7 +626,10 @@ public final class Engine {
     }
 
     public static void main(String[] args) {
-        TestAll test = (TestAll) loadUserData("test");
-        System.out.println(test);
+        storeAudio("lock");
+        storeAudio("lock2");
+
+        fadeInBGM("lock",0.3f);
+        while (true);
     }
 }

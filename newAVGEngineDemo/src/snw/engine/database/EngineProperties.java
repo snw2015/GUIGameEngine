@@ -20,11 +20,12 @@ public class EngineProperties {
     }
 
 
+
     public static EngineProperties getInstance() {
         return INSTANCE;
     }
 
-    public void clear() {
+    public void clear(){
         properties.clear();
         loadAllDefault(new String[]{
                 "!properties_path: properties.txt",

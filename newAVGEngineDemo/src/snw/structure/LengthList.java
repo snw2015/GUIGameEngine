@@ -1,4 +1,4 @@
-package snw.engine.text.structure;
+package snw.structure;
 
 import java.util.ArrayList;
 
