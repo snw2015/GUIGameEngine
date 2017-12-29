@@ -1,17 +1,12 @@
-package snw.text;
+package snw.engine.text;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
-import javax.swing.ImageIcon;
-
-import snw.engine.main.MainFrame;
 import snw.math.VectorInt;
 
 public class ExtensibleTextOld

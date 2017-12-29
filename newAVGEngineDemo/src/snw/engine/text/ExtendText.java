@@ -1,10 +1,8 @@
-package snw.text;
+package snw.engine.text;
 
 import snw.engine.database.Database;
-import snw.text.structure.LengthList;
+import snw.engine.text.structure.LengthList;
 
-import javax.jnlp.IntegrationService;
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

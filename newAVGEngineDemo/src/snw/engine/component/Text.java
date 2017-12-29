@@ -1,12 +1,11 @@
 package snw.engine.component;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Iterator;
 
 import snw.engine.animation.AnimationData;
 import snw.math.VectorInt;
-import snw.text.ExtensibleTextOld;
+import snw.engine.text.ExtensibleTextOld;
 
 public class Text extends Component {
 
