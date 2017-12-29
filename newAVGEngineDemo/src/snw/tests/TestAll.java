@@ -16,6 +16,11 @@ public class TestAll implements Reloadable {
         name = "default";
     }
 
+    public TestAll(String name) {
+        System.out.println("new test all with name");
+        this.name = name;
+    }
+
     public static void main(String[] args) {
         System.out.println(TestAll.class);
     }

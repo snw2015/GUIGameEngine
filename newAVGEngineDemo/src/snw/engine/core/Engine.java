@@ -7,10 +7,12 @@ import snw.engine.componentAVG.MainGameScreenC;
 import snw.engine.database.EngineData;
 import snw.engine.database.EngineProperties;
 import snw.engine.database.ImageBufferData;
+import snw.engine.database.Reloadable;
 import snw.engine.game.Game;
 import snw.engine.game.GameState;
 import snw.file.FileIOHelper;
 import snw.math.VectorInt;
+import snw.tests.TestAll;
 
 import java.awt.*;
 import java.io.*;
@@ -250,7 +252,7 @@ public final class Engine {
         return ENGINE_PROPERTIES;
     }
 
-    public static void clearEngineProperties(){
+    public static void clearEngineProperties() {
         getEngineProperties().clear();
     }
 
@@ -325,7 +327,7 @@ public final class Engine {
         return ENGINE_DATA;
     }
 
-    public static void clearEngineData(){
+    public static void clearEngineData() {
         getEngineData().clear();
     }
 
@@ -423,7 +425,41 @@ public final class Engine {
         else return loadDataListStr(dataList);
     }
 
-    public static void clear(){
+    public static boolean saveUserData(String fileName, Reloadable data) {
+        return writeFile(getProperty("user_data_path") + fileName + getProperty("user_data_form"), data.getClass().getName() + ": " + data.save());
+    }
+
+    public static Reloadable loadUserDataStr(String dataContent) {
+        String[] list = dataContent.split(":", 2);
+        String className = list[0].trim();
+        String reloadData = list[1].trim();
+        Class c = null;
+        try {
+            c = Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            //TODO
+            e.printStackTrace();
+        }
+
+        Reloadable obj = null;
+        try {
+            obj = (Reloadable) c.newInstance();
+        } catch (InstantiationException e) {
+            //TODO
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        obj.reload(reloadData);
+        return obj;
+    }
+
+    public static Reloadable loadUserData(String fileName) {
+        return loadUserDataStr(readFileStr(getProperty("user_data_path") + fileName + getProperty("user_data_form")));
+    }
+
+    public static void clearEngine() {
         clearGame();
         clearImageBufferData();
         clearEngineData();
@@ -431,32 +467,7 @@ public final class Engine {
     }
 
     public static void main(String[] args) {
-        //Test method
-        /*System.out.println(getGame());
-        addState(new GameState("1", MainGameScreenC.class, GameState.TYPE_LOAD));
-        System.out.println(getGame());
-        loadState("1");
-        showState("1");
-        System.out.println(getGame());*/
-
-//        System.out.println(getEngineProperties());
-//
-//        System.out.println(getEngineProperty("etc"));
-//
-//        System.out.println(loadEngineProperties("1:2", "2: 1231231"));
-//
-//        System.out.println(getEngineProperties());
-        setData("hi", 12f);
-        System.out.println(getEngineData());
-
-        saveDataFile("testData");
-
-        clear();
-
-        System.out.println(getEngineData());
-
-        loadDataFile("testData");
-
-        System.out.println(getEngineData());
+        TestAll test = (TestAll) loadUserData("test");
+        System.out.println(test);
     }
 }

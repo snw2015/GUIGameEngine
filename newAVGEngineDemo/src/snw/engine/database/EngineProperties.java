@@ -20,20 +20,22 @@ public class EngineProperties {
     }
 
 
-
     public static EngineProperties getInstance() {
         return INSTANCE;
     }
 
-    public void clear(){
+    public void clear() {
         properties.clear();
         loadAllDefault(new String[]{
                 "!properties_path: properties.txt",
                 "!images_path    : file/image/",
                 "!sounds_path    : file/audio/",
                 "!data_path      : file/data/",
-                "!data_form      : .txt",});
+                "!data_form      : .txt",
+                "!user_data_path : file/data/",
+                "!user_data_form : .sav"});
     }
+
     public String[] getAllProperties() {
         ArrayList<String> listProperties = new ArrayList<>();
 

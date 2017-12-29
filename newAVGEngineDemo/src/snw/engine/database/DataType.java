@@ -1,6 +1,7 @@
 package snw.engine.database;
 
 import com.sun.org.apache.regexp.internal.RE;
+import snw.engine.core.Engine;
 import snw.tests.TestAll;
 
 public enum DataType {
@@ -157,28 +158,7 @@ public enum DataType {
     }
 
     public static Reloadable parseObject(String value) {
-        String[] list = value.substring(1, value.length() - 1).split(":", 2);
-        String className = list[0].trim();
-        String reloadData = list[1].trim();
-        Class c = null;
-        try {
-            c = Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            //TODO
-            e.printStackTrace();
-        }
-
-        Reloadable obj = null;
-        try {
-            obj = (Reloadable) c.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        obj.reload(reloadData);
-        return obj;
+        return Engine.loadUserDataStr(value.substring(1, value.length() - 1));
     }
 
     public static String saveObject(Reloadable value) {
