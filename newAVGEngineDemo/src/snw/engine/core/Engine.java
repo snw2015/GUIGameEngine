@@ -2,20 +2,16 @@ package snw.engine.core;
 
 import snw.engine.audio.AudioManager;
 import snw.engine.component.Component;
-import snw.engine.component.Graphic;
 import snw.engine.component.TopLevelComponent;
-import snw.engine.componentAVG.MainGameScreenC;
 import snw.engine.database.*;
 import snw.engine.game.Game;
 import snw.engine.game.GameState;
 import snw.file.FileIOHelper;
 import snw.math.VectorInt;
-import snw.tests.TestAll;
 
 import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public final class Engine {
@@ -618,6 +614,45 @@ public final class Engine {
         return loadUserDataStr(readFileStr(getProperty("user_data_path") + fileName + getProperty("user_data_form")));
     }
 
+
+    public static void sleep(long timeSecond) {
+        sleepMs(timeSecond * 1000);
+    }
+
+    public static void sleepMs(long timeMilliSecond) {
+        try {
+            Thread.sleep(timeMilliSecond);
+        } catch (InterruptedException e) {
+            //TODO
+            e.printStackTrace();
+        }
+    }
+
+    public static long tickTimer = 0;
+
+    public static long tick() {
+        return tickMs() / 1000;
+    }
+
+    public static long tickMs() {
+        if (tickTimer != 0) return -1;
+
+        tickTimer = System.currentTimeMillis();
+        return tickTimer;
+    }
+
+    public static long tock() {
+        return tockMs() / 1000;
+    }
+
+    public static long tockMs() {
+        if (tickTimer <= 0) return -1;
+
+        long time = System.currentTimeMillis() - tickTimer;
+        tickTimer = 0;
+        return time;
+    }
+
     public static void clearEngine() {
         clearGame();
         clearImageBufferData();
@@ -626,10 +661,8 @@ public final class Engine {
     }
 
     public static void main(String[] args) {
-        storeAudio("lock");
-        storeAudio("lock2");
-
-        fadeInBGM("lock",0.3f);
-        while (true);
+        System.out.println(tick());
+        sleep(3);
+        System.out.println(tock());
     }
 }
