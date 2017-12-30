@@ -98,7 +98,7 @@ public abstract class Component {
     public AnimationData getFinalAnimationData() {
         AnimationData finalData = new AnimationData(AffineTransform.getTranslateInstance(getAlignedX(), getAlignedY()));
         finalData.setAlphaFloat(alpha);
-        if (animated && animationData != null) {
+        if (animationData != null) {
             finalData.transform(animationData);
         }
 
@@ -253,10 +253,13 @@ public abstract class Component {
     public Shape getClip() {
         if (animationData == null) return new Rectangle(getAlignedX(), getAlignedY(), width, height);
         double[] originPoints = new double[]{
-                getAlignedX(), getAlignedY(),
-                getAlignedX() + width, getAlignedY(),
-                getAlignedX() + width, getAlignedY() + height,
-                getAlignedX(), getAlignedY() + height};
+                0, 0,
+                width, 0,
+                width, height,
+                0, height};
+
+
+        //println(name + ": " + Arrays.toString(originPoints));
 
         AffineTransform transform = animationData.getTransformation();
 
@@ -265,8 +268,15 @@ public abstract class Component {
 
         //println(name + ": " + Arrays.toString(newPoints));
 
-        return new Polygon(new int[]{(int) newPoints[0], (int) newPoints[2], (int) newPoints[4], (int) newPoints[6]},
-                new int[]{(int) newPoints[1], (int) newPoints[3], (int) newPoints[5], (int) newPoints[7]}, 4);
+        return new Polygon(new int[]{
+                (int) newPoints[0] + getAlignedX(),
+                (int) newPoints[2] + getAlignedX(),
+                (int) newPoints[4] + getAlignedX(),
+                (int) newPoints[6] + getAlignedX()}, new int[]{
+                (int) newPoints[1] + getAlignedY(),
+                (int) newPoints[3] + getAlignedY(),
+                (int) newPoints[5] + getAlignedY(),
+                (int) newPoints[7] + getAlignedY()}, 4);
     }
 
     public Shape getClip(AffineTransform transform) {
@@ -416,6 +426,19 @@ public abstract class Component {
 
     public AnimationData getAnimationData() {
         return animationData;
+    }
+
+    public void setAnimationData(AnimationData animationData) {
+        this.animationData = animationData;
+    }
+
+    public AffineTransform getTransform() {
+        if (animationData == null) return null;
+        return animationData.getTransformation();
+    }
+
+    public void setTransform(AffineTransform affineTransform) {
+        animationData = new AnimationData(affineTransform);
     }
 
     public float getAlpha() {

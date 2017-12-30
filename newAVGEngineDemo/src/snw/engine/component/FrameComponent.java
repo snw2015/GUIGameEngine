@@ -173,11 +173,14 @@ public class FrameComponent extends Component {
 
             for (Component sub : subComponents) {
                 if (sub != null) {
-                    if (sub.getBound().intersects(bound)) {
+                    if (sub.getClip().intersects(bound)) {
                         //println(name + " render: " + sub.name);
                         //println(g.getClipBounds());
                         sub.render(g, appliedData);
                     }
+//                    else{
+//                        println(sub, sub.getClip().getBounds());
+//                    }
                 }
             }
         }
