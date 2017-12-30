@@ -4,12 +4,14 @@ import snw.engine.audio.AudioManager;
 import snw.engine.component.Component;
 import snw.engine.component.TopLevelComponent;
 import snw.engine.database.*;
+import snw.engine.frame.EngineFrame;
 import snw.engine.game.Game;
 import snw.engine.game.GameState;
 import snw.file.FileIOHelper;
 import snw.math.VectorInt;
 
 import javax.sound.sampled.Clip;
+import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ public final class Engine {
     private static AudioManager AUDIO_MANAGER;
     private static EngineProperties ENGINE_PROPERTIES;
     private static EngineData ENGINE_DATA;
+    private static EngineFrame ENGINE_FRAME;
 
     /*
       File I/O methods
@@ -81,11 +84,12 @@ public final class Engine {
     }
 
     public static void setSize(VectorInt size) {
-        getPanel().setSize(size);
+        setSize(size.x, size.y);
     }
 
     public static void setSize(int width, int height) {
         getPanel().setSize(width, height);
+        getFrame().resize();
     }
 
     public static void setLoading(Component loading) {
@@ -615,6 +619,39 @@ public final class Engine {
     }
 
 
+    /*
+     EngineFrame methods
+     */
+    public static EngineFrame getFrame() {
+        if (ENGINE_FRAME == null) {
+            ENGINE_FRAME = new EngineFrame();
+        }
+        return ENGINE_FRAME;
+    }
+
+    public static void setDecorated(boolean decorated) {
+        getFrame().setUndecorated(!decorated);
+    }
+
+    public static void setCursor() {
+        //TODO
+    }
+
+    public static void setVisible(boolean visible) {
+        getFrame().setVisible(visible);
+    }
+
+    public static void setEnable(boolean enable) {
+        getFrame().setEnabled(true);
+    }
+
+    public static void setTitle() {
+
+    }
+
+    /*
+     Timer kits
+     */
     public static void sleep(long timeSecond) {
         sleepMs(timeSecond * 1000);
     }
@@ -628,7 +665,8 @@ public final class Engine {
         }
     }
 
-    public static long tickTimer = 0;
+
+    private static long tickTimer = 0;
 
     public static long tick() {
         return tickMs() / 1000;
@@ -653,16 +691,62 @@ public final class Engine {
         return time;
     }
 
+
+    /*
+     Engine methods
+     */
     public static void clearEngine() {
         clearGame();
         clearImageBufferData();
+        clearAudioBufferData();
         clearEngineData();
         clearEngineProperties();
     }
 
+    public static int getFPS() {
+        return Integer.parseInt(getProperty("fps"));
+    }
+
+    public static int getWidth() {
+        return Integer.parseInt(getProperty("size").split("x|X")[0].trim());
+    }
+
+    public static int getHeight() {
+        return Integer.parseInt(getProperty("size").split("x|X")[1].trim());
+    }
+
+    public static void startPainting() {
+        Timer timerPaint = new Timer(1000 / getFPS(), (e) ->
+        {
+            getFrame().repaint();
+        });
+    }
+
+    public static void startUpdating() {
+        Timer timerPaint = new Timer(1000 / getFPS(), (e) ->
+        {
+            getPanel().update();
+        });
+    }
+
+    public static void initialize() {
+        clearEngine();
+        System.setProperty("sun.java2d.opengl", "true");
+    }
+
+    public static void start() {
+        startUpdating();
+        startPainting();
+        setEnable(true);
+        setVisible(true);
+    }
+
+    public static void exit() {
+        System.exit(0);
+    }
+
     public static void main(String[] args) {
-        System.out.println(tick());
-        sleep(3);
-        System.out.println(tock());
+        initialize();
+        start();
     }
 }

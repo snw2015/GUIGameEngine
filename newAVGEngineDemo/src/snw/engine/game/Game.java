@@ -5,6 +5,7 @@ import snw.engine.component.Component;
 import snw.engine.component.TopLevelComponent;
 import snw.engine.componentAVG.MainGameScreenC;
 import snw.engine.componentAVG.MainMenuC;
+import snw.engine.core.Engine;
 import snw.math.VectorInt;
 
 import javax.swing.*;
@@ -18,9 +19,7 @@ public class Game {
     static final private Game GAME = new Game();
 
     //TODO database, you know
-    private static final int DEFAULT_WIDTH = 1680;
-    private static final int DEFAULT_HEIGHT = 1050;
-    final private TopLevelComponent panel = new TopLevelComponent("topPanel", 0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    final private TopLevelComponent panel = new TopLevelComponent("topPanel", 0, 0, Engine.getWidth(), Engine.getHeight());
 
     final private HashMap<String, GameState> stateMap = new HashMap<>();
 
@@ -42,7 +41,7 @@ public class Game {
     }
 
     public void clear(){
-        setSize(DEFAULT_WIDTH,DEFAULT_HEIGHT);
+        setSize(Engine.getWidth(),Engine.getHeight());
         removeAllStates();
         setLoading(null);
     }

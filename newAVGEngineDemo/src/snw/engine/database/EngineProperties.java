@@ -20,15 +20,16 @@ public class EngineProperties {
     }
 
 
-
     public static EngineProperties getInstance() {
         return INSTANCE;
     }
 
-    public void clear(){
+    public void clear() {
         properties.clear();
         loadAllDefault(new String[]{
                 "!properties_path: properties.txt",
+                "!fps            : 60",
+                "!size           : 1680 x 1050",
                 "!images_path    : file/image/",
                 "!sounds_path    : file/audio/",
                 "!data_path      : file/data/",
