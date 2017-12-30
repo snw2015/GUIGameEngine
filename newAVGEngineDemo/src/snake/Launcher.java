@@ -79,7 +79,5 @@ public class Launcher {
             }
         });
         timerProcess.start();
-
-        frame.start();
     }
 }

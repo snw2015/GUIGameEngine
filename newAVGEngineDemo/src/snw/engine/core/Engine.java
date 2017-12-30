@@ -1,6 +1,7 @@
 package snw.engine.core;
 
 import snw.engine.audio.AudioManager;
+import snw.engine.component.Button;
 import snw.engine.component.Component;
 import snw.engine.component.TopLevelComponent;
 import snw.engine.database.*;
@@ -9,6 +10,7 @@ import snw.engine.game.Game;
 import snw.engine.game.GameState;
 import snw.file.FileIOHelper;
 import snw.math.VectorInt;
+import snw.tests.TestAll;
 
 import javax.sound.sampled.Clip;
 import javax.swing.*;
@@ -720,13 +722,15 @@ public final class Engine {
         {
             getFrame().repaint();
         });
+        timerPaint.start();
     }
 
     public static void startUpdating() {
-        Timer timerPaint = new Timer(1000 / getFPS(), (e) ->
+        Timer timerUpdate = new Timer(1000 / getFPS(), (e) ->
         {
             getPanel().update();
         });
+        timerUpdate.start();
     }
 
     public static void initialize() {
@@ -746,7 +750,6 @@ public final class Engine {
     }
 
     public static void main(String[] args) {
-        initialize();
-        start();
+        //TEST
     }
 }

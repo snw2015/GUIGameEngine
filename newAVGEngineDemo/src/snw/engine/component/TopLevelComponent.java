@@ -4,8 +4,12 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import snw.engine.database.Database;
 
 public class TopLevelComponent extends FrameComponent {
-    private boolean hasCursor;
+    private boolean hasCursor = false;
     private MovingGraphic cursor;
+
+    public TopLevelComponent(String name) {
+        this(name, 0, 0, 0, 0);
+    }
 
     public TopLevelComponent(String name, int x, int y, int width, int height) {
         this(name, x, y, width, height, true);
@@ -64,8 +68,5 @@ public class TopLevelComponent extends FrameComponent {
         int posX = cursor.getX();
         int posY = cursor.getY();
         cursor.setImages(Database.getCursorData().getImages(typeName));
-    }
-
-    public void start() {
     }
 }

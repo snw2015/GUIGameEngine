@@ -51,9 +51,4 @@ public class SnakeScreenDemo extends TopLevelComponent implements SnakeScreen {
     public void gameOver() {
         System.out.println("Game Over");
     }
-
-    @Override
-    public void start() {
-        // TODO Auto-generated method stub
-    }
 }

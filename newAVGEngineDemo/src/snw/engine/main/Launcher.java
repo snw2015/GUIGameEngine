@@ -48,8 +48,6 @@ public class Launcher {
         });
         timerUpdate.start();
 
-        frame.start();
-
         frame.setEnabled(true);
         frame.setVisible(true);
     }

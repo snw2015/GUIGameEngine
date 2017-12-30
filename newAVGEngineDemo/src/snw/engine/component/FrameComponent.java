@@ -33,6 +33,9 @@ public class FrameComponent extends Component {
             // Repeated adding
             if (subComponents.contains(sub)) return;
 
+//            print(name," add ",sub);
+//            println();
+
             int index = subPriorities.size();
             for (int i = 0; i < subPriorities.size(); i++) {
                 if (subPriorities.get(i) > priority) {
@@ -165,9 +168,11 @@ public class FrameComponent extends Component {
     public void paint(Graphics2D g, AnimationData appliedData) {
         synchronized (this) {
             Rectangle bound = new Rectangle(0, 0, width, height);
+
+            //println(name + " render: " + subComponents);
+
             for (Component sub : subComponents) {
                 if (sub != null) {
-                    //println("sub[" + sub + "]: " + sub.getBound());
                     if (sub.getBound().intersects(bound)) {
                         //println(name + " render: " + sub.name);
                         //println(g.getClipBounds());

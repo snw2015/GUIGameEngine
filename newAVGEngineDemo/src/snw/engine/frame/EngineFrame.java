@@ -22,6 +22,7 @@ public class EngineFrame extends JFrame{
         //TODO
         setCursor(getToolkit().createCustomCursor(
                 new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(), null));
+        panel.setCursor(true);
 
         addWindowListener(new WindowListener() {
             @Override

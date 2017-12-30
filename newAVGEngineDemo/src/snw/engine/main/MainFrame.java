@@ -114,10 +114,6 @@ public class MainFrame extends JFrame {
         System.out.println(s);
     }
 
-    public void start() {
-        panel.start();
-    }
-
     public void update() {
         panel.update();
     }

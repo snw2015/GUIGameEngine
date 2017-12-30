@@ -79,7 +79,6 @@ public abstract class Component {
         //println(name + ": " + selfBound);
 
         g.clip(selfBound);
-        //println(name + ": " + g.getClipBounds());
         paint(g, finalData);
 
         g.setClip(bound);

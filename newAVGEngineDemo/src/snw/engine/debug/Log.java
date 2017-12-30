@@ -8,6 +8,7 @@ public class Log {
     }
 
     public static void println(Object... s) {
+        if (s.length == 0) System.out.println();
         for (Object o : s) {
             System.out.println(o);
         }

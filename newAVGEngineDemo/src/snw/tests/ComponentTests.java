@@ -111,11 +111,6 @@ public class ComponentTests extends TopLevelComponent {
         //refocusMouse();
     }
 
-    @Override
-    public void start() {
-
-    }
-
     public static void main(String[] s) {
         Database.loadUserData();
 
@@ -142,7 +137,5 @@ public class ComponentTests extends TopLevelComponent {
             }
         });
         timerUpdate.start();
-
-        frame.start();
     }
 }
