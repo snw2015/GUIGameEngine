@@ -63,7 +63,7 @@ public final class Engine {
     /**
      * Get the Game of this engine
      */
-    public static Game getGame() {
+    public synchronized static Game getGame() {
         if (GAME == null) {
             GAME = Game.getInstance();
         }
@@ -172,7 +172,7 @@ public final class Engine {
     /**
      * Get the ImageBufferData of this engine
      */
-    public static ImageBufferData getImageBufferData() {
+    public synchronized static ImageBufferData getImageBufferData() {
         if (IMAGE_BUFFER_DATA == null) {
             IMAGE_BUFFER_DATA = ImageBufferData.getInstance();
         }
@@ -254,7 +254,7 @@ public final class Engine {
     /*
      AudioBufferData methods
      */
-    public static AudioBufferData getAudioBufferData() {
+    public synchronized static AudioBufferData getAudioBufferData() {
         if (AUDIO_BUFFER_DATA == null) {
             AUDIO_BUFFER_DATA = AudioBufferData.getInstance();
         }
@@ -314,7 +314,7 @@ public final class Engine {
      AudioManager methods
      */
 
-    public static AudioManager getAudioManager() {
+    public synchronized static AudioManager getAudioManager() {
         if (AUDIO_MANAGER == null) {
             AUDIO_MANAGER = AudioManager.getInstance();
         }
@@ -406,7 +406,7 @@ public final class Engine {
      EngineProperties methods
      */
 
-    public static EngineProperties getEngineProperties() {
+    public synchronized static EngineProperties getEngineProperties() {
         if (ENGINE_PROPERTIES == null) {
             ENGINE_PROPERTIES = EngineProperties.getInstance();
         }
@@ -481,7 +481,7 @@ public final class Engine {
     /*
      EngineData methods
      */
-    public static EngineData getEngineData() {
+    public synchronized static EngineData getEngineData() {
         if (ENGINE_DATA == null) {
             ENGINE_DATA = EngineData.getInstance();
         }
@@ -624,7 +624,9 @@ public final class Engine {
     /*
      EngineFrame methods
      */
-    public static EngineFrame getFrame() {
+
+    //TODO thread security
+    public synchronized static EngineFrame getFrame() {
         if (ENGINE_FRAME == null) {
             ENGINE_FRAME = new EngineFrame();
         }
