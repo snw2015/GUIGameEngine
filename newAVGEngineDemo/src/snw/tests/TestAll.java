@@ -22,7 +22,11 @@ public class TestAll implements Reloadable {
     }
 
     public static void main(String[] args) {
-        System.out.println(TestAll.class);
+        System.out.println(Thread.currentThread());
+        Thread t = new Thread(()->{
+            System.out.println(Thread.currentThread());
+        });
+        t.start();
     }
 
 

@@ -11,11 +11,11 @@ import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class EngineFrame extends JFrame{
+public class EngineFrame extends JFrame {
     final TopLevelComponent panel = Engine.getPanel();
     final ContentPanel contentPanel = new ContentPanel();
 
-    public EngineFrame(){
+    public EngineFrame() {
         add(contentPanel);
         resize();
 
@@ -32,7 +32,9 @@ public class EngineFrame extends JFrame{
 
             @Override
             public void windowClosing(WindowEvent e) {
-                Engine.exit();
+                Engine.runNewThread(() -> {
+                    Engine.exit();
+                });
             }
 
             @Override
@@ -64,18 +66,23 @@ public class EngineFrame extends JFrame{
 
             @Override
             public void keyTyped(KeyEvent e) {
-                panel.keyTyped(e.getKeyChar());
+                Engine.runNewThread(() -> {
+                    panel.keyTyped(e.getKeyChar());
+                });
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                panel.keyPressed(e.getKeyCode());
+                Engine.runNewThread(() -> {
+                    panel.keyPressed(e.getKeyCode());
+                });
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-
-                panel.keyReleased(e.getKeyCode());
+                Engine.runNewThread(() -> {
+                    panel.keyReleased(e.getKeyCode());
+                });
             }
         });
     }
@@ -87,39 +94,56 @@ public class EngineFrame extends JFrame{
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    panel.mouseClicked(e.getX(), e.getY());
+                    Engine.runNewThread(() -> {
+                        panel.mouseClicked(e.getX(), e.getY());
+                    });
                 }
 
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    panel.mousePressed(e.getX(), e.getY());
+                    Engine.runNewThread(() -> {
+                        panel.mousePressed(e.getX(), e.getY());
+                    });
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    panel.mouseReleased(e.getX(), e.getY());
+                    Engine.runNewThread(() -> {
+                        panel.mouseReleased(e.getX(), e.getY());
+                    });
                 }
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    panel.mouseEntered();
+
+                    Engine.runNewThread(() -> {
+                        panel.mouseEntered();
+                    });
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    panel.mouseExited();
+
+                    Engine.runNewThread(() -> {
+                        panel.mouseExited();
+                    });
                 }
             });
             this.addMouseMotionListener(new MouseMotionListener() {
 
                 @Override
                 public void mouseMoved(MouseEvent e) {
-                    panel.mouseMoved(e.getX(), e.getY());
+
+                    Engine.runNewThread(() -> {
+                        panel.mouseMoved(e.getX(), e.getY());
+                    });
                 }
 
                 @Override
                 public void mouseDragged(MouseEvent e) {
-                    panel.mouseDragged(e.getX(), e.getY());
+                    Engine.runNewThread(() -> {
+                        panel.mouseDragged(e.getX(), e.getY());
+                    });
                 }
             });
         }
@@ -131,12 +155,12 @@ public class EngineFrame extends JFrame{
             }
         }
 
-        public void resize(){
+        public void resize() {
             this.setPreferredSize(new Dimension(panel.getWidth(), panel.getHeight()));
         }
     }
 
-    public void resize(){
+    public void resize() {
         contentPanel.resize();
         pack();
         setLocationRelativeTo(null);

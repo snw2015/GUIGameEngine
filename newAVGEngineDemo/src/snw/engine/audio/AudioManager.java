@@ -63,7 +63,7 @@ public class AudioManager {
         stopBGM();
 
         Clip clipBGM = Engine.getClip(name);
-        setClipVol(clipBGM, BGMVol*masterVol);
+        setClipVol(clipBGM, BGMVol * masterVol);
 
         clipBGM.addLineListener((LineEvent event) -> {
             if (event.getType() == LineEvent.Type.STOP)
@@ -74,7 +74,7 @@ public class AudioManager {
         clipBGM.setFramePosition(0);
 
         if (loopTime > 0) {
-            clipBGM.loop(loopTime);
+            clipBGM.loop(loopTime - 1);
         } else {
             clipBGM.loop(Clip.LOOP_CONTINUOUSLY);
         }
@@ -98,7 +98,7 @@ public class AudioManager {
         stopBGM();
 
         Clip clipBGM = Engine.getClip(name);
-        setClipVol(clipBGM, BGMVol*masterVol);
+        setClipVol(clipBGM, BGMVol * masterVol);
         FloatControl control = (FloatControl) clipBGM.getControl(FloatControl.Type.MASTER_GAIN);
 
         Thread threadControl = new Thread(() -> {
@@ -169,12 +169,12 @@ public class AudioManager {
         if (loopTime == 0) return;
 
         Clip clipSE = Engine.getClip(name);
-        setClipVol(clipSE, SEVol*masterVol);
+        setClipVol(clipSE, SEVol * masterVol);
 
         clipSE.setFramePosition(0);
 
         if (loopTime > 0) {
-            clipSE.loop(loopTime);
+            clipSE.loop(loopTime - 1);
         } else {
             clipSE.loop(Clip.LOOP_CONTINUOUSLY);
         }

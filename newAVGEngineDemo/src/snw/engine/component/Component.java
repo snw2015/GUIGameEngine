@@ -72,6 +72,7 @@ public abstract class Component {
     }
 
     public void render(Graphics2D g, AnimationData appliedData) {
+        if(!visible) return;
         AnimationData finalData = getFinalAnimationData().preAdd(appliedData);
         Rectangle bound = g.getClipBounds();
 
@@ -257,7 +258,6 @@ public abstract class Component {
                 width, 0,
                 width, height,
                 0, height};
-
 
         //println(name + ": " + Arrays.toString(originPoints));
 

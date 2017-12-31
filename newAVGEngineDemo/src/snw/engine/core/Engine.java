@@ -1,7 +1,6 @@
 package snw.engine.core;
 
 import snw.engine.audio.AudioManager;
-import snw.engine.component.Button;
 import snw.engine.component.Component;
 import snw.engine.component.TopLevelComponent;
 import snw.engine.database.*;
@@ -10,10 +9,8 @@ import snw.engine.game.Game;
 import snw.engine.game.GameState;
 import snw.file.FileIOHelper;
 import snw.math.VectorInt;
-import snw.tests.TestAll;
 
 import javax.sound.sampled.Clip;
-import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
@@ -110,6 +107,10 @@ public final class Engine {
 
     public static void addState(GameState state) {
         getGame().addState(state);
+    }
+
+    public static void addState(String name, Class panelClass) {
+        addState(new GameState(name, panelClass));
     }
 
     public static void removeAllStates() {
@@ -437,6 +438,14 @@ public final class Engine {
         return getEngineProperties().get(name);
     }
 
+    public static int getPropertyInt(String name) {
+        return Integer.parseInt(getProperty(name).trim());
+    }
+
+    public static double getPropertyDouble(String name) {
+        return Double.parseDouble(getProperty(name).trim());
+    }
+
     public static String getDefaultProperty(String name) {
         return getEngineProperties().getDefault(name);
     }
@@ -649,8 +658,8 @@ public final class Engine {
         getFrame().setEnabled(true);
     }
 
-    public static void setTitle() {
-
+    public static void setTitle(String title) {
+        getFrame().setTitle(title);
     }
 
     /*
@@ -696,6 +705,33 @@ public final class Engine {
     }
 
 
+    public static Thread runNewThread(Runnable runnable) {
+        Thread t = new Thread(runnable);
+        t.start();
+        return t;
+    }
+
+    public static Thread runNewLoop(Runnable runnable, long timeMillis) {
+        Thread t = new Thread(() -> {
+            while (true) {
+                runnable.run();
+                sleepMs(timeMillis);
+            }
+        });
+        t.start();
+        return t;
+    }
+
+    public static Thread runNewLoop(Runnable runnable) {
+        Thread t = new Thread(() -> {
+            while (true) {
+                runnable.run();
+            }
+        });
+        t.start();
+        return t;
+    }
+
     /*
      Engine methods
      */
@@ -708,7 +744,7 @@ public final class Engine {
     }
 
     public static int getFPS() {
-        return Integer.parseInt(getProperty("fps"));
+        return getPropertyInt("fps");
     }
 
     public static int getWidth() {
@@ -720,19 +756,25 @@ public final class Engine {
     }
 
     public static void startPainting() {
-        Timer timerPaint = new Timer(1000 / getFPS(), (e) ->
-        {
-            getFrame().repaint();
+        Thread threadPaint = new Thread(() -> {
+            int delay = 1000 / getFPS();
+            while (true) {
+                sleepMs(delay);
+                getFrame().repaint();
+            }
         });
-        timerPaint.start();
+        threadPaint.start();
     }
 
     public static void startUpdating() {
-        Timer timerUpdate = new Timer(1000 / getFPS(), (e) ->
-        {
-            getPanel().update();
+        Thread threadUpdate = new Thread(() -> {
+            int delay = 1000 / getFPS();
+            while (true) {
+                sleepMs(delay);
+                getPanel().update();
+            }
         });
-        timerUpdate.start();
+        threadUpdate.start();
     }
 
     public static void initialize() {
@@ -754,4 +796,5 @@ public final class Engine {
     public static void main(String[] args) {
         //TEST
     }
+
 }
