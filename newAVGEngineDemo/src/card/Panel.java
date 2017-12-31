@@ -1,5 +1,6 @@
 package card;
 
+import snw.engine.animation.Animation;
 import snw.engine.component.Button;
 import snw.engine.component.Component;
 import snw.engine.component.Graphic;
@@ -39,8 +40,11 @@ public class Panel extends normalPanel {
         System.out.println("loading");
         initialize();
         System.out.println("initializing");
+        System.out.println("setting cards");
         setCards();
+        System.out.println("setting board");
         setBoard();
+        System.out.println("setting button");
         setBoardButton();
         System.out.println("finished load");
 
@@ -53,7 +57,7 @@ public class Panel extends normalPanel {
         cards = new Button[cardTypeNum][cardRankNum];
         positions = new VectorInt[cardTypeNum][cardRankNum];
 
-        double collideDis = (cardSize.x + cardSize.y) * (cardSize.x + cardSize.y);
+        double collideDis = (cardSize.x + cardSize.y) * (cardSize.x + cardSize.y)/6*7;
 
         for (int i = 1; i <= cardTypeNum; i++) {
             for (int j = 1; j <= cardRankNum; j++) {
@@ -100,7 +104,7 @@ public class Panel extends normalPanel {
                     }
                 });
 
-                Graphic effect = new Graphic("effect", getImage("card_effect"), cardSize.x / 2, cardSize.y / 2);
+                Graphic effect = new Graphic("effect", getImage("card_effect"), cardSize.x / 2, cardSize.y / 2, cardSize.x, cardSize.y);
                 effect.setAlignment(ALIGNMENT_CENTER);
                 card.setReactionIn((VectorInt pos) -> {
                     card.add(effect, 1);
@@ -111,7 +115,7 @@ public class Panel extends normalPanel {
 
 
                 cards[i - 1][j - 1] = card;
-                VectorInt position = getNextPos(rnd, getWidth() * 9 / 10, (getHeight() - 100) * 9 / 10, collideDis).add(new VectorInt(getWidth() / 20, (getHeight() - 100) / 20));
+                VectorInt position = getNextPos(rnd, getWidth() * 14 / 15, (getHeight() - 80) * 9 / 10, collideDis).add(new VectorInt(getWidth() / 30, (getHeight() - 80) / 20));
                 positions[i - 1][j - 1] = position;
             }
         }
@@ -216,7 +220,6 @@ public class Panel extends normalPanel {
         Engine.storeImage("button1", "button2", "card_back", "card_effect");
         Engine.storeAudio("correct", "wrong", "win", "swish");
 
-        Image ruler = getImage("card_1_1");
-        cardSize = new VectorInt(ruler.getWidth(null), ruler.getHeight(null));
+        cardSize = new VectorInt(Engine.getPropertyInt("card_width"), Engine.getPropertyInt("card_height"));
     }
 }

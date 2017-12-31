@@ -18,7 +18,6 @@ public class EngineFrame extends JFrame {
     public EngineFrame() {
         add(contentPanel);
         resize();
-
         //TODO
         setCursor(getToolkit().createCustomCursor(
                 new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(), null));
@@ -162,6 +161,7 @@ public class EngineFrame extends JFrame {
 
     public void resize() {
         contentPanel.resize();
+        setPreferredSize(new Dimension(panel.getWidth(), panel.getHeight()));
         pack();
         setLocationRelativeTo(null);
     }

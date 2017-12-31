@@ -88,7 +88,7 @@ public final class Engine {
 
     public static void setSize(int width, int height) {
         getPanel().setSize(width, height);
-        getFrame().resize();
+        resize();
     }
 
     public static void setLoading(Component loading) {
@@ -660,6 +660,11 @@ public final class Engine {
 
     public static void setTitle(String title) {
         getFrame().setTitle(title);
+    }
+
+    public static void resize() {
+        getPanel().setSize(getWidth(), getHeight());
+        getFrame().resize();
     }
 
     /*
