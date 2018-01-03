@@ -1,21 +1,17 @@
 package snw.engine.component;
 
+import snw.engine.core.Engine;
+import snw.file.FileDirectReader;
+
 import java.awt.Image;
 
 public class MovingGraphic extends Graphic {
-    private boolean isEnded = false;
-    private boolean isLoop = true;
-    private int counter = 0;
-    private int frameNum = 0;
+    private boolean isStopped = true;
+    private int loopTime = -1;
+    private int speedCounter = 0;
+    private int framePos = 0;
     private int updateSpeed = 0;// 0~100
 
-    public void setImages(Image[] images) {
-        this.images = images;
-        if (!isEnded) {
-            counter = 0;
-            frameNum = 0;
-        }
-    }
 
     private Image[] images;
 
@@ -36,37 +32,67 @@ public class MovingGraphic extends Graphic {
 
     public MovingGraphic(String name, Image[] images, int x, int y, int width, int height,
                          int speed) {
-        super(name, images[0], x, y, width, height, false);
-        // TODO Auto-generated constructor stub
-        this.images = images;
-        this.updateSpeed = speed;
+        this(name, images, x, y, width, height, speed, false);
+    }
+
+    public MovingGraphic(String name, Image[] images, int x, int y, int width, int height) {
+        this(name, images, x, y, width, height, 5);
     }
 
     public MovingGraphic(String name, Image[] images, int x, int y, int speed) {
-        super(name, images[0], x, y, false);
-        // TODO Auto-generated constructor stub
-        this.images = images;
-        this.updateSpeed = speed;
+        this(name, images, x, y, speed, false);
+    }
+
+    public MovingGraphic(String name, Image[] images, int x, int y) {
+        this(name, images, x, y, 5);
+    }
+
+    public void loop(int loopTime) {
+        terminate();
+        this.loopTime = loopTime;
+        setStopped(false);
+    }
+
+    public void loop() {
+        loop(-1);
+    }
+
+    public void start() {
+        loop(1);
+    }
+
+    public void stop() {
+        setStopped(true);
+    }
+
+    public void resume() {
+        setStopped(false);
+    }
+
+    public void terminate() {
+        stop();
+        loopTime = -1;
+        speedCounter = 0;
+        framePos = 0;
     }
 
     @Override
     public void update() {
         super.update();
-        if (updateSpeed != 0 && !isEnded) {
-            int maxmumFrame = 100 / updateSpeed;
-            if (++counter >= maxmumFrame) {
-                counter = 0;
-                if (++frameNum >= images.length) {
-                    if (isLoop) {
-                        frameNum = 0;
+        if (loopTime != 0 && updateSpeed >= 0 && !isStopped()) {
+            if (++speedCounter >= 100 / updateSpeed) {
+                speedCounter = 0;
+                image = images[framePos];
+                if (++framePos >= images.length) {
+                    if (loopTime == -1 || --loopTime > 0) {
+                        framePos = 0;
                     } else {
-                        isEnded = true;
+                        terminate();
                     }
                 }
 
             }
         }
-        image = images[frameNum];
     }
 
     public int getSpeed() {
@@ -77,16 +103,38 @@ public class MovingGraphic extends Graphic {
         this.updateSpeed = speed;
     }
 
-    public int getFrameNum() {
-        return frameNum;
+    public int getFramePos() {
+        return framePos;
     }
 
-    public void setFrameNum(int frameNum) {
-        this.frameNum = frameNum;
+    public void setFramePos(int framePos) {
+        if (framePos >= images.length) framePos = images.length - 1;
+        this.framePos = framePos;
     }
 
-    public void setLoop(boolean isLoop) {
-        this.isLoop = isLoop;
+    public boolean isStopped() {
+        return isStopped;
     }
 
+    public void setStopped(boolean stopped) {
+        isStopped = stopped;
+    }
+
+    public void setImages(Image[] images) {
+        this.images = images;
+        stop();
+        speedCounter = 0;
+        framePos = 0;
+    }
+
+    public static void main(String[] args) {
+        Engine.initialize();
+
+        MovingGraphic graphic = new MovingGraphic("testg", Engine.getImages("a_1", "a_2", "a_3", "a_4", "a_5"), 100, 100);
+        Engine.getPanel().add(graphic);
+
+        Engine.start();
+
+        graphic.loop(10);
+    }
 }

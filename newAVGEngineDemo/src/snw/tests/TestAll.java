@@ -25,29 +25,14 @@ public class TestAll implements Reloadable {
         this.name = name;
     }
 
-    public static void main(String[] args) throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
-        File file = new File("file/audio/lock.wav");
-
-        AudioInputStream audioInputStream1 = AudioSystem.getAudioInputStream(file);
-        AudioInputStream audioInputStream2 = AudioSystem.getAudioInputStream(file);
-        Clip clip1 = AudioSystem.getClip();
-        Clip clip2 = AudioSystem.getClip();
-
-        clip1.open(audioInputStream1);
-        clip2.open(audioInputStream2);
-
-        FloatControl control = (FloatControl) clip1.getControl(FloatControl.Type.MASTER_GAIN);
-        control.setValue(-30f);
-        clip1.start();
-
-        Thread.sleep(5000);
-
-        control = (FloatControl) clip2.getControl(FloatControl.Type.MASTER_GAIN);
-        control.setValue(1f);
-        clip2.start();
-
-        Thread.sleep(5000);
-        clip2.stop();
+    public static void main(String[] args) {
+        int i = 0;
+        System.out.println("i++ " + i++);
+        System.out.println("++i " + ++i);
+        System.out.println("true||i++>0 " + (true || i++ > 0));
+        System.out.println("i " + i);
+        System.out.println("false&&++i>0 " + (false && ++i > 0));
+        System.out.println("i " + i);
     }
 
 
