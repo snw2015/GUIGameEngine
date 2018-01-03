@@ -140,22 +140,4 @@ public class Spirit extends FrameComponent {
         return name + ": " + Arrays.toString(getStateNames());
     }
 
-    public static void main(String[] args) {
-        Engine.initialize();
-
-        Image[][] images = {Engine.getImages("a_1", "a_2", "a_3", "a_4", "a_5"), Engine.getImages("a_5", "a_4", "a_3", "a_2", "a_1")};
-        Spirit spirit = new Spirit("tests", images, 100, 100);
-        spirit.setStateName(0, "order");
-        spirit.setStateName(1, "reverse");
-        Engine.getPanel().add(spirit);
-
-        Engine.start();
-
-        spirit.loop(1, -1);
-
-        Engine.sleep(4);
-
-        spirit.setState("order");
-        spirit.loop();
-    }
 }

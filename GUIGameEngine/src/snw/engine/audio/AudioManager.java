@@ -255,21 +255,4 @@ public class AudioManager {
     public static float gain2volume(float gain) {
         return (float) Math.log((gain - MIN_GAIN) / (1 - MIN_GAIN) * (Math.E - 1) + 1);
     }
-
-    public static void main(String[] args) {
-        Engine.storeAudio("lock");
-        getInstance().setBGMVol(0.2f);
-        getInstance().fadeInBGM("lock");
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        getInstance().playSE("lock2");
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }
