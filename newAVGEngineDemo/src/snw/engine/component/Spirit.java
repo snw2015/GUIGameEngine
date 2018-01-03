@@ -7,6 +7,8 @@ import java.awt.*;
 public class Spirit extends Component {
     public Spirit(String name, int x, int y) {
         super(name, x, y, 0, 0);
+
+        
     }
 
     @Override
