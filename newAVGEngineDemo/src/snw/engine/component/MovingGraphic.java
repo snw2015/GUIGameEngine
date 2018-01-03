@@ -1,8 +1,5 @@
 package snw.engine.component;
 
-import snw.engine.core.Engine;
-import snw.file.FileDirectReader;
-
 import java.awt.Image;
 
 public class MovingGraphic extends Graphic {
@@ -125,16 +122,5 @@ public class MovingGraphic extends Graphic {
         stop();
         speedCounter = 0;
         framePos = 0;
-    }
-
-    public static void main(String[] args) {
-        Engine.initialize();
-
-        MovingGraphic graphic = new MovingGraphic("testg", Engine.getImages("a_1", "a_2", "a_3", "a_4", "a_5"), 100, 100);
-        Engine.getPanel().add(graphic);
-
-        Engine.start();
-
-        graphic.loop(10);
     }
 }

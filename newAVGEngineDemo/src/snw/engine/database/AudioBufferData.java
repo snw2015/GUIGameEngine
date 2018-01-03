@@ -5,7 +5,6 @@ import snw.structure.BufferData;
 
 import javax.sound.sampled.*;
 import java.io.File;
-import java.io.IOException;
 
 public class AudioBufferData extends BufferData<AudioData> {
     private final static AudioBufferData INSTANCE = new AudioBufferData();

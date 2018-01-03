@@ -1,12 +1,11 @@
 package snw.engine.database;
 
 import java.awt.Image;
-import java.util.HashMap;
-import java.util.Map;
 
 import snw.engine.core.Engine;
-import snw.file.FileDirectReader;
 import snw.structure.BufferData;
+
+import javax.swing.*;
 
 /*
    Warning!
@@ -20,7 +19,8 @@ public class ImageBufferData extends BufferData<Image> {
         return INSTANCE;
     }
 
-    private ImageBufferData(){}
+    private ImageBufferData() {
+    }
 
     public void clear() {
         releaseAll();
@@ -41,7 +41,7 @@ public class ImageBufferData extends BufferData<Image> {
     }
 
     private Image load(String name) {
-        return (FileDirectReader.getImage(Engine.getProperty("images_path") + name + ".png"));
+        return (new ImageIcon(Engine.getProperty("images_path") + name + ".png").getImage());
     }
 
     @Override

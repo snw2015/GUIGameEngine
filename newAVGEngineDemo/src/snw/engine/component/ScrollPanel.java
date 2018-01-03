@@ -1,7 +1,5 @@
 package snw.engine.component;
 
-import java.awt.*;
-
 public class ScrollPanel extends FrameComponent {
     private Component contents;
 

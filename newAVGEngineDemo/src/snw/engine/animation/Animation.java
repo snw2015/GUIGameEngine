@@ -1,8 +1,5 @@
 package snw.engine.animation;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,11 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
-
-import snw.engine.script.ScriptLine;
-import snw.file.FileDirectReader;
 
 public class Animation {
     private int counter = 0;

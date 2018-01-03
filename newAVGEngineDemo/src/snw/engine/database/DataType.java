@@ -1,8 +1,6 @@
 package snw.engine.database;
 
-import com.sun.org.apache.regexp.internal.RE;
 import snw.engine.core.Engine;
-import snw.tests.TestAll;
 
 public enum DataType {
     /*
@@ -163,20 +161,5 @@ public enum DataType {
 
     public static String saveObject(Reloadable value) {
         return "[" + value.getClass().getName() + ": " + value.save() + "]";
-    }
-
-    public static void main(String[] args) {
-        TestAll test = new TestAll();
-        test.setName("1!!");
-        System.out.println(test);
-        String testInfo = saveObject(test);
-
-        test = null;
-
-        System.out.println(test);
-
-        test = (TestAll) parseObject(testInfo);
-
-        System.out.println(test);
     }
 }

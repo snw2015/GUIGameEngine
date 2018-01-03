@@ -12,7 +12,6 @@ import snw.file.FileIOHelper;
 import snw.math.VectorInt;
 
 import javax.sound.sampled.Clip;
-import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
@@ -199,6 +198,16 @@ public final class Engine {
         return b;
     }
 
+    public static boolean storeImageList(String name, int num) {
+        if (num < 0) return false;
+        if (num == 1) return storeImage(name);
+        boolean b = true;
+        for (int i = 1; i <= num; i++) {
+            b = storeImage(name + "_" + i) && b;
+        }
+        return b;
+    }
+
     /**
      * decorative method
      */
@@ -241,10 +250,11 @@ public final class Engine {
     }
 
     public static Image[] getImageList(String name, int num) {
-        if (num < 0) return null;
+        if (num < 0) return new Image[]{};
+        if (num == 1) return getImages(name);
         Image[] images = new Image[num];
         for (int i = 1; i <= num; i++) {
-            images[i - 1] = getImage(name + "_" + num);
+            images[i - 1] = getImage(name + "_" + i);
         }
         return images;
     }
@@ -773,6 +783,21 @@ public final class Engine {
         return Integer.parseInt(getProperty("size").split("x|X")[1].trim());
     }
 
+    public static Image[][] getCursorImages() {
+        Image[][] images = new Image[TopLevelComponent.TOTAL_STATE_NUM][];
+
+        String cursorName = getProperty("cursor_name");
+        images[TopLevelComponent.STATE_NORMAL] = getImageList(cursorName, getPropertyInt("cursor_normal_length"));
+        images[TopLevelComponent.STATE_DRAG] = getImageList(cursorName + "_drag", getPropertyInt("cursor_drag_length"));
+        images[TopLevelComponent.STATE_BUSY] = getImageList(cursorName + "_busy", getPropertyInt("cursor_busy_length"));
+
+        return images;
+    }
+
+    public static void setCursorState(int state) {
+        getPanel().setState(state);
+    }
+
     public static void startPainting() {
         final Thread[] threadPaint = {null};
 
@@ -831,17 +856,4 @@ public final class Engine {
         //TODO
         Logger.println(objects);
     }
-
-    public static void main(String[] args) {
-        //TEST
-        storeAudio("lock");
-        fadeInBGM("lock");
-
-        sleep(10);
-
-        fadeOutBGM();
-        sleep(10);
-        //fadeInBGM("lock");
-    }
-
 }

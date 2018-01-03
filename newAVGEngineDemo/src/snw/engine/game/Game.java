@@ -1,19 +1,11 @@
 package snw.engine.game;
 
-import snw.engine.animation.AnimationData;
 import snw.engine.component.Component;
 import snw.engine.component.TopLevelComponent;
-import snw.engine.componentAVG.MainGameScreenC;
-import snw.engine.componentAVG.MainMenuC;
 import snw.engine.core.Engine;
 import snw.math.VectorInt;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.HashMap;
-
-import static snw.engine.debug.Logger.*;
 
 public class Game {
     static final private Game GAME = new Game();
@@ -175,38 +167,5 @@ public class Game {
         }
         s += "\tLoading component: " + getLoading() + "\n";
         return s;
-    }
-
-    public static void main(String[] args) {
-        //Test
-        JFrame frame = new JFrame() {
-            @Override
-            public void paint(Graphics g) {
-                println(GAME.panel.getSubs());
-                GAME.panel.render((Graphics2D) g, new AnimationData(AffineTransform.getTranslateInstance(0, 0)));
-            }
-        };
-        frame.setBounds(0, 0, 2000, 1200);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
-        GAME.addState(new GameState("1", MainMenuC.class));
-        GAME.addState(new GameState("2", MainGameScreenC.class));
-
-        GAME.loadState("1");
-        GAME.showState("1");
-
-        frame.repaint();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        GAME.hideState("1");
-        GAME.releaseState("1");
-
-        GAME.loadState("2");
-        GAME.showState("2");
-        frame.repaint();
     }
 }

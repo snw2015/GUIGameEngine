@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import snw.engine.animation.AnimationData;
-import snw.math.VectorInt;
 
 public class Graphic extends Component {
     protected Image image;

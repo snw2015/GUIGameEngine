@@ -1,15 +1,10 @@
 package snw.engine.component;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.image.ColorModel;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import com.sun.scenario.animation.shared.AnimationAccessor;
 import snw.engine.animation.AnimationData;
 import snw.math.VectorInt;
-
 
 public class FrameComponent extends Component {
 

@@ -7,10 +7,9 @@ import java.awt.geom.NoninvertibleTransformException;
 import snw.engine.animation.Animation;
 import snw.engine.animation.AnimationData;
 import snw.engine.core.Engine;
+import snw.engine.debug.Logger;
 import snw.math.VectorDbl;
 import snw.math.VectorInt;
-
-import snw.engine.debug.Logger;
 
 public abstract class Component {
     protected final String name;
@@ -449,19 +448,19 @@ public abstract class Component {
 
 
     public void load(String msg) {
-        println("load " + name);
+        //println("load " + name);
     }
 
     public void resume(String msg) {
-        println("resume " + name);
+        //println("resume " + name);
     }
 
     public void release(String msg) {
-        println("release " + name);
+        //println("release " + name);
     }
 
     public void suspend(String msg) {
-        println("suspend " + name);
+        //println("suspend " + name);
     }
 
     ;

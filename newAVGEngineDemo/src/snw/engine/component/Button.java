@@ -6,9 +6,6 @@ import java.awt.event.KeyEvent;
 import snw.engine.component.reaction.Reaction;
 import snw.math.VectorInt;
 
-/**
- * Need refactor constructors.
- */
 public class Button extends FrameComponent {
     private Graphic background = null;
     private Text text = null;

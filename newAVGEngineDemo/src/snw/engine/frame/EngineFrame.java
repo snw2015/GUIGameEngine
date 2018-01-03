@@ -3,7 +3,6 @@ package snw.engine.frame;
 import snw.engine.animation.AnimationData;
 import snw.engine.component.TopLevelComponent;
 import snw.engine.core.Engine;
-import snw.engine.main.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
