@@ -1,6 +1,6 @@
 package snw.engine.text;
 
-import snw.engine.core.Engine;
+import snw.engine.database.Database;
 import snw.structure.LengthList;
 
 import java.awt.*;
@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 public class ExtendText implements Cloneable {
     public final static HashMap<String, Color> colorNameMap = new HashMap<>();
-
     static {
         colorNameMap.put("WHITE", Color.white);
         colorNameMap.put("white", Color.white);
@@ -156,9 +155,9 @@ public class ExtendText implements Cloneable {
 
     private void resolveRawText(String rawText) {
         //TODO
-        colorList.append(colorNameMap.get(Engine.getProperty("default_text_color")), 0);
-        fontList.append(Engine.getProperty("default_font_name"), 0);
-        sizeList.append(Engine.getPropertyInt("default_font_size"), 0);
+        colorList.append(Database.getDefaultColor(), 0);
+        fontList.append(Database.getDefaultFont(), 0);
+        sizeList.append(Database.getDefaultSize(), 0);
 
         resolveText(rawText, 0);
     }
@@ -230,9 +229,11 @@ public class ExtendText implements Cloneable {
     }
 
     private Color getColorByName(String name) {
-        if (!colorNameMap.containsKey(name))
-            name = Engine.getProperty("default_text_color");
-        return (colorNameMap.get(name));
+        if (colorNameMap.containsKey(name)) {
+            return (colorNameMap.get(name));
+        } else {
+            return Database.getDefaultColor();
+        }
     }
 
     private void resolveFontCommand(String text, int depth) {

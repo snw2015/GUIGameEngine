@@ -35,11 +35,7 @@ public class EngineProperties {
                 "!data_path      : file/data/",
                 "!data_form      : .txt",
                 "!user_data_path : file/data/",
-                "!user_data_form : .sav",
-                "!cursor_name    : cursor",
-                "!cursor_normal_length: 6",
-                "!cursor_drag_length  : 1",
-                "!cursor_busy_length  : 0",});
+                "!user_data_form : .sav"});
     }
 
     public String[] getAllProperties() {

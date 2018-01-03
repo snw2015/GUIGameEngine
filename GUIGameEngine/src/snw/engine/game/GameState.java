@@ -1,6 +1,7 @@
 package snw.engine.game;
 
 import snw.engine.component.Component;
+import snw.engine.componentAVG.MainPanelC;
 
 import static snw.engine.debug.Logger.*;
 
@@ -140,5 +141,17 @@ public class GameState {
     @Override
     public String toString() {
         return "State " + name + ", type: " + getTypeString() + ", class: " + className;
+    }
+
+    public static void main(String[] args) {
+        GameState s1 = new GameState("test1", MainPanelC.class);
+        GameState s2 = new GameState("test2", MainPanelC.class.getName());
+
+        s1.load("");
+        s1.suspend("");
+        s1.resume("");
+        s1.release("");
+
+        println(s1, s2);
     }
 }

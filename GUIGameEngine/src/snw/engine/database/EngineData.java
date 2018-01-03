@@ -1,5 +1,7 @@
 package snw.engine.database;
 
+import snw.tests.TestAll;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -247,4 +249,27 @@ public class EngineData {
     public String toString() {
         return getDataMapStr();
     }
+
+    public static void main(String[] args) {
+        EngineData ed = getInstance();
+
+        ed.set("data1", 1);
+        ed.set("data2", true);
+        ed.set("data3", "12");
+        ed.set("dataObj", new TestAll());
+
+        System.out.println(ed);
+        System.out.println(ed.getAllDataInfoStr());
+
+        String info = ed.getAllDataInfoStr();
+
+        ed.removeAll();
+
+        System.out.println(ed);
+
+        ed.loadDataListStr(info);
+
+        System.out.println(ed);
+    }
+
 }
