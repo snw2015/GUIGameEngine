@@ -4,6 +4,7 @@ import snw.engine.audio.AudioManager;
 import snw.engine.component.Component;
 import snw.engine.component.TopLevelComponent;
 import snw.engine.database.*;
+import snw.engine.debug.Logger;
 import snw.engine.frame.EngineFrame;
 import snw.engine.game.Game;
 import snw.engine.game.GameState;
@@ -11,6 +12,7 @@ import snw.file.FileIOHelper;
 import snw.math.VectorInt;
 
 import javax.sound.sampled.Clip;
+import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
@@ -274,8 +276,8 @@ public final class Engine {
         return b;
     }
 
-    public static boolean storeAudio(String name, Clip clip) {
-        return getAudioBufferData().store(name, clip);
+    public static boolean storeAudio(String name, AudioData audioData) {
+        return getAudioBufferData().store(name, audioData);
     }
 
     public static boolean releaseAudio(String name) {
@@ -290,8 +292,28 @@ public final class Engine {
         return b;
     }
 
-    public static Clip getClip(String name) {
+    public static AudioData getAudio(String name) {
         return getAudioBufferData().get(name);
+    }
+
+    public static AudioData[] getAudio(String... names) {
+        AudioData[] audios = new AudioData[names.length];
+        for (int i = 0; i < names.length; i++) {
+            audios[i] = getAudio(names[i]);
+        }
+        return audios;
+    }
+
+    public static AudioData attainAudio(String name) {
+        return getAudioBufferData().attain(name);
+    }
+
+    public static Clip getClip(String name) {
+        return getAudioBufferData().getClip(name);
+    }
+
+    public static Clip getNewClip(String name) {
+        return getAudioBufferData().getNewClip(name);
     }
 
     public static Clip[] getClips(String... names) {
@@ -303,7 +325,7 @@ public final class Engine {
     }
 
     public static Clip attainClip(String name) {
-        return getAudioBufferData().attain(name);
+        return getAudioBufferData().attainClip(name);
     }
 
     public static void clearAudioBufferData() {
@@ -396,6 +418,10 @@ public final class Engine {
 
     public static void playSE(String name, int loopTime) {
         getAudioManager().playSE(name, loopTime);
+    }
+
+    public static void playSEQuickly(String name) {
+        getAudioManager().playSEQuickly(name);
     }
 
     public static void stopSE(String name) {
@@ -691,8 +717,6 @@ public final class Engine {
     }
 
     public static long tickMs() {
-        if (tickTimer != 0) return -1;
-
         tickTimer = System.currentTimeMillis();
         return tickTimer;
     }
@@ -705,7 +729,7 @@ public final class Engine {
         if (tickTimer <= 0) return -1;
 
         long time = System.currentTimeMillis() - tickTimer;
-        tickTimer = 0;
+        tickMs();
         return time;
     }
 
@@ -716,26 +740,6 @@ public final class Engine {
         return t;
     }
 
-    public static Thread runNewLoop(Runnable runnable, long timeMillis) {
-        Thread t = new Thread(() -> {
-            while (true) {
-                runnable.run();
-                sleepMs(timeMillis);
-            }
-        });
-        t.start();
-        return t;
-    }
-
-    public static Thread runNewLoop(Runnable runnable) {
-        Thread t = new Thread(() -> {
-            while (true) {
-                runnable.run();
-            }
-        });
-        t.start();
-        return t;
-    }
 
     /*
      Engine methods
@@ -761,25 +765,41 @@ public final class Engine {
     }
 
     public static void startPainting() {
-        Thread threadPaint = new Thread(() -> {
+        final Thread[] threadPaint = {null};
+
+        Thread threadLoop = new Thread(() -> {
             int delay = 1000 / getFPS();
             while (true) {
                 sleepMs(delay);
-                getFrame().repaint();
+                if (threadPaint[0] == null || threadPaint[0].getState() == Thread.State.TERMINATED) {
+                    threadPaint[0] = new Thread(() -> {
+                        getFrame().repaint();
+                    });
+                    threadPaint[0].start();
+                }
             }
         });
-        threadPaint.start();
+
+        threadLoop.start();
     }
 
     public static void startUpdating() {
-        Thread threadUpdate = new Thread(() -> {
+        final Thread[] threadUpdate = {null};
+
+        Thread threadLoop = new Thread(() -> {
             int delay = 1000 / getFPS();
             while (true) {
                 sleepMs(delay);
-                getPanel().update();
+                if (threadUpdate[0] == null || threadUpdate[0].getState() == Thread.State.TERMINATED) {
+                    threadUpdate[0] = new Thread(() -> {
+                        getPanel().update();
+                    });
+                    threadUpdate[0].start();
+                }
             }
         });
-        threadUpdate.start();
+
+        threadLoop.start();
     }
 
     public static void initialize() {
@@ -798,8 +818,21 @@ public final class Engine {
         System.exit(0);
     }
 
+    public static void log(Object... objects) {
+        //TODO
+        Logger.println(objects);
+    }
+
     public static void main(String[] args) {
         //TEST
+        storeAudio("lock");
+        fadeInBGM("lock");
+
+        sleep(10);
+
+        fadeOutBGM();
+        sleep(10);
+        //fadeInBGM("lock");
     }
 
 }

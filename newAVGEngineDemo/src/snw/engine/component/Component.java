@@ -3,16 +3,14 @@ package snw.engine.component;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
-import java.util.Arrays;
 
 import snw.engine.animation.Animation;
 import snw.engine.animation.AnimationData;
 import snw.engine.core.Engine;
-import snw.engine.database.ImageBufferData;
 import snw.math.VectorDbl;
 import snw.math.VectorInt;
 
-import snw.engine.debug.Log;
+import snw.engine.debug.Logger;
 
 public abstract class Component {
     protected final String name;
@@ -473,10 +471,10 @@ public abstract class Component {
     }
 
     public void print(Object... objects) {
-        Log.print(objects);
+        Logger.print(objects);
     }
 
     public void println(Object... objects) {
-        Log.println(objects);
+        Logger.println(objects);
     }
 }

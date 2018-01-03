@@ -10,7 +10,7 @@ public class MovingGraphic extends Graphic {
     private int updateSpeed = 0;// 0~100
 
     public void setImages(Image[] images) {
-            this.images = images;
+        this.images = images;
         if (!isEnded) {
             counter = 0;
             frameNum = 0;
@@ -51,6 +51,7 @@ public class MovingGraphic extends Graphic {
 
     @Override
     public void update() {
+        super.update();
         if (updateSpeed != 0 && !isEnded) {
             int maxmumFrame = 100 / updateSpeed;
             if (++counter >= maxmumFrame) {

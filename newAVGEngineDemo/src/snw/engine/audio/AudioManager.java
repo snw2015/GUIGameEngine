@@ -2,8 +2,10 @@ package snw.engine.audio;
 
 import org.omg.CORBA.MARSHAL;
 import snw.engine.core.Engine;
+import snw.engine.database.AudioData;
 
 import javax.sound.sampled.*;
+import java.io.File;
 import java.util.ArrayList;
 
 //Need restructured to allow multi-bgm
@@ -17,7 +19,17 @@ public class AudioManager {
     private float BGMVol = 1;
     private float SEVol = 1;
     private float masterVol = 1;
+
     private String currentBGM = null;
+    private ArrayList<String> BGMList = new ArrayList<>();
+
+    private class BGMLineListener implements LineListener {
+        @Override
+        public void update(LineEvent event) {
+            if (event.getType() == LineEvent.Type.STOP)
+                endBGM();
+        }
+    }
 
     public static AudioManager getInstance() {
         return INSTANCE;
@@ -54,21 +66,37 @@ public class AudioManager {
         return currentBGM;
     }
 
+    public void storeBGM(String name) {
+        AudioData audio = Engine.attainAudio(name);
+        if (!BGMList.contains(name)) {
+            audio.getClip().addLineListener(new BGMLineListener());
+            BGMList.add(name);
+        }
+    }
+
+    public void storeBGM(String name, int loopStart, int loopEnd) {
+        storeBGM(name);
+        Engine.getClip(name).setLoopPoints(loopStart, loopEnd);
+    }
+
+    public void releaseBGM(String name) {
+        if (BGMList.contains(name)) {
+            Engine.releaseAudio(name);
+            BGMList.remove(name);
+        }
+    }
+
     public void playBGM(String name) {
         playBGM(name, -1);
     }
 
     public void playBGM(String name, int loopTime) {
-        if (loopTime == 0) return;
+        if (loopTime == 0 || !BGMList.contains(name)) return;
         stopBGM();
 
         Clip clipBGM = Engine.getClip(name);
         setClipVol(clipBGM, BGMVol * masterVol);
 
-        clipBGM.addLineListener((LineEvent event) -> {
-            if (event.getType() == LineEvent.Type.STOP)
-                currentBGM = null;
-        });
         currentBGM = name;
 
         clipBGM.setFramePosition(0);
@@ -87,6 +115,11 @@ public class AudioManager {
 
     public void stopBGM(String name) {
         Engine.getClip(name).stop();
+        endBGM();
+    }
+
+    private void endBGM() {
+        currentBGM = null;
     }
 
     public void fadeInBGM(String name) {
@@ -146,6 +179,7 @@ public class AudioManager {
 
         Thread threadControl = new Thread(() -> {
             for (float i = control.getValue(); i > MIN_GAIN; i -= speed) {
+                System.out.println(i);
                 control.setValue(i);
                 try {
                     Thread.sleep(100);
@@ -168,7 +202,11 @@ public class AudioManager {
     public void playSE(String name, int loopTime) {
         if (loopTime == 0) return;
 
-        Clip clipSE = Engine.getClip(name);
+        Clip clipSE = Engine.getNewClip(name);
+        //Edit: I found that you should open a new File otherwise you can't play the same sound simultaneously
+        // (at lease can't play it with a short interval), sigh
+        //TODO due to the reason above, this class and the AudioBufferData should be restructured
+
         setClipVol(clipSE, SEVol * masterVol);
 
         clipSE.setFramePosition(0);
@@ -179,6 +217,22 @@ public class AudioManager {
             clipSE.loop(Clip.LOOP_CONTINUOUSLY);
         }
     }
+
+    public void playSEQuickly(String name) {
+        Clip clipSE = null;
+        try {
+            clipSE = AudioSystem.getClip();
+            clipSE.open(AudioSystem.getAudioInputStream(new File(Engine.getProperty("sounds_path") + name + ".wav")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setClipVol(clipSE, SEVol * masterVol);
+
+        clipSE.setFramePosition(0);
+
+        clipSE.start();
+    }
+
 
     public void stopSE(String name) {
         Engine.getClip(name).stop();

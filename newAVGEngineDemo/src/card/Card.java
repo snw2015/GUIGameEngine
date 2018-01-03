@@ -6,7 +6,7 @@ public class Card {
     public static void main(String[] args) {
         initialize();
         setTitle("Cards are in pairs, man alone");
-        setProperty("size","2000x1000");
+        setProperty("size","1900x980");
         resize();
 
         setProperty("card_type_num", "4");

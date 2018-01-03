@@ -57,7 +57,7 @@ public class Panel extends normalPanel {
         cards = new Button[cardTypeNum][cardRankNum];
         positions = new VectorInt[cardTypeNum][cardRankNum];
 
-        double collideDis = (cardSize.x + cardSize.y) * (cardSize.x + cardSize.y)/6*7;
+        double collideDis = (cardSize.x + cardSize.y) * (cardSize.x + cardSize.y);
 
         for (int i = 1; i <= cardTypeNum; i++) {
             for (int j = 1; j <= cardRankNum; j++) {
@@ -115,7 +115,7 @@ public class Panel extends normalPanel {
 
 
                 cards[i - 1][j - 1] = card;
-                VectorInt position = getNextPos(rnd, getWidth() * 14 / 15, (getHeight() - 80) * 9 / 10, collideDis).add(new VectorInt(getWidth() / 30, (getHeight() - 80) / 20));
+                VectorInt position = getNextPos(rnd, getWidth() * 14 / 15, (getHeight() - 70) * 9 / 10, collideDis).add(new VectorInt(getWidth() / 30, (getHeight() - 70) / 20));
                 positions[i - 1][j - 1] = position;
             }
         }
@@ -131,7 +131,8 @@ public class Panel extends normalPanel {
 
     private VectorInt getNextPos(Random rnd, int width, int height, double dis) {
         VectorInt pos = new VectorInt(rnd.nextInt(width), rnd.nextInt(height));
-        while (collide(pos, dis)) {
+        int collideCounter = 0;
+        while (collide(pos, dis - 0.01 * (collideCounter++))) {
             pos = new VectorInt(rnd.nextInt(width), rnd.nextInt(height));
         }
         return pos;
@@ -153,7 +154,7 @@ public class Panel extends normalPanel {
     }
 
     private void setBoardButton() {
-        Button start = new Button("start_button", getWidth() / 2, getHeight() - 50, 180, 60,
+        Button start = new Button("start_button", getWidth() / 2, getHeight() - 20, 180, 60,
                 getImage("button1"), "start");
         start.setAlignment(Component.ALIGNMENT_BOTTOMMID);
 
@@ -180,6 +181,8 @@ public class Panel extends normalPanel {
         Random rnd = new Random();
         for (int i = 0; i < cardTypeNum; i++) {
             for (int j = 0; j < cardRankNum; j++) {
+                Engine.playSEQuickly("swish");
+
                 double angle = rnd.nextDouble() * Math.PI * 2;
 
                 int finalI = i;
@@ -195,7 +198,6 @@ public class Panel extends normalPanel {
     }
 
     private void putCard(int i, int j, double angle) {
-        Engine.playSE("swish");
         add(cards[i][j], PRIORITY_CARD);
         VectorInt startPos = VectorInt.getRandom(getWidth() * 8 / 10, 10).add(new VectorInt(getWidth() / 10, -cardSize.y));
         double rotateSpeed = new Random().nextDouble() * 10;
@@ -218,7 +220,7 @@ public class Panel extends normalPanel {
         cardTypeNum = Engine.getPropertyInt("card_type_num");
         cardRankNum = Engine.getPropertyInt("card_rank_num");
         Engine.storeImage("button1", "button2", "card_back", "card_effect");
-        Engine.storeAudio("correct", "wrong", "win", "swish");
+        Engine.storeAudio("correct", "wrong", "win");
 
         cardSize = new VectorInt(Engine.getPropertyInt("card_width"), Engine.getPropertyInt("card_height"));
     }

@@ -7,7 +7,7 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
-public class AudioBufferData extends BufferData<Clip> {
+public class AudioBufferData extends BufferData<AudioData> {
     private final static AudioBufferData INSTANCE = new AudioBufferData();
 
     public static AudioBufferData getInstance() {
@@ -29,37 +29,36 @@ public class AudioBufferData extends BufferData<Clip> {
         return true;
     }
 
-    public Clip get(String name) {
-        Clip clip = super.get(name);
-        return (clip != null ? clip : load(name));
+    @Override
+    public AudioData get(String name) {
+        AudioData data = super.get(name);
+        return data != null ? data : load(name);
     }
 
-    public Clip load(String name) {
-        Clip clip = null;
-        try {
-            clip = AudioSystem.getClip();
-        } catch (LineUnavailableException e) {
-            //TODO
-            e.printStackTrace();
-        }
+    public Clip getClip(String name) {
+        AudioData data = get(name);
+        return data.getClip();
+    }
 
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(Engine.getProperty("sounds_path")+name+".wav"));
-            clip.open(audioInputStream);
-        } catch (LineUnavailableException e) {
-            //TODO
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        }
-        return clip;
+    public Clip getNewClip(String name) {
+        AudioData data = get(name);
+        return data.getNewClip();
+    }
+
+    public AudioData load(String name) {
+        File file = new File(Engine.getProperty("sounds_path") + name + ".wav");
+        return new AudioData(file);
+    }
+
+    public Clip attainClip(String name) {
+        store(name);
+        return getClip(name);
     }
 
     @Override
-    protected void disposeData(Clip data){
-        data.close();
+    protected void disposeData(AudioData data) {
+        data.setFile(null);
+        data.releaseClip();
     }
 
     @Override

@@ -1,10 +1,9 @@
 package snw.engine.game;
 
 import snw.engine.component.Component;
-import snw.engine.component.FrameComponent;
 import snw.engine.componentAVG.MainPanelC;
 
-import static snw.engine.debug.Log.*;
+import static snw.engine.debug.Logger.*;
 
 public class GameState {
     private final String name;

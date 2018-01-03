@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 
-import static snw.engine.debug.Log.*;
+import static snw.engine.debug.Logger.*;
 
 public class Game {
     static final private Game GAME = new Game();

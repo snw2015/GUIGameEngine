@@ -38,9 +38,20 @@ public class BufferData<D> {
             } else {
                 referenceCounters.put(name, referenceCounters.get(name) - 1);
             }
-            return (true);
+            return true;
         } else {
-            return (false);
+            return false;
+        }
+    }
+
+    public boolean releaseCompletely(String name) {
+        if (bufferData.containsKey(name)) {
+            disposeData(bufferData.get(name));
+            bufferData.remove(name);
+            referenceCounters.remove(name);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -51,7 +62,7 @@ public class BufferData<D> {
 
     public void releaseAll() {
         for (String name : bufferData.keySet()) {
-            release(name);
+            releaseCompletely(name);
         }
     }
 
@@ -68,6 +79,7 @@ public class BufferData<D> {
     }
 
     protected void disposeData(D data) {
+
     }
 
     @Override

@@ -1,6 +1,6 @@
 package snw.engine.debug;
 
-public class Log {
+public class Logger {
     public static void print(Object... s) {
         for (Object o : s) {
             System.out.print(o);
