@@ -200,4 +200,10 @@ public class EngineProperties {
     public String toString() {
         return "Properties: \n" + getAllPropertiesStr() + "\nDefault Properties: \n" + getDefaultPropertiesStr();
     }
+
+    public static void main(String[] args) {
+        System.out.println(getInstance());
+        getInstance().load("a:a");
+        getInstance().savePropertiesFile();
+    }
 }

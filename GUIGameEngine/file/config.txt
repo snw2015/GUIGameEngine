@@ -1,0 +1,2 @@
+mode = common
+textbox_alpha = 0.8
