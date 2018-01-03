@@ -240,6 +240,15 @@ public final class Engine {
         return images;
     }
 
+    public static Image[] getImageList(String name, int num) {
+        if (num < 0) return null;
+        Image[] images = new Image[num];
+        for (int i = 1; i <= num; i++) {
+            images[i - 1] = getImage(name + "_" + num);
+        }
+        return images;
+    }
+
     /**
      * decorative method
      *
